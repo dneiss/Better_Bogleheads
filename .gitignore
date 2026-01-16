@@ -1,0 +1,18 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Package files (if you add npm later)
+node_modules/
+package-lock.json
+
+# Chrome extension packaging
+*.pem
+*.crx
+*.zip

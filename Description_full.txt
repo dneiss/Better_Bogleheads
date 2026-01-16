@@ -1,0 +1,31 @@
+Bogleheads Enhancement Extension improves your browsing experience on the Bogleheads.org forum thread listing page.
+
+FEATURES
+
+Zebra Striping
+Add alternating row colors to the thread list for easier reading. Choose any color you like.
+
+Hide Read Threads
+Automatically tracks threads you've clicked and lets you hide them. Threads reappear when new replies are posted, so you never miss new activity.
+
+Highlight Hot Topics
+Make popular threads stand out by highlighting threads above a customizable reply threshold. Choose your own highlight color.
+
+Hide Old Threads
+Filter out threads older than a specified number of days to focus on recent discussions.
+
+Adjustable Font Size
+Increase or decrease the thread list font size from 50% to 200% for comfortable reading.
+
+Collapsible Settings Panel
+The settings panel floats in the top-right corner and can be collapsed to stay out of your way.
+
+All settings are saved automatically and persist across sessions.
+
+PRIVACY
+
+This extension only runs on bogleheads.org/index.php and stores your preferences locally using Chrome's storage API. No data is collected or transmitted.
+
+OPEN SOURCE
+
+This extension is open source and available on GitHub. Contributions and feedback are welcome.

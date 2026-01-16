@@ -1,0 +1,1 @@
+Enhance Bogleheads.org with zebra striping, hide read threads, highlight hot topics, and adjustable font size.
