@@ -23,3 +23,7 @@
 #zebra-picker label:has(input[type="checkbox"]):hover {
   background: #e8e8e8;
 }
+
+#zebra-picker input[type="checkbox"] {
+  vertical-align: middle;
+}
