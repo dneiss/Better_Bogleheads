@@ -42,5 +42,5 @@ All settings are saved and persist across sessions.
 
 ## License(s)
 
-MIT License - Feel free to modify and distribute.
-Bogleheads® is a registered service mark of The John C. Bogle Center for Financial Literacy
+- MIT License - Feel free to modify and distribute.
+- Bogleheads® is a registered service mark of The John C. Bogle Center for Financial Literacy
