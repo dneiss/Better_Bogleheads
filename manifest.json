@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Bogleheads Forum Extension",
+  "name": "Better Bogleheads",
   "version": "1.1.0",
-  "description": "Enhances the Bogleheads.org forum with zebra striping, read thread tracking, hot topic highlighting, and adjustable font sizing. Bogleheads® is a registered service mark of The John C. Bogle Center for Financial Literacy.",
+  "description": "Enhances the Bogleheads.org forum with visual controls. Bogleheads® is a registered service mark of The John C. Bogle Center for Financial Literacy.",
   "author": "David Neiss",
   "permissions": ["storage"],
   "icons": {

@@ -3,7 +3,7 @@
 set -e
 
 MANIFEST="manifest.json"
-ZIP_NAME="bogleheads-extension.zip"
+ZIP_NAME="bogleheads.zip"
 FILES_TO_ZIP="manifest.json content.js styles.css icons/icon16.png icons/icon48.png icons/icon128.png"
 
 # Check for required argument

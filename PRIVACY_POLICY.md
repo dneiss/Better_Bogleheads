@@ -1,10 +1,10 @@
-# Privacy Policy for Bogleheads Enhancement Extension
+# Privacy Policy for Better Bogleheads
 
 **Last updated: January 16, 2026**
 
 ## Overview
 
-The Bogleheads Enhancement Extension is committed to protecting your privacy. This privacy policy explains what information the extension collects, how it is used, and how it is stored.
+Better Bogleheads is committed to protecting your privacy. This privacy policy explains what information the extension collects, how it is used, and how it is stored.
 
 ## Data Collection
 

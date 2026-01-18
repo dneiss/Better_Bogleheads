@@ -17,7 +17,7 @@
     picker.id = 'zebra-picker';
     picker.innerHTML = 
       '<div id="zebra-header" style="background: #2c5aa0; color: white; padding: 6px 8px; margin: -8px -8px 8px -8px; border-radius: 4px 4px 0 0; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">' +
-        '<span>Bogleheads Chrome Extension</span>' +
+        '<span>Better Bogleheads</span>' +
         '<span id="collapse-icon">▲</span>' +
       '</div>' +
       '<div id="zebra-content">' +
@@ -26,6 +26,10 @@
         '</div>' +
         '<div style="margin-bottom: 6px;">' +
           '<label><input type="checkbox" id="hide-read"> Hide read threads</label>' +
+        '</div>' +
+        '<div style="margin-bottom: 6px; margin-left: 20px;">' +
+          '<button id="clear-read" style="font-size: 11px; cursor: pointer;">Clear read history</button>' +
+          '<span id="read-count" style="font-size: 11px; margin-left: 5px;"></span>' +
         '</div>' +
         '<div style="margin-bottom: 6px;">' +
           '<label><input type="checkbox" id="highlight-hot"> Highlight hot topics</label>' +
@@ -50,10 +54,6 @@
             '<button id="font-increase" style="width: 30px; cursor: pointer;">+</button>' +
             '<button id="font-reset" style="margin-left: 5px; font-size: 11px; cursor: pointer;">Reset</button>' +
           '</div>' +
-        '</div>' +
-        '<div>' +
-          '<button id="clear-read" style="font-size: 11px; cursor: pointer;">Clear read history</button>' +
-          '<span id="read-count" style="font-size: 11px; margin-left: 5px;"></span>' +
         '</div>' +
       '</div>';
     document.body.appendChild(picker);

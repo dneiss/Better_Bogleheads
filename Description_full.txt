@@ -1,4 +1,4 @@
-Bogleheads Enhancement Extension improves your browsing experience on the Bogleheads.org forum thread listing page.
+Better Bogleheads improves your browsing experience on the Bogleheads.org forum thread listing page.
 
 FEATURES
 
