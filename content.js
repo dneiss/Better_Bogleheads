@@ -96,12 +96,78 @@
       }
     }
 
-    zebraHeader.onclick = function() {
+    // Drag functionality
+    var isDragging = false;
+    var dragStartX, dragStartY;
+    var panelStartX, panelStartY;
+    var hasDragged = false;
+    var DRAG_THRESHOLD = 5;
+
+    function applyPosition(left, top) {
+      picker.style.right = 'auto';
+      picker.style.left = left + 'px';
+      picker.style.top = top + 'px';
+    }
+
+    function keepInViewport(left, top) {
+      var maxLeft = window.innerWidth - picker.offsetWidth - 10;
+      var maxTop = window.innerHeight - picker.offsetHeight - 10;
+      left = Math.max(10, Math.min(left, maxLeft));
+      top = Math.max(10, Math.min(top, maxTop));
+      return { left: left, top: top };
+    }
+
+    zebraHeader.addEventListener('mousedown', function(e) {
+      if (e.button !== 0) return;
+      isDragging = true;
+      hasDragged = false;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+
+      var rect = picker.getBoundingClientRect();
+      panelStartX = rect.left;
+      panelStartY = rect.top;
+
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+
+      var deltaX = e.clientX - dragStartX;
+      var deltaY = e.clientY - dragStartY;
+
+      if (!hasDragged && Math.abs(deltaX) < DRAG_THRESHOLD && Math.abs(deltaY) < DRAG_THRESHOLD) {
+        return;
+      }
+      hasDragged = true;
+
+      var newLeft = panelStartX + deltaX;
+      var newTop = panelStartY + deltaY;
+      var pos = keepInViewport(newLeft, newTop);
+      applyPosition(pos.left, pos.top);
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (!isDragging) return;
+      isDragging = false;
+
+      if (hasDragged) {
+        var rect = picker.getBoundingClientRect();
+        chrome.storage.sync.set({ panelPosition: { left: rect.left, top: rect.top } });
+      }
+    });
+
+    zebraHeader.addEventListener('click', function(e) {
+      if (hasDragged) {
+        e.stopPropagation();
+        return;
+      }
       var isCollapsed = zebraContent.style.display === 'none';
       var newCollapsed = !isCollapsed;
       applyCollapsedState(newCollapsed);
       chrome.storage.sync.set({ panelCollapsed: newCollapsed });
-    };
+    });
 
     function getDataRows() {
       var rows = document.querySelectorAll('#posts_table tbody tr');
@@ -256,7 +322,7 @@
       });
     }
 
-    chrome.storage.sync.get(['stripeColor', 'hideRead', 'readThreads', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'panelCollapsed'], function(result) {
+    chrome.storage.sync.get(['stripeColor', 'hideRead', 'readThreads', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'panelCollapsed', 'panelPosition'], function(result) {
       var color = result.stripeColor || DEFAULT_COLOR;
       var hideRead = result.hideRead || false;
       var readThreads = result.readThreads || {};
@@ -270,7 +336,8 @@
       var hideOld = result.hideOld || false;
       var maxAgeDays = result.maxAgeDays || 30;
       var panelCollapsed = result.panelCollapsed || false;
-      
+      var panelPosition = result.panelPosition || null;
+
       colorInput.value = color;
       hideReadCheckbox.checked = hideRead;
       highlightHotCheckbox.checked = highlightHot;
@@ -280,7 +347,12 @@
       maxAgeDaysInput.value = maxAgeDays;
       applyFontSize(fontSize);
       applyCollapsedState(panelCollapsed);
-      
+
+      if (panelPosition) {
+        var pos = keepInViewport(panelPosition.left, panelPosition.top);
+        applyPosition(pos.left, pos.top);
+      }
+
       updateReadCount(readThreads);
       applyFilters(readThreads);
       trackClicks(readThreads);
