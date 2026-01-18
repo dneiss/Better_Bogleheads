@@ -10,5 +10,5 @@ To release:
 # Ensure PRIVACY_POLICY.md is still current
 # Ensure LICNESE is still current
 
-# rezip the files.zip via zip -r bogleheads-extension.zip manifest.json content.js styles.css icon16.png icon48.png icon128.png
-# Upload the zipped file to Chrome extension site
+# Create a release by running release.sh
+# Upload the files.zip release to Chrome extension site

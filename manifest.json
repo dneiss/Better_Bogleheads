@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Bogleheads Forum Extension",
-  "version": "1.0",
+  "version": "1.1.0",
   "description": "Enhances the Bogleheads.org forum with zebra striping, read thread tracking, hot topic highlighting, and adjustable font sizing. Bogleheads® is a registered service mark of The John C. Bogle Center for Financial Literacy.",
   "author": "David Neiss",
   "permissions": ["storage"],
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "content_scripts": [{
     "matches": ["*://*.bogleheads.org/index.php*"],
