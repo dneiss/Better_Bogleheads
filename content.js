@@ -24,6 +24,7 @@
         '<div style="margin-bottom: 6px;">' +
           '<label>Stripe color: <input type="color" id="stripe-color" value="' + DEFAULT_COLOR + '"></label>' +
         '</div>' +
+        '<div style="border-top: 1px solid #e0e0e0; margin: 8px 0;"></div>' +
         '<div style="margin-bottom: 6px;">' +
           '<label><input type="checkbox" id="hide-read"> Hide read threads</label>' +
         '</div>' +
@@ -31,6 +32,7 @@
           '<button id="clear-read" style="font-size: 11px; cursor: pointer;">Clear read history</button>' +
           '<span id="read-count" style="font-size: 11px; margin-left: 5px;"></span>' +
         '</div>' +
+        '<div style="border-top: 1px solid #e0e0e0; margin: 8px 0;"></div>' +
         '<div style="margin-bottom: 6px;">' +
           '<label><input type="checkbox" id="highlight-hot"> Highlight hot topics</label>' +
         '</div>' +
@@ -40,12 +42,14 @@
         '<div style="margin-bottom: 6px; margin-left: 20px;">' +
           '<label>Hot color: <input type="color" id="hot-color" value="' + DEFAULT_HOT_COLOR + '"></label>' +
         '</div>' +
+        '<div style="border-top: 1px solid #e0e0e0; margin: 8px 0;"></div>' +
         '<div style="margin-bottom: 6px;">' +
           '<label><input type="checkbox" id="hide-old"> Hide old threads</label>' +
         '</div>' +
         '<div style="margin-bottom: 6px; margin-left: 20px;">' +
           '<label>Max age (days): <input type="number" id="max-age-days" min="1" max="365" style="width: 60px;" value="30"></label>' +
         '</div>' +
+        '<div style="border-top: 1px solid #e0e0e0; margin: 8px 0;"></div>' +
         '<div style="margin-bottom: 6px;">' +
           '<label>Font size: <span id="font-size-display">' + DEFAULT_FONT_SIZE + '%</span></label>' +
           '<div style="margin-top: 4px;">' +
