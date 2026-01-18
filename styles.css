@@ -26,4 +26,5 @@
 
 #zebra-picker input[type="checkbox"] {
   vertical-align: middle;
+  margin-right: 4px;
 }
