@@ -117,23 +117,7 @@
       return { left: left, top: top };
     }
 
-    zebraHeader.addEventListener('mousedown', function(e) {
-      if (e.button !== 0) return;
-      isDragging = true;
-      hasDragged = false;
-      dragStartX = e.clientX;
-      dragStartY = e.clientY;
-
-      var rect = picker.getBoundingClientRect();
-      panelStartX = rect.left;
-      panelStartY = rect.top;
-
-      e.preventDefault();
-    });
-
-    document.addEventListener('mousemove', function(e) {
-      if (!isDragging) return;
-
+    function onMouseMove(e) {
       var deltaX = e.clientX - dragStartX;
       var deltaY = e.clientY - dragStartY;
 
@@ -146,16 +130,33 @@
       var newTop = panelStartY + deltaY;
       var pos = keepInViewport(newLeft, newTop);
       applyPosition(pos.left, pos.top);
-    });
+    }
 
-    document.addEventListener('mouseup', function(e) {
-      if (!isDragging) return;
+    function onMouseUp(e) {
       isDragging = false;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
 
       if (hasDragged) {
         var rect = picker.getBoundingClientRect();
         chrome.storage.sync.set({ panelPosition: { left: rect.left, top: rect.top } });
       }
+    }
+
+    zebraHeader.addEventListener('mousedown', function(e) {
+      if (e.button !== 0) return;
+      isDragging = true;
+      hasDragged = false;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+
+      var rect = picker.getBoundingClientRect();
+      panelStartX = rect.left;
+      panelStartY = rect.top;
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+      e.preventDefault();
     });
 
     zebraHeader.addEventListener('click', function(e) {

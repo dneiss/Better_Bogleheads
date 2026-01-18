@@ -12,3 +12,4 @@ To release:
 
 # Create a release by running release.sh
 # Upload the files.zip release to Chrome extension site
+# git tag with release version specified int he manifest.json file
