@@ -1,0 +1,11 @@
+{
+  "name": "screenshot-capture",
+  "type": "module",
+  "scripts": {
+    "capture": "node capture.js"
+  },
+  "dependencies": {
+    "puppeteer": "^24.0.0",
+    "sharp": "^0.33.0"
+  }
+}

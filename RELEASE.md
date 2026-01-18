@@ -1,7 +1,6 @@
-To release:
+To release, run though this file with your AI agent
 
-# Ask AI agent for "code review of all source files here" and consider feedback
-
+# code review of all files for correctness, security, and performance and consider feedback
 # Update Description_full.txt for new/removed features and apply that to the Chrome extension site
 # Update Description_short.txt for shortened text and apply that to the Chrome extension site
 # Create any new screenshots in the Chrome_listing_screenshots and apply that to the Chrome extension site
@@ -9,7 +8,7 @@ To release:
 # Verify text in README.md file is still current
 # Ensure PRIVACY_POLICY.md is still current
 # Ensure LICENSE is still current
-
-# Create a release by running release.sh
+# Ensure that there is no PII leakage into any files
+# Create a release by running release.sh and bump versions
 # Upload the files.zip release to Chrome extension site
 # git tag with release version specified int he manifest.json file
