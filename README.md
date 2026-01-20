@@ -1,6 +1,6 @@
 # Better Bogleheads
 
-A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org) forum thread listing page with visual improvements and filtering options.
+A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org) home page with visual improvements and filtering options.
 
 ## Features
 
