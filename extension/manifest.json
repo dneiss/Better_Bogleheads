@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Better Bogleheads",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Bogleheads site enhancements. Bogleheads® is a trademark of The John C. Bogle Center for Financial Literacy.",
   "author": "David Neiss",
   "permissions": ["storage", "sidePanel", "tabs"],
