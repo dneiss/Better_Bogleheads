@@ -4,6 +4,19 @@
   var DEFAULT_HOT_THRESHOLD = 50;
   var DEFAULT_FONT_SIZE = 100;
 
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.body.classList.add('bh-dark');
+    } else {
+      document.body.classList.remove('bh-dark');
+    }
+  }
+
+  // Load and apply theme on init
+  chrome.storage.sync.get(['theme'], function(result) {
+    applyTheme(result.theme || 'light');
+  });
+
   var colorInput = document.getElementById('stripe-color');
   var hideReadCheckbox = document.getElementById('hide-read');
   var clearReadButton = document.getElementById('clear-read');
@@ -55,10 +68,14 @@
 
   // Listen for storage changes (e.g., read count updates from content script)
   chrome.storage.onChanged.addListener(function(changes, namespace) {
-    if (namespace === 'sync' && changes.readThreads) {
+    if (namespace !== 'sync') return;
+    if (changes.readThreads) {
       var readThreads = changes.readThreads.newValue || {};
       if (Array.isArray(readThreads)) readThreads = {};
       updateReadCount(readThreads);
+    }
+    if (changes.theme) {
+      applyTheme(changes.theme.newValue || 'light');
     }
   });
 

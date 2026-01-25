@@ -6,9 +6,45 @@
 
   var table = null;
   var currentColor = DEFAULT_COLOR;
+  var darkStylesInjected = false;
+
+  function injectDarkStyles() {
+    if (darkStylesInjected) return;
+    var style = document.createElement('style');
+    style.id = 'bh-dark-theme';
+    style.textContent = [
+      'body.bh-dark { background-color: #1a1a1a !important; color: #e0e0e0 !important; }',
+      'body.bh-dark .page-body { background-color: #1a1a1a !important; }',
+      'body.bh-dark .post, body.bh-dark .panel { background-color: #2d2d2d !important; border-color: #444 !important; }',
+      'body.bh-dark a { color: #6db3f2 !important; }',
+      'body.bh-dark #posts_table { background-color: #2d2d2d !important; }',
+      'body.bh-dark #posts_table tr { background-color: #2d2d2d !important; }',
+      'body.bh-dark #posts_table td, body.bh-dark #posts_table th { color: #e0e0e0 !important; border-color: #444 !important; }',
+      'body.bh-dark .forumbg, body.bh-dark .forabg { background-color: #2d2d2d !important; }',
+      'body.bh-dark .header-bar, body.bh-dark .forum-row { background-color: #333 !important; }',
+      'body.bh-dark input, body.bh-dark select, body.bh-dark textarea { background-color: #333 !important; color: #e0e0e0 !important; border-color: #555 !important; }'
+    ].join('\n');
+    document.head.appendChild(style);
+    darkStylesInjected = true;
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      injectDarkStyles();
+      document.body.classList.add('bh-dark');
+    } else {
+      document.body.classList.remove('bh-dark');
+    }
+  }
 
   function init() {
     table = document.getElementById('posts_table');
+
+    // Apply theme on load
+    chrome.storage.sync.get(['theme'], function(result) {
+      applyTheme(result.theme || 'light');
+    });
+
     if (!table) return;
 
     // Load settings and apply initial state
@@ -218,7 +254,14 @@
 
   // Also listen for storage changes (backup for side panel communication)
   chrome.storage.onChanged.addListener(function(changes, namespace) {
-    if (namespace !== 'sync' || !table) return;
+    if (namespace !== 'sync') return;
+
+    // Theme can change even without a table
+    if (changes.theme) {
+      applyTheme(changes.theme.newValue || 'light');
+    }
+
+    if (!table) return;
 
     if (changes.fontSize) {
       applyFontSize(changes.fontSize.newValue || DEFAULT_FONT_SIZE);

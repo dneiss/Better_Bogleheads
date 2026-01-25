@@ -20,6 +20,17 @@ Filter out threads older than a specified number of days to focus on recent disc
 Adjustable Font Size
 Increase or decrease the thread list font size from 50% to 200% for comfortable reading.
 
+Omnibox Commands
+Type "bh" in Chrome's address bar, press Tab, then use these shortcuts:
+• new - Go to active topics
+• hot / hot off - Toggle hot topic highlighting
+• zebra / zebra off - Toggle zebra striping
+• font inc / font dec - Adjust font size
+• reset - Clear read history
+• #12345 - Go to thread by ID
+• user:alice - Search posts by user
+• "search term" - Search the forum
+
 Collapsible Settings Panel
 The settings panel floats in the top-right corner and can be collapsed to stay out of your way.
 

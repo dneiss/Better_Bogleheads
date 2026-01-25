@@ -124,3 +124,59 @@ button:hover {
   font-weight: 500;
   color: #2c5aa0;
 }
+
+/* Dark theme styles */
+body.bh-dark {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+body.bh-dark #panel-header {
+  background: #1e3a5f;
+}
+
+body.bh-dark #panel-content {
+  background: #1a1a1a;
+}
+
+body.bh-dark #close-hint {
+  background: #2d3748;
+  color: #a0aec0;
+}
+
+body.bh-dark .divider {
+  border-color: #444;
+}
+
+body.bh-dark label {
+  color: #e0e0e0;
+}
+
+body.bh-dark label:has(input[type="checkbox"]):hover {
+  background: #333;
+}
+
+body.bh-dark input[type="number"],
+body.bh-dark input[type="color"] {
+  background: #333;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.bh-dark button {
+  background: #333;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.bh-dark button:hover {
+  background: #444;
+}
+
+body.bh-dark #read-count {
+  color: #a0aec0;
+}
+
+body.bh-dark #font-size-display {
+  color: #6db3f2;
+}
