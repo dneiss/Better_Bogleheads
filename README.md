@@ -10,6 +10,7 @@ A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org
 - **Highlight Hot Topics** - Highlight threads with many replies (customizable threshold and color)
 - **Hide Old Threads** - Filter out threads older than a specified number of days
 - **Adjustable Font Size** - Increase or decrease the thread list font size (50% - 200%)
+- **Pointer Cursor** - Optional pointer cursor when hovering over thread rows
 
 All settings are saved and persist across sessions.
 
