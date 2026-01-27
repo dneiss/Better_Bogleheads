@@ -89,7 +89,10 @@ else
     esac
 
     NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+fi
 
+# Update manifest if version changed
+if [ "$RELEASE_TYPE" != "none" ]; then
     echo "New version: $NEW_VERSION"
 
     # Update version in manifest.json (cross-platform sed)
