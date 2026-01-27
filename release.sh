@@ -150,9 +150,9 @@ if [ "$RELEASE_TYPE" != "none" ]; then
         git tag "v$NEW_VERSION"
         echo "Created git tag v$NEW_VERSION"
     fi
-
-    # Push commit and tags to remote
-    git push
-    git push --tags
-    echo "Pushed to remote"
 fi
+
+# Push commit and tags to remote
+git push
+git push --tags
+echo "Pushed to remote"
