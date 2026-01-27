@@ -128,8 +128,13 @@ echo "Created $ZIP_NAME with version $NEW_VERSION"
 
 # Commit manifest and create git tag if version was bumped
 if [ "$RELEASE_TYPE" != "none" ]; then
-    git add "$MANIFEST"
-    git commit -m "chore: Bump version to $NEW_VERSION"
+    # Only commit if there are changes to commit
+    if [ -n "$(git status --porcelain "$MANIFEST")" ]; then
+        git add "$MANIFEST"
+        git commit -m "chore: Bump version to $NEW_VERSION"
+    else
+        echo "Manifest already at version $NEW_VERSION, skipping commit"
+    fi
 
     # Check if tag already exists
     if git tag -l "v$NEW_VERSION" | grep -q "v$NEW_VERSION"; then
@@ -139,7 +144,7 @@ if [ "$RELEASE_TYPE" != "none" ]; then
             git tag -f "v$NEW_VERSION"
             echo "Overwrote git tag v$NEW_VERSION"
         else
-            echo "Skipped tagging. Commit was created but tag was not updated."
+            echo "Skipped tagging."
         fi
     else
         git tag "v$NEW_VERSION"
