@@ -32,7 +32,9 @@
   var hideOldCheckbox = document.getElementById('hide-old');
   var maxAgeDaysInput = document.getElementById('max-age-days');
   var pointerCursorCheckbox = document.getElementById('pointer-cursor');
-  var timeDisplayEl = document.getElementById('time-display');
+  var timeTodayEl = document.getElementById('time-today');
+  var timeTotalEl = document.getElementById('time-total');
+  var sparklineEl = document.getElementById('sparkline');
   var timeStatsEl = document.getElementById('time-stats');
   var resetTimeButton = document.getElementById('reset-time');
 
@@ -64,18 +66,78 @@
     return Math.round(avgMinutes) + ' minutes/day';
   }
 
+  function getTodayDateString() {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return year + '-' + month + '-' + day;
+  }
+
+  function getLast30Days() {
+    var days = [];
+    for (var i = 29; i >= 0; i--) {
+      var d = new Date();
+      d.setDate(d.getDate() - i);
+      var year = d.getFullYear();
+      var month = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      days.push(year + '-' + month + '-' + day);
+    }
+    return days;
+  }
+
+  function renderSparkline(dailySeconds) {
+    var days = getLast30Days();
+    var values = days.map(function(day) {
+      return (dailySeconds && dailySeconds[day]) ? dailySeconds[day] / 60 : 0; // convert to minutes
+    });
+    var maxVal = Math.max.apply(null, values);
+    var hasData = maxVal > 0;
+    if (maxVal === 0) maxVal = 1; // prevent division by zero
+
+    var svgWidth = 200;
+    var svgHeight = 40;
+    var barWidth = svgWidth / 30 - 1;
+    var gap = 1;
+
+    var bars = '';
+    for (var i = 0; i < 30; i++) {
+      var x = i * (barWidth + gap);
+      if (hasData) {
+        var barHeight = (values[i] / maxVal) * (svgHeight - 4);
+        if (barHeight < 1 && values[i] > 0) barHeight = 1; // minimum visible height
+        var y = svgHeight - barHeight - 2;
+        bars += '<rect class="sparkline-bar" x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barHeight + '"><title>' + days[i] + ': ' + Math.round(values[i]) + ' min</title></rect>';
+      } else {
+        // Show placeholder bars when no data
+        var y = svgHeight - 4;
+        bars += '<rect class="sparkline-bar sparkline-empty" x="' + x + '" y="' + y + '" width="' + barWidth + '" height="2"><title>' + days[i] + ': no data</title></rect>';
+      }
+    }
+
+    sparklineEl.innerHTML = '<svg viewBox="0 0 ' + svgWidth + ' ' + svgHeight + '" preserveAspectRatio="none">' + bars + '</svg>';
+  }
+
   function updateTimeDisplay(tracking) {
+    var today = getTodayDateString();
     if (!tracking) {
-      timeDisplayEl.textContent = '0 minutes';
+      timeTodayEl.textContent = '0 minutes today';
+      timeTotalEl.textContent = '0 minutes all-time';
       timeStatsEl.textContent = '0 days tracked · 0 minutes/day';
+      renderSparkline({});
       return;
     }
-    var now = Date.now();
-    var msPerDay = 24 * 60 * 60 * 1000;
-    var days = Math.max(1, Math.ceil((now - tracking.resetTimestamp) / msPerDay));
+    var dailySeconds = tracking.dailySeconds || {};
+    var todaySeconds = dailySeconds[today] || 0;
 
-    timeDisplayEl.textContent = formatTime(tracking.totalSeconds);
-    timeStatsEl.textContent = days + ' days tracked · ' + formatAvgTime(tracking.totalSeconds, days);
+    // Count days with actual activity
+    var daysWithActivity = Object.keys(dailySeconds).length;
+
+    timeTodayEl.textContent = formatTime(todaySeconds) + ' today';
+    timeTotalEl.textContent = formatTime(tracking.totalSeconds) + ' all-time';
+    timeStatsEl.textContent = daysWithActivity + ' days tracked · ' + formatAvgTime(tracking.totalSeconds, Math.max(1, daysWithActivity));
+    renderSparkline(dailySeconds);
   }
 
   function applyFontSizeDisplay(size) {
@@ -199,7 +261,8 @@
       var newTracking = {
         totalSeconds: 0,
         resetTimestamp: now,
-        lastUpdateTimestamp: now
+        lastUpdateTimestamp: now,
+        dailySeconds: {}
       };
       chrome.storage.sync.set({ timeTracking: newTracking });
       updateTimeDisplay(newTracking);

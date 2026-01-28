@@ -41,19 +41,60 @@
     }
   }
 
+  function getTodayDateString() {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return year + '-' + month + '-' + day;
+  }
+
+  function pruneOldDays(dailySeconds) {
+    var cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 30);
+    var cutoffStr = cutoff.toISOString().split('T')[0];
+    var pruned = {};
+    for (var dateKey in dailySeconds) {
+      if (dateKey >= cutoffStr) {
+        pruned[dateKey] = dailySeconds[dateKey];
+      }
+    }
+    return pruned;
+  }
+
   function saveTimeTracking() {
     if (!isTracking) return;
     var now = Date.now();
-    chrome.storage.sync.get(['timeTracking'], function(result) {
-      var tracking = result.timeTracking || {
-        totalSeconds: 0,
-        resetTimestamp: now,
-        lastUpdateTimestamp: now
-      };
-      tracking.totalSeconds += 30;
-      tracking.lastUpdateTimestamp = now;
-      chrome.storage.sync.set({ timeTracking: tracking });
-    });
+    var today = getTodayDateString();
+    try {
+      chrome.storage.sync.get(['timeTracking'], function(result) {
+        if (chrome.runtime.lastError) {
+          // Extension context invalidated, stop tracking
+          stopTimeTracking();
+          return;
+        }
+        var tracking = result.timeTracking || {
+          totalSeconds: 0,
+          resetTimestamp: now,
+          lastUpdateTimestamp: now,
+          dailySeconds: {}
+        };
+        // Ensure dailySeconds exists for migration
+        if (!tracking.dailySeconds) {
+          tracking.dailySeconds = {};
+        }
+        tracking.totalSeconds += 30;
+        tracking.lastUpdateTimestamp = now;
+        // Add to today's count
+        tracking.dailySeconds[today] = (tracking.dailySeconds[today] || 0) + 30;
+        // Prune entries older than 30 days
+        tracking.dailySeconds = pruneOldDays(tracking.dailySeconds);
+        chrome.storage.sync.set({ timeTracking: tracking });
+      });
+    } catch (e) {
+      // Extension context invalidated, stop tracking
+      stopTimeTracking();
+    }
   }
 
   function startTimeTracking() {

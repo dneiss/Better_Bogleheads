@@ -11,7 +11,7 @@ A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org
 - **Hide Old Threads** - Filter out threads older than a specified number of days
 - **Adjustable Font Size** - Increase or decrease the thread list font size (50% - 200%)
 - **Pointer Cursor** - Optional pointer cursor when hovering over thread rows
-- **Time Tracking** - Tracks cumulative time spent on the site, with days tracked and average time per day
+- **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
 
 All settings are saved and persist across sessions.
 
