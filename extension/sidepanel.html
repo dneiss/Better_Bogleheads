@@ -15,63 +15,63 @@
       <p id="close-hint">Click the X box in upper right to close this panel.</p>
 
       <div class="section">
-        <label>Stripe color: <input type="color" id="stripe-color" value="#d0d0d0"></label>
+        <label data-tooltip="Sets the background color for alternating rows in thread lists">Stripe color: <input type="color" id="stripe-color" value="#d0d0d0"></label>
       </div>
 
       <div class="divider"></div>
 
       <div class="section">
-        <label><input type="checkbox" id="hide-read"> Hide read threads</label>
+        <label data-tooltip="Hides threads you've already opened from the forum list"><input type="checkbox" id="hide-read"> Hide read threads</label>
       </div>
       <div class="section indent">
-        <button id="clear-read">Clear read history</button>
+        <button data-tooltip="Removes all read thread history, making all threads visible again" id="clear-read">Clear read history</button>
         <span id="read-count"></span>
       </div>
 
       <div class="divider"></div>
 
       <div class="section">
-        <label><input type="checkbox" id="highlight-hot"> Highlight hot topics</label>
+        <label data-tooltip="Highlights threads with many replies to spot active discussions"><input type="checkbox" id="highlight-hot"> Highlight hot topics</label>
       </div>
       <div class="section indent">
-        <label>Replies threshold: <input type="number" id="hot-threshold" min="1" max="1000" value="50"></label>
+        <label data-tooltip="Minimum number of replies for a thread to be highlighted as hot">Replies threshold: <input type="number" id="hot-threshold" min="1" max="1000" value="50"></label>
       </div>
       <div class="section indent">
-        <label>Hot color: <input type="color" id="hot-color" value="#ffeb3b"></label>
+        <label data-tooltip="Background color used to highlight hot threads">Hot color: <input type="color" id="hot-color" value="#ffeb3b"></label>
       </div>
 
       <div class="divider"></div>
 
       <div class="section">
-        <label><input type="checkbox" id="hide-old"> Hide old threads</label>
+        <label data-tooltip="Hides threads older than the specified number of days"><input type="checkbox" id="hide-old"> Hide old threads</label>
       </div>
       <div class="section indent">
-        <label>Max age (days): <input type="number" id="max-age-days" min="1" max="365" value="30"></label>
+        <label data-tooltip="Threads older than this many days will be hidden from view">Max age (days): <input type="number" id="max-age-days" min="1" max="365" value="30"></label>
       </div>
 
       <div class="divider"></div>
 
       <div class="section">
-        <label><input type="checkbox" id="pointer-cursor"> Pointer cursor on threads</label>
+        <label data-tooltip="Shows a hand cursor when hovering over thread rows"><input type="checkbox" id="pointer-cursor"> Pointer cursor on threads</label>
       </div>
 
       <div class="divider"></div>
 
       <div class="section">
-        <div class="time-display" id="time-display">0 minutes</div>
+        <div class="time-display" id="time-display" data-tooltip="Total time spent on Bogleheads since last reset">0 minutes</div>
         <div class="time-stats" id="time-stats">0 days tracked · 0 minutes/day</div>
-        <button id="reset-time">Reset time</button>
+        <button data-tooltip="Clears all time tracking history" id="reset-time">Reset time</button>
       </div>
 
       <div class="divider"></div>
 
       <div class="section">
-        <label>Font size: <span id="font-size-display">100%</span></label>
+        <label data-tooltip="Adjusts text size on Bogleheads pages (50% to 200%)">Font size: <span id="font-size-display">100%</span></label>
         <div class="font-controls">
-          <button id="font-decrease">-</button>
+          <button data-tooltip="Decrease font size" id="font-decrease">-</button>
           <input type="range" id="font-size" min="50" max="200" value="100">
-          <button id="font-increase">+</button>
-          <button id="font-reset">Reset</button>
+          <button data-tooltip="Increase font size" id="font-increase">+</button>
+          <button data-tooltip="Reset font size to 100%" id="font-reset">Reset</button>
         </div>
       </div>
     </div>

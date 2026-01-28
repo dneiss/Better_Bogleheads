@@ -17,7 +17,7 @@ All settings are saved and persist across sessions.
 
 ## Side Panel
 
-The extension uses Chrome's side panel for all controls. The panel automatically opens when you visit Bogleheads.org and slides out from the right side of the browser. You can also click the extension icon to toggle it. All settings in the panel apply immediately.
+The extension uses Chrome's side panel for all controls. The panel automatically opens when you visit Bogleheads.org and slides out from the right side of the browser. You can also click the extension icon to toggle it. All settings in the panel apply immediately. Hover over any setting to see a tooltip explaining what it does.
 
 ## Installation (from repo)
 

@@ -201,3 +201,42 @@ body.bh-dark .time-display {
 body.bh-dark .time-stats {
   color: #a0aec0;
 }
+
+/* Tooltip styles */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: #333;
+  color: #fff;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 1.4;
+  border-radius: 4px;
+  white-space: normal;
+  width: max-content;
+  max-width: 220px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  pointer-events: none;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Dark theme tooltip */
+body.bh-dark [data-tooltip]::after {
+  background: #555;
+  color: #f0f0f0;
+}

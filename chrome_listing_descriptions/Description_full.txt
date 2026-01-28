@@ -40,6 +40,9 @@ Type "bh" in Chrome's address bar, press Tab, then use these shortcuts:
 Collapsible Settings Panel
 The settings panel floats in the top-right corner and can be collapsed to stay out of your way.
 
+Helpful Tooltips
+Hover over any setting in the side panel to see a description of what it does.
+
 Draggable Settings Panel
 Drag the panel by its header to reposition it anywhere on screen. Your preferred position is saved automatically.
 
