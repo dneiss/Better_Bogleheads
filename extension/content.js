@@ -7,6 +7,7 @@
   var table = null;
   var currentColor = DEFAULT_COLOR;
   var darkStylesInjected = false;
+  var lastRightClickedRow = null;
 
   // Time tracking variables
   var timeTrackingInterval = null;
@@ -179,6 +180,7 @@
       applyPointerCursor(pointerCursor);
       applyFilters(readTopics);
       trackClicks(readTopics);
+      trackRightClicks();
       updateBadge(readTopics);
     });
   }
@@ -346,6 +348,15 @@
     });
   }
 
+  function trackRightClicks() {
+    var rows = getDataRows();
+    rows.forEach(function(row) {
+      row.addEventListener('contextmenu', function() {
+        lastRightClickedRow = row;
+      });
+    });
+  }
+
   function trackClicks(readTopics) {
     var rows = getDataRows();
     rows.forEach(function(row) {
@@ -380,6 +391,23 @@
       });
     } else if (message.type === 'fontSize') {
       applyFontSize(message.value);
+    } else if (message.type === 'contextMenuAction') {
+      if (!lastRightClickedRow) return;
+      var topicId = getTopicId(lastRightClickedRow);
+      if (!topicId) return;
+      chrome.storage.sync.get(['readTopics'], function(result) {
+        var readTopics = result.readTopics || {};
+        if (Array.isArray(readTopics)) readTopics = {};
+        if (message.action === 'markRead') {
+          var lastPostId = getLastPostId(lastRightClickedRow);
+          if (lastPostId) {
+            readTopics[topicId] = lastPostId;
+          }
+        }
+        chrome.storage.sync.set({ readTopics: readTopics });
+        applyFilters(readTopics);
+        updateBadge(readTopics);
+      });
     }
   });
 

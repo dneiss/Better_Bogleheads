@@ -23,8 +23,9 @@ The extension stores the following preferences locally on your device using Chro
 - Hide old topics setting (on/off)
 - Maximum topic age preference
 - Font size preference
-- Panel collapsed state
-- Panel position (if dragged)
+- Pointer cursor preference (on/off)
+- Theme preference (light/dark)
+- Time tracking data (daily seconds spent on site, kept for 30 days)
 
 This data is stored locally and synced across your Chrome browsers if you are signed into Chrome. This data is **never** transmitted to any external servers or third parties.
 
@@ -33,6 +34,8 @@ This data is stored locally and synced across your Chrome browsers if you are si
 The extension requires the following permissions:
 
 - **storage**: To save your preferences locally
+- **sidePanel**: To display the settings panel in Chrome's side panel
+- **contextMenus**: To provide right-click "Mark Topic as Read"
 - **Host permission for bogleheads.org**: To run the extension on the Bogleheads forum
 
 ## Third-Party Services

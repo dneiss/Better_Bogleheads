@@ -31,7 +31,7 @@ The extension uses Chrome's side panel for all controls. The panel automatically
 
 - `manifest.json` - Extension configuration (Manifest V3)
 - `content.js` - Applies enhancements to forum pages
-- `background.js` - Service worker that manages the side panel
+- `background.js` - Service worker for side panel, context menus, omnibox, and badge
 - `sidepanel.html` - Settings panel UI
 - `sidepanel.js` - Settings panel logic
 - `sidepanel.css` - Settings panel styling
@@ -47,7 +47,7 @@ The extension uses Chrome's side panel for all controls. The panel automatically
 
 - **storage** - To save your preferences
 - **sidePanel** - To display settings in Chrome's side panel
-- **tabs** - To detect when you're on a Bogleheads page
+- **contextMenus** - To provide right-click "Mark Topic as Read"
 - **Host permission** - Only runs on bogleheads.org
 
 ## License(s)

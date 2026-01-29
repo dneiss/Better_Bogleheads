@@ -37,14 +37,11 @@ Type "bh" in Chrome's address bar, press Tab, then use these shortcuts:
 • user:alice - Search posts by user
 • "search term" - Search the forum
 
-Collapsible Settings Panel
-The settings panel floats in the top-right corner and can be collapsed to stay out of your way.
+Side Panel
+All controls live in Chrome's built-in side panel. Click the extension icon to toggle it. Settings apply immediately.
 
 Helpful Tooltips
 Hover over any setting in the side panel to see a description of what it does.
-
-Draggable Settings Panel
-Drag the panel by its header to reposition it anywhere on screen. Your preferred position is saved automatically.
 
 All settings are saved automatically and persist across sessions.
 

@@ -4,7 +4,7 @@
   "version": "2.3.0",
   "description": "Bogleheads site enhancements. Bogleheads® is a trademark of The John C. Bogle Center for Financial Literacy.",
   "author": "David Neiss",
-  "permissions": ["storage", "sidePanel"],
+  "permissions": ["storage", "sidePanel", "contextMenus"],
   "omnibox": { "keyword": "bh" },
   "icons": {
     "16": "icons/icon16.png",

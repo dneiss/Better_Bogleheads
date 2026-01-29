@@ -1,6 +1,25 @@
 // Enable side panel to open on bogleheads.org
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
 
+// Context menu for marking topics as read
+chrome.contextMenus.removeAll(function() {
+  chrome.contextMenus.create({
+    id: 'markRead',
+    title: 'Mark Topic as Read',
+    contexts: ['all'],
+    documentUrlPatterns: ['*://*.bogleheads.org/*']
+  });
+});
+
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+  if (info.menuItemId === 'markRead') {
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'contextMenuAction',
+      action: 'markRead'
+    });
+  }
+});
+
 // Omnibox: Navigate to URL in active tab
 function navigateTo(url) {
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
