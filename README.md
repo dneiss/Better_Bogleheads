@@ -10,6 +10,7 @@ A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org
 - **Highlight Hot Topics** - Highlight topics with many replies (customizable threshold and color)
 - **Hide Old Topics** - Filter out topics older than a specified number of days
 - **Adjustable Font Size** - Increase or decrease the topic list font size (50% - 200%)
+- **Mark as Read (Right-Click)** - Right-click any topic row to mark it as read without opening it
 - **Pointer Cursor** - Optional pointer cursor when hovering over topic rows
 - **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
 

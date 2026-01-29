@@ -20,6 +20,9 @@ Filter out topics older than a specified number of days to focus on recent discu
 Adjustable Font Size
 Increase or decrease the topic list font size from 50% to 200% for comfortable reading.
 
+Mark as Read (Right-Click)
+Right-click any topic row to mark it as read without opening it. Useful for clearing topics you're not interested in.
+
 Pointer Cursor
 Enable a pointer cursor when hovering over topic rows to make them feel more clickable.
 
