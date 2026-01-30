@@ -253,6 +253,78 @@ body.bh-dark .time-stats {
   color: #a0aec0;
 }
 
+/* Keyboard shortcuts section */
+.shortcuts-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+.shortcut-row kbd {
+  background: #e8e8e8;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: monospace;
+  font-size: 12px;
+  min-width: 90px;
+  text-align: center;
+}
+
+.shortcuts-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #888;
+}
+
+body.bh-dark .shortcuts-title {
+  color: #e0e0e0;
+}
+
+body.bh-dark .shortcut-row {
+  color: #a0aec0;
+}
+
+body.bh-dark .shortcut-row kbd {
+  background: #333;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.bh-dark .shortcuts-hint {
+  color: #666;
+}
+
+.refresh-notice {
+  font-size: 13px;
+  color: #856404;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  padding: 8px 10px;
+  line-height: 1.4;
+}
+
+body.bh-dark .refresh-notice {
+  color: #ffd666;
+  background: #3a2e00;
+  border-color: #665200;
+}
+
 /* Tooltip styles */
 [data-tooltip] {
   position: relative;

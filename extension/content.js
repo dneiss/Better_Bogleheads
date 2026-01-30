@@ -424,6 +424,41 @@
         applyFilters(readTopics);
         updateBadge(readTopics);
       });
+    } else if (message.type === 'keyboardAction' && message.action === 'markTopicRead') {
+      var url = window.location.href;
+      if (url.indexOf('viewtopic.php') === -1) return;
+
+      var urlParams = new URLSearchParams(window.location.search);
+      var topicId = urlParams.get('t');
+
+      // Fallback for direct post links (viewtopic.php?p=XXXXX)
+      if (!topicId) {
+        var topicLink = document.querySelector('h2.topic-title a[href*="viewtopic.php"]');
+        if (topicLink) {
+          var tMatch = topicLink.href.match(/t=(\d+)/);
+          if (tMatch) topicId = tMatch[1];
+        }
+      }
+      if (!topicId) return;
+
+      // Find last post ID on the page (phpBB uses <div id="pXXXXXX"> for each post)
+      var postDivs = document.querySelectorAll('div[id^="p"]');
+      var lastPostId = null;
+      for (var i = postDivs.length - 1; i >= 0; i--) {
+        var pMatch = postDivs[i].id.match(/^p(\d+)$/);
+        if (pMatch) {
+          lastPostId = pMatch[1];
+          break;
+        }
+      }
+      if (!lastPostId) return;
+
+      chrome.storage.sync.get(['readTopics'], function(result) {
+        var readTopics = result.readTopics || {};
+        if (Array.isArray(readTopics)) readTopics = {};
+        readTopics[topicId] = lastPostId;
+        chrome.storage.sync.set({ readTopics: readTopics });
+      });
     }
   });
 

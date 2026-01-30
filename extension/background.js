@@ -200,3 +200,23 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   }
 });
 
+// Keyboard shortcut commands
+chrome.commands.onCommand.addListener(function(command) {
+  if (command === 'toggle-hide-read') {
+    chrome.storage.sync.get(['hideRead'], function(result) {
+      chrome.storage.sync.set({ hideRead: !result.hideRead });
+    });
+  } else if (command === 'navigate-active-topics') {
+    navigateTo('https://www.bogleheads.org/forum/search.php?search_id=active_topics');
+  } else if (command === 'mark-topic-read') {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: 'keyboardAction',
+          action: 'markTopicRead'
+        });
+      }
+    });
+  }
+});
+

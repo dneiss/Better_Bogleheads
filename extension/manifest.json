@@ -24,5 +24,23 @@
   "content_scripts": [{
     "matches": ["*://*.bogleheads.org/*"],
     "js": ["content.js"]
-  }]
+  }],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": { "default": "Alt+B" },
+      "description": "Toggle side panel"
+    },
+    "toggle-hide-read": {
+      "suggested_key": { "default": "Alt+Shift+H" },
+      "description": "Toggle hide read topics"
+    },
+    "navigate-active-topics": {
+      "suggested_key": { "default": "Alt+Shift+N" },
+      "description": "Navigate to active topics"
+    },
+    "mark-topic-read": {
+      "suggested_key": { "default": "Alt+Shift+R" },
+      "description": "Mark current topic as read"
+    }
+  }
 }
