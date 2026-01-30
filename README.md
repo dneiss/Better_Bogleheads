@@ -11,6 +11,7 @@ A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org
 - **Hide Old Topics** - Filter out topics older than a specified number of days
 - **Adjustable Font Size** - Increase or decrease the topic list font size (50% - 200%)
 - **Mark as Read (Right-Click)** - Right-click any topic row to mark it as read without opening it
+- **Keyboard Shortcuts** - Alt+B (toggle side panel), Alt+Shift+H (toggle hide read), Alt+Shift+N (active topics), Alt+Shift+R (mark topic read). Reassign at `chrome://extensions/shortcuts`.
 - **Pointer Cursor** - Optional pointer cursor when hovering over topic rows
 - **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
 

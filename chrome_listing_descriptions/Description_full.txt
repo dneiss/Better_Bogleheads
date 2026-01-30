@@ -40,7 +40,16 @@ Type "bh" in Chrome's address bar, press Tab, then use these shortcuts:
 • user:alice - Search posts by user
 • "search term" - Search the forum
 
+Keyboard Shortcuts
+Use these shortcuts from any Bogleheads page:
+• Alt+B - Toggle side panel
+• Alt+Shift+H - Toggle hide read topics
+• Alt+Shift+N - Navigate to active topics
+• Alt+Shift+R - Mark current topic as read
+Reassign shortcuts at chrome://extensions/shortcuts.
+
 Side Panel
+
 All controls live in Chrome's built-in side panel. Click the extension icon to toggle it. Settings apply immediately.
 
 Helpful Tooltips
