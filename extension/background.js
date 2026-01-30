@@ -1,6 +1,20 @@
 // Enable side panel to open on bogleheads.org
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
 
+// Re-inject content script into existing tabs after extension install/update
+chrome.runtime.onInstalled.addListener(function(details) {
+  if (details.reason === 'install' || details.reason === 'update') {
+    chrome.tabs.query({ url: '*://*.bogleheads.org/*' }, function(tabs) {
+      tabs.forEach(function(tab) {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['content.js']
+        });
+      });
+    });
+  }
+});
+
 // Context menu for marking topics as read
 chrome.contextMenus.removeAll(function() {
   chrome.contextMenus.create({

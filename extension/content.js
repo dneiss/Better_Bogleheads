@@ -1,8 +1,22 @@
 (function() {
+  // Skip if already running with a valid extension context
+  if (document.documentElement.dataset.bhActive === 'true') {
+    try {
+      if (chrome.runtime && chrome.runtime.id) return;
+    } catch (e) {
+      // Context invalid, proceed with re-injection
+    }
+  }
+  document.documentElement.dataset.bhActive = 'true';
+
   var DEFAULT_COLOR = '#d0d0d0';
   var DEFAULT_HOT_COLOR = '#ffeb3b';
   var DEFAULT_HOT_THRESHOLD = 50;
   var DEFAULT_FONT_SIZE = 100;
+
+  function isContextValid() {
+    return typeof chrome !== 'undefined' && !!chrome.runtime && !!chrome.runtime.id;
+  }
 
   var table = null;
   var currentColor = DEFAULT_COLOR;
@@ -148,6 +162,7 @@
   }
 
   function init() {
+    if (!isContextValid()) return;
     table = document.getElementById('posts_table');
 
     // Migrate readThreads to readTopics (one-time)
@@ -272,7 +287,7 @@
   }
 
   function updateBadge(readTopics) {
-    if (!table) return;
+    if (!table || !isContextValid()) return;
     var rows = getDataRows();
     var unreadCount = 0;
     for (var i = 0; i < rows.length; i++) {
@@ -365,6 +380,7 @@
         if (link.dataset.tracked) return;
         link.dataset.tracked = 'true';
         link.addEventListener('click', function() {
+          if (!isContextValid()) return;
           var topicId = getTopicId(row);
           var lastPostId = getLastPostId(row);
           if (topicId && lastPostId) {
