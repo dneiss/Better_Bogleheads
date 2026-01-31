@@ -20,6 +20,7 @@ async function captureScreenshots() {
 
   const browser = await puppeteer.launch({
     headless: false,
+    channel: 'chrome',
     args: [
       `--disable-extensions-except=${EXTENSION_PATH}`,
       `--load-extension=${EXTENSION_PATH}`,
