@@ -48,6 +48,9 @@ Use these shortcuts from any Bogleheads page:
 • Alt+Shift+R - Mark current topic as read
 Reassign shortcuts at chrome://extensions/shortcuts.
 
+Export/Import Settings
+Download your settings as a JSON file to back them up or transfer to another machine. Import a previously exported file to restore your settings.
+
 Side Panel
 
 All controls live in Chrome's built-in side panel. Click the extension icon to toggle it. Settings apply immediately.

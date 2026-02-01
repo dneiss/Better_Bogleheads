@@ -269,4 +269,43 @@
       updateTimeDisplay(newTracking);
     }
   };
+
+  // Export / Import settings
+  var exportButton = document.getElementById('export-settings');
+  var importButton = document.getElementById('import-settings');
+  var importFileInput = document.getElementById('import-file');
+
+  exportButton.onclick = function() {
+    chrome.storage.sync.get(null, function(data) {
+      var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'better-bogleheads-settings.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  };
+
+  importButton.onclick = function() {
+    importFileInput.click();
+  };
+
+  importFileInput.onchange = function() {
+    var file = this.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        var data = JSON.parse(e.target.result);
+        chrome.storage.sync.set(data, function() {
+          location.reload();
+        });
+      } catch (err) {
+        alert('Invalid JSON file.');
+      }
+    };
+    reader.readAsText(file);
+    this.value = '';
+  };
 })();

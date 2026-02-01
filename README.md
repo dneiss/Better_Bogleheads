@@ -14,6 +14,7 @@ A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org
 - **Keyboard Shortcuts** - Quick access from any Bogleheads page (see below)
 - **Pointer Cursor** - Optional pointer cursor when hovering over topic rows
 - **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
+- **Export/Import Settings** - Download your settings as a JSON file or restore them from a previous export
 
 All settings are saved and persist across sessions.
 
