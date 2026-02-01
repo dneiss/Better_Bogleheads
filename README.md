@@ -11,7 +11,7 @@ A Chrome extension that enhances the [Bogleheads.org](https://www.bogleheads.org
 - **Hide Old Topics** - Filter out topics older than a specified number of days
 - **Adjustable Font Size** - Increase or decrease the topic list font size (50% - 200%)
 - **Mark as Read (Right-Click)** - Right-click any topic row to mark it as read without opening it
-- **Keyboard Shortcuts** - Alt+B (toggle side panel), Alt+Shift+H (toggle hide read), Alt+Shift+N (active topics), Alt+Shift+R (mark topic read). Reassign at `chrome://extensions/shortcuts`.
+- **Keyboard Shortcuts** - Quick access from any Bogleheads page (see below)
 - **Pointer Cursor** - Optional pointer cursor when hovering over topic rows
 - **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
 
@@ -20,6 +20,30 @@ All settings are saved and persist across sessions.
 ## Side Panel
 
 The extension uses Chrome's side panel for all controls. The panel automatically opens when you visit Bogleheads.org and slides out from the right side of the browser. You can also click the extension icon to toggle it. All settings in the panel apply immediately. Hover over any setting to see a tooltip explaining what it does.
+
+## Omnibox Commands
+
+Type `bh` in Chrome's address bar, press Tab, then use these shortcuts:
+
+- `new` - Go to active topics
+- `hot` / `hot off` - Toggle hot topic highlighting
+- `zebra` / `zebra off` - Toggle zebra striping
+- `font inc` / `font dec` - Adjust font size
+- `reset` - Clear read history
+- `#12345` - Go to topic by ID
+- `user:alice` - Search posts by user
+- `"search term"` - Search the forum
+
+## Keyboard Shortcuts
+
+Use these shortcuts from any Bogleheads page:
+
+- **Alt+B** - Toggle side panel
+- **Alt+Shift+H** - Toggle hide read topics
+- **Alt+Shift+N** - Navigate to active topics
+- **Alt+Shift+R** - Mark current topic as read
+
+Reassign shortcuts at `chrome://extensions/shortcuts`.
 
 ## Installation (from repo)
 
