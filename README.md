@@ -54,5 +54,5 @@ The extension uses Chrome's side panel for all controls. The panel automatically
 
 ## License(s)
 
-- MIT License - Feel free to modify and distribute.
+- MIT License - Feel free to modify and distribute
 - Bogleheads® is a registered service mark of The John C. Bogle Center for Financial Literacy
