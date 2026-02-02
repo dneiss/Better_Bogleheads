@@ -24,6 +24,7 @@
   var darkStylesInjected = false;
   var lastRightClickedRow = null;
   var lastRightClickedProfileLink = null;
+  var lastRightClickedCell = null;
 
   // Time tracking variables
   var timeTrackingInterval = null;
@@ -404,6 +405,8 @@
     document.addEventListener('contextmenu', function(e) {
       var link = e.target.closest('a[href*="memberlist.php"]');
       lastRightClickedProfileLink = link || null;
+      var cell = e.target.closest('td');
+      lastRightClickedCell = cell || null;
     });
   }
 
@@ -460,8 +463,12 @@
         updateBadge(readTopics);
       });
     } else if (message.type === 'watchPoster') {
-      if (!lastRightClickedProfileLink) return;
-      var username = lastRightClickedProfileLink.textContent.trim().toLowerCase();
+      var username = '';
+      if (lastRightClickedProfileLink) {
+        username = lastRightClickedProfileLink.textContent.trim().toLowerCase();
+      } else if (lastRightClickedCell) {
+        username = extractPosterName(lastRightClickedCell);
+      }
       if (!username) return;
       chrome.storage.sync.get(['watchedPosters'], function(result) {
         var watchedPosters = result.watchedPosters || [];

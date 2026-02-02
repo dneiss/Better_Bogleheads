@@ -26,8 +26,8 @@ chrome.contextMenus.removeAll(function() {
   chrome.contextMenus.create({
     id: 'watchPoster',
     title: 'Watch this Poster',
-    contexts: ['link'],
-    targetUrlPatterns: ['*://*.bogleheads.org/forum/memberlist.php*']
+    contexts: ['all'],
+    documentUrlPatterns: ['*://*.bogleheads.org/*']
   });
 });
 
