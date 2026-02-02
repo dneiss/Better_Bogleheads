@@ -4,7 +4,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 
 ## Features
 
-- **Unread Badge** - Shows a red badge on the extension icon with the count of topics you haven't clicked yet
+- **Unread Badge** - Shows the count of unread topics on the extension icon. Badge color changes based on count: green (1-20), yellow (21-60), or red (61+)
 - **Zebra Striping** - Alternating row colors for easier reading (customizable color)
 - **Hide Read Topics** - Automatically tracks topics you've clicked and can hide them. Topics reappear when new replies are posted.
 - **Highlight Hot Topics** - Highlight topics with many replies (customizable threshold and color)
@@ -76,6 +76,7 @@ Reassign shortcuts at `chrome://extensions/shortcuts`.
 - **storage** - To save your preferences
 - **sidePanel** - To display settings in Chrome's side panel
 - **contextMenus** - To provide right-click "Mark Topic as Read"
+- **scripting** - To re-inject content script after extension updates
 - **Host permission** - Only runs on bogleheads.org
 
 ## License(s)
