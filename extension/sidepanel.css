@@ -38,7 +38,8 @@ label:has(input[type="checkbox"]) {
   border-radius: 3px;
 }
 
-label:has(input[type="checkbox"]):hover {
+label:has(input[type="checkbox"]):hover,
+label:has(input[type="checkbox"]):focus-within {
   background: #e8e8e8;
 }
 
@@ -53,6 +54,14 @@ input[type="number"] {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+}
+
+input[type="number"]:focus-visible,
+input[type="color"]:focus-visible,
+input[type="text"]:focus-visible,
+input[type="range"]:focus-visible {
+  outline: 2px solid #2c5aa0;
+  outline-offset: 1px;
 }
 
 input[type="color"] {
@@ -75,6 +84,11 @@ button {
 
 button:hover {
   background: #e8e8e8;
+}
+
+button:focus-visible {
+  outline: 2px solid #2c5aa0;
+  outline-offset: 1px;
 }
 
 #read-count {
@@ -211,7 +225,8 @@ body.bh-dark label {
   color: #e0e0e0;
 }
 
-body.bh-dark label:has(input[type="checkbox"]):hover {
+body.bh-dark label:has(input[type="checkbox"]):hover,
+body.bh-dark label:has(input[type="checkbox"]):focus-within {
   background: #333;
 }
 
@@ -230,6 +245,21 @@ body.bh-dark button {
 
 body.bh-dark button:hover {
   background: #444;
+}
+
+body.bh-dark button:focus-visible {
+  outline-color: #6db3f2;
+}
+
+body.bh-dark input[type="number"]:focus-visible,
+body.bh-dark input[type="color"]:focus-visible,
+body.bh-dark input[type="text"]:focus-visible,
+body.bh-dark input[type="range"]:focus-visible {
+  outline-color: #6db3f2;
+}
+
+body.bh-dark .feedback-link:focus-visible {
+  outline-color: #6db3f2;
 }
 
 body.bh-dark #read-count {
@@ -370,6 +400,11 @@ body.bh-dark .refresh-notice {
   text-decoration: underline;
 }
 
+.feedback-link:focus-visible {
+  outline: 2px solid #2c5aa0;
+  outline-offset: 1px;
+}
+
 body.bh-dark .feedback-link {
   color: #6db3f2;
 }
@@ -402,7 +437,9 @@ body.bh-dark .feedback-link {
   pointer-events: none;
 }
 
-[data-tooltip]:hover::after {
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-within::after,
+[data-tooltip]:focus::after {
   opacity: 1;
   visibility: visible;
 }

@@ -67,6 +67,7 @@
       removeBtn.className = 'watch-poster-remove';
       removeBtn.textContent = '\u00d7';
       removeBtn.dataset.tooltip = 'Remove ' + name + ' from watch list';
+      removeBtn.setAttribute('aria-label', 'Remove ' + name + ' from watch list');
       removeBtn.onclick = function() {
         chrome.storage.sync.get(['watchedPosters'], function(result) {
           var list = result.watchedPosters || [];
