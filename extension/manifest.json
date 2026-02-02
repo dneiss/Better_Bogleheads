@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Better Bogleheads",
   "version": "2.5.0",
-  "description": "Bogleheads site enhancements. Bogleheads® is a trademark of The John C. Bogle Center for Financial Literacy.",
+  "description": "A Chrome extension that supercharges the Bogleheads.org forum with visual enhancements and smart filtering.",
   "author": "David Neiss",
   "permissions": ["storage", "sidePanel", "contextMenus", "scripting"],
   "host_permissions": ["*://*.bogleheads.org/*"],
