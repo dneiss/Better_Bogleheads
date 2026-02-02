@@ -1,4 +1,4 @@
-Better Bogleheads improves your browsing experience on the Bogleheads.org home page.
+Better Bogleheads improves your browsing experience on the Bogleheads.org home page by supercharging the Bogleheads.org forum with visual enhancements and smart filtering.
 
 FEATURES
 
@@ -13,6 +13,9 @@ Shows the count of unread topics on the extension icon. The badge color changes 
 
 Highlight Hot Topics
 Make popular topics stand out by highlighting topics above a customizable reply threshold. Choose your own highlight color.
+
+Watch Posters
+Keep an eye on your favorite posters. Add usernames via the side panel or right-click a poster's profile link on the forum to add them. Topics where a watched poster is the author or last poster are highlighted with a customizable color. Watched poster highlighting takes priority over hot topic highlighting.
 
 Hide Old Topics
 Filter out topics older than a specified number of days to focus on recent discussions.

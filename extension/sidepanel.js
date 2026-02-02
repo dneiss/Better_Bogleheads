@@ -3,6 +3,7 @@
   var DEFAULT_HOT_COLOR = '#ffeb3b';
   var DEFAULT_HOT_THRESHOLD = 50;
   var DEFAULT_FONT_SIZE = 100;
+  var DEFAULT_WATCH_COLOR = '#c8e6c9';
 
   function applyTheme(theme) {
     if (theme === 'dark') {
@@ -17,6 +18,7 @@
     applyTheme(result.theme || 'light');
   });
 
+  var enableStripingCheckbox = document.getElementById('enable-striping');
   var colorInput = document.getElementById('stripe-color');
   var hideReadCheckbox = document.getElementById('hide-read');
   var clearReadButton = document.getElementById('clear-read');
@@ -37,10 +39,51 @@
   var sparklineEl = document.getElementById('sparkline');
   var timeStatsEl = document.getElementById('time-stats');
   var resetTimeButton = document.getElementById('reset-time');
+  var enableWatchPostersCheckbox = document.getElementById('enable-watch-posters');
+  var watchPosterInput = document.getElementById('watch-poster-input');
+  var watchPosterAddButton = document.getElementById('watch-poster-add');
+  var watchColorInput = document.getElementById('watch-color');
+  var watchPosterListEl = document.getElementById('watch-poster-list');
+  var watchPosterCountSpan = document.getElementById('watch-poster-count');
 
   function updateReadCount(readTopics) {
     var count = Object.keys(readTopics).length;
     readCountSpan.textContent = '(' + count + ' read)';
+  }
+
+  function updateWatchCount(watchedPosters) {
+    var count = watchedPosters.length;
+    watchPosterCountSpan.textContent = count > 0 ? '(' + count + ' watched)' : '';
+  }
+
+  function renderWatchedPosters(watchedPosters) {
+    watchPosterListEl.innerHTML = '';
+    watchedPosters.forEach(function(name) {
+      var item = document.createElement('div');
+      item.className = 'watch-poster-item';
+      var nameSpan = document.createElement('span');
+      nameSpan.textContent = name;
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'watch-poster-remove';
+      removeBtn.textContent = '\u00d7';
+      removeBtn.dataset.tooltip = 'Remove ' + name + ' from watch list';
+      removeBtn.onclick = function() {
+        chrome.storage.sync.get(['watchedPosters'], function(result) {
+          var list = result.watchedPosters || [];
+          var idx = list.indexOf(name);
+          if (idx !== -1) {
+            list.splice(idx, 1);
+            chrome.storage.sync.set({ watchedPosters: list });
+            renderWatchedPosters(list);
+            updateWatchCount(list);
+          }
+        });
+      };
+      item.appendChild(nameSpan);
+      item.appendChild(removeBtn);
+      watchPosterListEl.appendChild(item);
+    });
+    updateWatchCount(watchedPosters);
   }
 
   function formatTime(seconds) {
@@ -147,7 +190,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -160,6 +203,8 @@
     var maxAgeDays = result.maxAgeDays || 30;
     var pointerCursor = result.pointerCursor || false;
 
+    var enableStriping = result.enableStriping !== false;
+    enableStripingCheckbox.checked = enableStriping;
     colorInput.value = color;
     hideReadCheckbox.checked = hideRead;
     highlightHotCheckbox.checked = highlightHot;
@@ -170,6 +215,13 @@
     pointerCursorCheckbox.checked = pointerCursor;
     applyFontSizeDisplay(fontSize);
     updateReadCount(readTopics);
+
+    var enableWatchPosters = result.enableWatchPosters || false;
+    enableWatchPostersCheckbox.checked = enableWatchPosters;
+    var watchedPosters = result.watchedPosters || [];
+    var watchColor = result.watchColor || DEFAULT_WATCH_COLOR;
+    watchColorInput.value = watchColor;
+    renderWatchedPosters(watchedPosters);
   });
 
   // Load time tracking data
@@ -191,9 +243,17 @@
     if (changes.timeTracking) {
       updateTimeDisplay(changes.timeTracking.newValue);
     }
+    if (changes.watchedPosters) {
+      var watchedPosters = changes.watchedPosters.newValue || [];
+      renderWatchedPosters(watchedPosters);
+    }
   });
 
   // Event handlers
+  enableStripingCheckbox.onchange = function() {
+    chrome.storage.sync.set({ enableStriping: this.checked });
+  };
+
   colorInput.oninput = function() {
     chrome.storage.sync.set({ stripeColor: this.value });
   };
@@ -224,6 +284,34 @@
 
   pointerCursorCheckbox.onchange = function() {
     chrome.storage.sync.set({ pointerCursor: this.checked });
+  };
+
+  enableWatchPostersCheckbox.onchange = function() {
+    chrome.storage.sync.set({ enableWatchPosters: this.checked });
+  };
+
+  function addWatchedPoster() {
+    var name = watchPosterInput.value.trim().toLowerCase();
+    if (!name) return;
+    chrome.storage.sync.get(['watchedPosters'], function(result) {
+      var list = result.watchedPosters || [];
+      if (list.indexOf(name) === -1) {
+        list.push(name);
+        chrome.storage.sync.set({ watchedPosters: list });
+        renderWatchedPosters(list);
+      }
+    });
+    watchPosterInput.value = '';
+  }
+
+  watchPosterAddButton.onclick = addWatchedPoster;
+
+  watchPosterInput.onkeydown = function(e) {
+    if (e.key === 'Enter') addWatchedPoster();
+  };
+
+  watchColorInput.oninput = function() {
+    chrome.storage.sync.set({ watchColor: this.value });
   };
 
   fontSizeInput.oninput = function() {

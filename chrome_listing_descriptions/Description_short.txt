@@ -1,1 +1,1 @@
-Enhance Bogleheads.org with zebra striping, hide read topics, hide old topics, highlight hot topics, and adjustable font size.
+A Chrome extension that supercharges the Bogleheads.org forum with visual enhancements and smart filtering.

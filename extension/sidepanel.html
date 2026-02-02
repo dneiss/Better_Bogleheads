@@ -8,11 +8,10 @@
 <body>
   <div id="panel-container">
     <div id="panel-content">
-      <p id="close-hint">Click the X above to close this panel.</p>
-
-      <div class="divider"></div>
-
       <div class="section">
+        <label data-tooltip="Adds alternating row colors to the topic list for easier reading"><input type="checkbox" id="enable-striping"> Zebra striping</label>
+      </div>
+      <div class="section indent">
         <label data-tooltip="Sets the background color for alternating rows in topic lists">Stripe color: <input type="color" id="stripe-color" value="#d0d0d0"></label>
       </div>
 
@@ -36,6 +35,25 @@
       </div>
       <div class="section indent">
         <label data-tooltip="Background color used to highlight hot topics">Hot color: <input type="color" id="hot-color" value="#ffeb3b"></label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section">
+        <label data-tooltip="Highlight topics where a watched poster is the author or last poster"><input type="checkbox" id="enable-watch-posters"> Watch Posters</label>
+      </div>
+      <div class="section indent">
+        <div class="watch-add-row">
+          <input type="text" id="watch-poster-input" placeholder="Username" data-tooltip="Enter a poster's username to watch">
+          <button id="watch-poster-add" data-tooltip="Add this poster to the watch list">Add</button>
+        </div>
+      </div>
+      <div class="section indent">
+        <label data-tooltip="Background color used to highlight watched poster topics">Watch color: <input type="color" id="watch-color" value="#c8e6c9"></label>
+      </div>
+      <div class="section indent">
+        <div id="watch-poster-list"></div>
+        <span id="watch-poster-count"></span>
       </div>
 
       <div class="divider"></div>

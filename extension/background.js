@@ -23,6 +23,12 @@ chrome.contextMenus.removeAll(function() {
     contexts: ['all'],
     documentUrlPatterns: ['*://*.bogleheads.org/*']
   });
+  chrome.contextMenus.create({
+    id: 'watchPoster',
+    title: 'Watch this Poster',
+    contexts: ['link'],
+    targetUrlPatterns: ['*://*.bogleheads.org/forum/memberlist.php*']
+  });
 });
 
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
@@ -30,6 +36,10 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
     chrome.tabs.sendMessage(tab.id, {
       type: 'contextMenuAction',
       action: 'markRead'
+    });
+  } else if (info.menuItemId === 'watchPoster') {
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'watchPoster'
     });
   }
 });

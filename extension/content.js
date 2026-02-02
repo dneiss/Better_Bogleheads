@@ -13,6 +13,7 @@
   var DEFAULT_HOT_COLOR = '#ffeb3b';
   var DEFAULT_HOT_THRESHOLD = 50;
   var DEFAULT_FONT_SIZE = 100;
+  var DEFAULT_WATCH_COLOR = '#c8e6c9';
 
   function isContextValid() {
     return typeof chrome !== 'undefined' && !!chrome.runtime && !!chrome.runtime.id;
@@ -22,6 +23,7 @@
   var currentColor = DEFAULT_COLOR;
   var darkStylesInjected = false;
   var lastRightClickedRow = null;
+  var lastRightClickedProfileLink = null;
 
   // Time tracking variables
   var timeTrackingInterval = null;
@@ -235,6 +237,25 @@
     return 0;
   }
 
+  function extractPosterName(cell) {
+    if (!cell) return '';
+    var text = cell.textContent.trim();
+    text = text.replace(/^\d{1,2}:\d{2}\s*/, '');
+    text = text.replace(/^\d{1,2}\/\d{1,2}\s*/, '');
+    text = text.replace(/^\d{4}\s*/, '');
+    return text.trim().toLowerCase();
+  }
+
+  function getTopicAuthor(row) {
+    var cells = row.querySelectorAll('td');
+    return cells.length >= 2 ? extractPosterName(cells[cells.length - 2]) : '';
+  }
+
+  function getLastPoster(row) {
+    var cells = row.querySelectorAll('td');
+    return cells.length >= 1 ? extractPosterName(cells[cells.length - 1]) : '';
+  }
+
   function getTopicAgeDays(row) {
     var cells = row.querySelectorAll('td.NoMobile');
     for (var i = 0; i < cells.length; i++) {
@@ -303,10 +324,14 @@
     if (!table) return;
     currentColor = color || currentColor;
 
-    chrome.storage.sync.get(['highlightHot', 'hotThreshold', 'hotColor'], function(result) {
+    chrome.storage.sync.get(['enableStriping', 'highlightHot', 'hotThreshold', 'hotColor', 'enableWatchPosters', 'watchedPosters', 'watchColor'], function(result) {
+      var enableStriping = result.enableStriping !== false;
       var highlightHot = result.highlightHot || false;
       var hotThreshold = result.hotThreshold || DEFAULT_HOT_THRESHOLD;
       var hotColor = result.hotColor || DEFAULT_HOT_COLOR;
+      var enableWatchPosters = result.enableWatchPosters || false;
+      var watchedPosters = result.watchedPosters || [];
+      var watchColor = result.watchColor || DEFAULT_WATCH_COLOR;
 
       var rows = getDataRows();
       var count = 0;
@@ -315,13 +340,19 @@
         var row = rows[i];
         if (row.style.display === 'none') continue;
 
-        var replyCount = getReplyCount(row);
         var bgColor;
+        var author = getTopicAuthor(row);
+        var lastPoster = getLastPoster(row);
+        var isWatched = enableWatchPosters && watchedPosters.length > 0 && (watchedPosters.indexOf(author) !== -1 || watchedPosters.indexOf(lastPoster) !== -1);
 
-        if (highlightHot && replyCount >= hotThreshold) {
+        if (isWatched) {
+          bgColor = watchColor;
+        } else if (highlightHot && getReplyCount(row) >= hotThreshold) {
           bgColor = hotColor;
-        } else {
+        } else if (enableStriping) {
           bgColor = (count % 2 === 0) ? currentColor : '#ffffff';
+        } else {
+          bgColor = '#ffffff';
         }
 
         row.style.setProperty('background-color', bgColor, 'important');
@@ -369,6 +400,10 @@
       row.addEventListener('contextmenu', function() {
         lastRightClickedRow = row;
       });
+    });
+    document.addEventListener('contextmenu', function(e) {
+      var link = e.target.closest('a[href*="memberlist.php"]');
+      lastRightClickedProfileLink = link || null;
     });
   }
 
@@ -423,6 +458,17 @@
         chrome.storage.sync.set({ readTopics: readTopics });
         applyFilters(readTopics);
         updateBadge(readTopics);
+      });
+    } else if (message.type === 'watchPoster') {
+      if (!lastRightClickedProfileLink) return;
+      var username = lastRightClickedProfileLink.textContent.trim().toLowerCase();
+      if (!username) return;
+      chrome.storage.sync.get(['watchedPosters'], function(result) {
+        var watchedPosters = result.watchedPosters || [];
+        if (watchedPosters.indexOf(username) === -1) {
+          watchedPosters.push(username);
+          chrome.storage.sync.set({ watchedPosters: watchedPosters });
+        }
       });
     } else if (message.type === 'keyboardAction' && message.action === 'markTopicRead') {
       var url = window.location.href;
@@ -479,11 +525,17 @@
     if (changes.pointerCursor) {
       applyPointerCursor(changes.pointerCursor.newValue || false);
     }
+    if (changes.enableStriping) {
+      applyStripes();
+    }
     if (changes.stripeColor) {
       currentColor = changes.stripeColor.newValue || DEFAULT_COLOR;
       applyStripes(currentColor);
     }
     if (changes.highlightHot || changes.hotThreshold || changes.hotColor) {
+      applyStripes();
+    }
+    if (changes.enableWatchPosters || changes.watchedPosters || changes.watchColor) {
       applyStripes();
     }
     if (changes.hideRead || changes.hideOld || changes.maxAgeDays || changes.readTopics) {
