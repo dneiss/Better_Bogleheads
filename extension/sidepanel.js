@@ -34,6 +34,7 @@
   var hideOldCheckbox = document.getElementById('hide-old');
   var maxAgeDaysInput = document.getElementById('max-age-days');
   var pointerCursorCheckbox = document.getElementById('pointer-cursor');
+  var darkModeCheckbox = document.getElementById('dark-mode-toggle');
   var timeTodayEl = document.getElementById('time-today');
   var timeTotalEl = document.getElementById('time-total');
   var sparklineEl = document.getElementById('sparkline');
@@ -191,7 +192,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor'], function(result) {
+  chrome.storage.sync.get(['theme', 'enableStriping', 'stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -203,7 +204,8 @@
     var hideOld = result.hideOld || false;
     var maxAgeDays = result.maxAgeDays || 30;
     var pointerCursor = result.pointerCursor || false;
-
+    var theme = result.theme || 'light';
+    darkModeCheckbox.checked = theme === 'dark';
     var enableStriping = result.enableStriping !== false;
     enableStripingCheckbox.checked = enableStriping;
     colorInput.value = color;
@@ -285,6 +287,11 @@
 
   pointerCursorCheckbox.onchange = function() {
     chrome.storage.sync.set({ pointerCursor: this.checked });
+  };
+  darkModeCheckbox.onchange = function() {
+  var theme = this.checked ? 'dark' : 'light';
+  chrome.storage.sync.set({ theme: theme });
+  applyTheme(theme);
   };
 
   enableWatchPostersCheckbox.onchange = function() {
