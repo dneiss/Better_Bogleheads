@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Better Bogleheads",
   "version": "3.0.0",
-  "description": "Better Bogleheads improves your browsing experience on the Bogleheads.org home page by supercharging the Bogleheads.org forum with visual enhancements and smart filtering",
+  "description": "Supercharges the Bogleheads.org forum with visual enhancements, smart filtering, dark mode, and more.",
   "author": "David Neiss",
   "permissions": ["storage", "sidePanel", "contextMenus", "scripting"],
   "host_permissions": ["*://*.bogleheads.org/*"],
