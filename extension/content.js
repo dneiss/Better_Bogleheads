@@ -457,6 +457,10 @@
         }
 
         row.style.setProperty('background-color', bgColor, 'important');
+        var cells = row.querySelectorAll('td');
+        for (var j = 0; j < cells.length; j++) {
+          cells[j].style.setProperty('background-color', bgColor, 'important');
+        }
         count++;
       }
     });
