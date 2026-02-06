@@ -5,6 +5,17 @@
   var DEFAULT_FONT_SIZE = 100;
   var DEFAULT_WATCH_COLOR = '#c8e6c9';
 
+  var pendingSync = {};
+  var syncTimeout = null;
+  function debouncedSyncSet(obj) {
+    Object.assign(pendingSync, obj);
+    clearTimeout(syncTimeout);
+    syncTimeout = setTimeout(function() {
+      chrome.storage.sync.set(pendingSync);
+      pendingSync = {};
+    }, 300);
+  }
+
   var currentThemeSetting = 'system';
 
   function resolveTheme(theme) {
@@ -289,7 +300,7 @@
   };
 
   colorInput.oninput = function() {
-    chrome.storage.sync.set({ stripeColor: this.value });
+    debouncedSyncSet({ stripeColor: this.value });
   };
 
   hideReadCheckbox.onchange = function() {
@@ -301,11 +312,11 @@
   };
 
   hotThresholdInput.oninput = function() {
-    chrome.storage.sync.set({ hotThreshold: parseInt(this.value, 10) });
+    debouncedSyncSet({ hotThreshold: parseInt(this.value, 10) });
   };
 
   hotColorInput.oninput = function() {
-    chrome.storage.sync.set({ hotColor: this.value });
+    debouncedSyncSet({ hotColor: this.value });
   };
 
   hideOldCheckbox.onchange = function() {
@@ -313,7 +324,7 @@
   };
 
   maxAgeDaysInput.oninput = function() {
-    chrome.storage.sync.set({ maxAgeDays: parseInt(this.value, 10) });
+    debouncedSyncSet({ maxAgeDays: parseInt(this.value, 10) });
   };
 
   pointerCursorCheckbox.onchange = function() {
@@ -345,13 +356,13 @@
   };
 
   watchColorInput.oninput = function() {
-    chrome.storage.sync.set({ watchColor: this.value });
+    debouncedSyncSet({ watchColor: this.value });
   };
 
   fontSizeInput.oninput = function() {
     var size = parseInt(this.value, 10);
     applyFontSizeDisplay(size);
-    chrome.storage.sync.set({ fontSize: size });
+    debouncedSyncSet({ fontSize: size });
   };
 
   fontDecreaseButton.onclick = function() {
