@@ -22,6 +22,7 @@
   var table = null;
   var currentColor = DEFAULT_COLOR;
   var darkStylesInjected = false;
+  var currentThemeSetting = 'system';
   var lastRightClickedRow = null;
   var lastRightClickedProfileLink = null;
   var lastRightClickedCell = null;
@@ -35,29 +36,122 @@
     var style = document.createElement('style');
     style.id = 'bh-dark-theme';
     style.textContent = [
+      /* Base */
       'body.bh-dark { background-color: #1a1a1a !important; color: #e0e0e0 !important; }',
-      'body.bh-dark .page-body { background-color: #1a1a1a !important; }',
-      'body.bh-dark .post, body.bh-dark .panel { background-color: #2d2d2d !important; border-color: #444 !important; }',
-      'body.bh-dark a { color: #6db3f2 !important; }',
-      'body.bh-dark #posts_table { background-color: #2d2d2d !important; }',
-      'body.bh-dark #posts_table tr { background-color: #2d2d2d !important; }',
-      'body.bh-dark #posts_table td, body.bh-dark #posts_table th { color: #e0e0e0 !important; border-color: #444 !important; }',
+
+      /* Major containers */
+      'body.bh-dark #wrap, body.bh-dark #page-body, body.bh-dark #page-header, body.bh-dark #page-footer, body.bh-dark .page-body { background-color: #1a1a1a !important; color: #e0e0e0 !important; }',
+
+      /* Forum list containers */
       'body.bh-dark .forumbg, body.bh-dark .forabg { background-color: #2d2d2d !important; }',
-      'body.bh-dark .header-bar, body.bh-dark .forum-row { background-color: #333 !important; }',
-      'body.bh-dark input, body.bh-dark select, body.bh-dark textarea { background-color: #333 !important; color: #e0e0e0 !important; border-color: #555 !important; }'
+      'body.bh-dark .forumbg .header, body.bh-dark .forabg .header { background-color: #333 !important; color: #e0e0e0 !important; }',
+
+      /* Row items and alternating backgrounds */
+      'body.bh-dark li.row, body.bh-dark .bg1, body.bh-dark .bg2, body.bh-dark .bg3 { background-color: #2d2d2d !important; }',
+      'body.bh-dark li.row:nth-child(even) { background-color: #252525 !important; }',
+      'body.bh-dark dl.row-item { background-color: inherit !important; }',
+      'body.bh-dark dt, body.bh-dark dd { color: #e0e0e0 !important; }',
+
+      /* Tables */
+      'body.bh-dark table { background-color: #2d2d2d !important; border-color: #444 !important; }',
+      'body.bh-dark #posts_table { background-color: #2d2d2d !important; }',
+      'body.bh-dark td, body.bh-dark th { color: #e0e0e0 !important; border-color: #444 !important; }',
+
+      /* Links */
+      'body.bh-dark a { color: #6db3f2 !important; }',
+      'body.bh-dark a:visited { color: #9b8ec8 !important; }',
+      'body.bh-dark a:hover { color: #8cc8ff !important; }',
+
+      /* Posts */
+      'body.bh-dark .post, body.bh-dark .panel { background-color: #2d2d2d !important; border-color: #444 !important; }',
+      'body.bh-dark .postbody, body.bh-dark .content { color: #e0e0e0 !important; }',
+      'body.bh-dark .postprofile { background-color: #252525 !important; border-color: #444 !important; }',
+      'body.bh-dark .post .author { color: #e0e0e0 !important; }',
+      'body.bh-dark .post .notice { color: #a0aec0 !important; }',
+      'body.bh-dark .signature { border-color: #444 !important; color: #a0aec0 !important; }',
+
+      /* Navigation and headers */
+      'body.bh-dark .header-bar, body.bh-dark .forum-row, body.bh-dark .navbar { background-color: #333 !important; }',
+      'body.bh-dark .headerbar { background-color: #333 !important; }',
+      'body.bh-dark .action-bar { background-color: #2d2d2d !important; border-color: #444 !important; }',
+      'body.bh-dark .breadcrumbs { color: #a0aec0 !important; }',
+      'body.bh-dark .pagination { color: #a0aec0 !important; }',
+      'body.bh-dark .pagination a { color: #6db3f2 !important; }',
+
+      /* Forms */
+      'body.bh-dark input, body.bh-dark select, body.bh-dark textarea { background-color: #333 !important; color: #e0e0e0 !important; border-color: #555 !important; }',
+      'body.bh-dark button, body.bh-dark input[type="submit"], body.bh-dark .button, body.bh-dark .button2 { background-color: #444 !important; color: #e0e0e0 !important; border-color: #555 !important; }',
+
+      /* Override inline styles (forum uses hardcoded colors) */
+      'body.bh-dark [style*="background-color"], body.bh-dark [style*="background:"] { background-color: inherit !important; }',
+      'body.bh-dark [bgcolor] { background-color: inherit !important; }',
+      'body.bh-dark font[color], body.bh-dark [style*="color:"] { color: inherit !important; }',
+
+      /* Blockquotes and code in posts */
+      'body.bh-dark blockquote { background-color: #252525 !important; border-color: #555 !important; color: #d0d0d0 !important; }',
+      'body.bh-dark .codebox { background-color: #252525 !important; border-color: #555 !important; }',
+      'body.bh-dark .codebox code { color: #e0e0e0 !important; }',
+
+      /* Dropdowns and menus */
+      'body.bh-dark .dropdown-contents { background-color: #333 !important; border-color: #555 !important; }',
+
+      /* Separators */
+      'body.bh-dark hr { border-color: #444 !important; }',
+
+      /* Left sidebar (portal homepage) */
+      'body.bh-dark #leftside { background-color: #1a1a1a !important; }',
+      'body.bh-dark .leftside_table, body.bh-dark .leftside_table td { background-color: #1a1a1a !important; }',
+
+      /* Misc text and small elements */
+      'body.bh-dark .topic-title { color: #e0e0e0 !important; }',
+      'body.bh-dark span, body.bh-dark p, body.bh-dark div, body.bh-dark li { color: inherit; }',
+      'body.bh-dark .stat-block { color: #a0aec0 !important; }',
+      'body.bh-dark .search-box { background-color: #333 !important; }',
+      'body.bh-dark #search-box { background-color: #333 !important; }',
+
+      /* Announcement and sticky bars */
+      'body.bh-dark .announce-bar, body.bh-dark .sticky-bar { background-color: #333 !important; }',
+
+      /* phpBB quick-login and similar panels */
+      'body.bh-dark .login-box, body.bh-dark #login-box { background-color: #2d2d2d !important; border-color: #444 !important; }',
+
+      /* Footer */
+      'body.bh-dark #page-footer, body.bh-dark .copyright { color: #888 !important; }',
+
+      /* Scrollbar (Webkit) */
+      'body.bh-dark ::-webkit-scrollbar { background-color: #1a1a1a; }',
+      'body.bh-dark ::-webkit-scrollbar-thumb { background-color: #555; }',
+      'body.bh-dark ::-webkit-scrollbar-track { background-color: #2d2d2d; }'
     ].join('\n');
     document.head.appendChild(style);
     darkStylesInjected = true;
   }
 
+  function resolveTheme(theme) {
+    if (theme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return theme;
+  }
+
   function applyTheme(theme) {
-    if (theme === 'dark') {
+    currentThemeSetting = theme;
+    var resolved = resolveTheme(theme);
+    if (resolved === 'dark') {
       injectDarkStyles();
       document.body.classList.add('bh-dark');
     } else {
       document.body.classList.remove('bh-dark');
     }
+    applyStripes();
   }
+
+  // Re-apply theme when OS color scheme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+    if (currentThemeSetting === 'system') {
+      applyTheme('system');
+    }
+  });
 
   function getTodayDateString() {
     var d = new Date();
@@ -178,7 +272,7 @@
 
     // Apply theme on load
     chrome.storage.sync.get(['theme'], function(result) {
-      applyTheme(result.theme || 'light');
+      applyTheme(result.theme || 'system');
     });
 
     // Start time tracking (works on all bogleheads.org pages)
@@ -346,14 +440,16 @@
         var lastPoster = getLastPoster(row);
         var isWatched = enableWatchPosters && watchedPosters.length > 0 && (watchedPosters.indexOf(author) !== -1 || watchedPosters.indexOf(lastPoster) !== -1);
 
+        var baseBg = document.body.classList.contains('bh-dark') ? '#2d2d2d' : '#ffffff';
+
         if (isWatched) {
           bgColor = watchColor;
         } else if (highlightHot && getReplyCount(row) >= hotThreshold) {
           bgColor = hotColor;
         } else if (enableStriping) {
-          bgColor = (count % 2 === 0) ? currentColor : '#ffffff';
+          bgColor = (count % 2 === 0) ? currentColor : baseBg;
         } else {
-          bgColor = '#ffffff';
+          bgColor = baseBg;
         }
 
         row.style.setProperty('background-color', bgColor, 'important');
@@ -521,7 +617,7 @@
 
     // Theme can change even without a table
     if (changes.theme) {
-      applyTheme(changes.theme.newValue || 'light');
+      applyTheme(changes.theme.newValue || 'system');
     }
 
     if (!table) return;

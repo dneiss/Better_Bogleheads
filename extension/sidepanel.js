@@ -5,19 +5,42 @@
   var DEFAULT_FONT_SIZE = 100;
   var DEFAULT_WATCH_COLOR = '#c8e6c9';
 
+  var currentThemeSetting = 'system';
+
+  function resolveTheme(theme) {
+    if (theme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return theme;
+  }
+
   function applyTheme(theme) {
-    if (theme === 'dark') {
+    currentThemeSetting = theme;
+    var resolved = resolveTheme(theme);
+    if (resolved === 'dark') {
       document.body.classList.add('bh-dark');
     } else {
       document.body.classList.remove('bh-dark');
     }
   }
 
-  // Load and apply theme on init
-  chrome.storage.sync.get(['theme'], function(result) {
-    applyTheme(result.theme || 'light');
+  // Re-apply theme when OS color scheme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+    if (currentThemeSetting === 'system') {
+      applyTheme('system');
+    }
   });
 
+  // Load and apply theme on init
+  chrome.storage.sync.get(['theme'], function(result) {
+    var theme = result.theme || 'system';
+    applyTheme(theme);
+    // Set the correct radio button
+    var radio = document.getElementById('theme-' + theme);
+    if (radio) radio.checked = true;
+  });
+
+  var themeRadios = document.querySelectorAll('input[name="theme"]');
   var enableStripingCheckbox = document.getElementById('enable-striping');
   var colorInput = document.getElementById('stripe-color');
   var hideReadCheckbox = document.getElementById('hide-read');
@@ -239,7 +262,10 @@
       updateReadCount(readTopics);
     }
     if (changes.theme) {
-      applyTheme(changes.theme.newValue || 'light');
+      var theme = changes.theme.newValue || 'system';
+      applyTheme(theme);
+      var radio = document.getElementById('theme-' + theme);
+      if (radio) radio.checked = true;
     }
     if (changes.timeTracking) {
       updateTimeDisplay(changes.timeTracking.newValue);
@@ -251,6 +277,13 @@
   });
 
   // Event handlers
+  themeRadios.forEach(function(radio) {
+    radio.onchange = function() {
+      chrome.storage.sync.set({ theme: this.value });
+      applyTheme(this.value);
+    };
+  });
+
   enableStripingCheckbox.onchange = function() {
     chrome.storage.sync.set({ enableStriping: this.checked });
   };
