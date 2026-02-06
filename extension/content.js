@@ -55,7 +55,11 @@
       /* Tables */
       'body.bh-dark table { background-color: #2d2d2d !important; border-color: #444 !important; }',
       'body.bh-dark #posts_table { background-color: #2d2d2d !important; }',
-      'body.bh-dark td, body.bh-dark th { color: #e0e0e0 !important; border-color: #444 !important; }',
+      'body.bh-dark td, body.bh-dark th { background-color: #1a1a1a !important; color: #e0e0e0 !important; border-color: #444 !important; }',
+
+      /* Right side main content area */
+      'body.bh-dark #rightside { background-color: #1a1a1a !important; }',
+      'body.bh-dark .accordion { background-color: #333 !important; color: #e0e0e0 !important; border-color: #444 !important; }',
 
       /* Links */
       'body.bh-dark a { color: #6db3f2 !important; }',
