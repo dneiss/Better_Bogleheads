@@ -14,6 +14,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Mark as Read (Right-Click)** - Right-click any topic row to mark it as read without opening it
 - **Keyboard Shortcuts** - Quick access from any Bogleheads page (see below)
 - **Pointer Cursor** - Optional pointer cursor when hovering over topic rows
+- **Dark Mode** - Full dark theme for Bogleheads forum pages and the side panel. Choose System (follows your OS setting), Light, or Dark. Switches automatically when your OS theme changes.
 - **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
 - **Export/Import Settings** - Download your settings as a JSON file or restore them from a previous export
 

@@ -1,5 +1,8 @@
 FEATURES
 
+Dark Mode
+Full dark theme for Bogleheads forum pages and the side panel. Choose System (follows your OS light/dark setting), Light, or Dark from the theme selector at the top of the side panel. When set to System, the theme switches automatically when your OS theme changes.
+
 Zebra Striping
 Add alternating row colors to the topic list for easier reading. Choose any color you like.
 
