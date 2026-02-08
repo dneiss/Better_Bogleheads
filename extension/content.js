@@ -356,6 +356,11 @@
     });
   }
 
+  function getSubforum(row) {
+    var cells = row.querySelectorAll('td');
+    return cells.length >= 2 ? cells[1].textContent.trim() : '';
+  }
+
   function getTopicId(row) {
     var link = row.querySelector('td a[href*="viewtopic.php"]');
     if (link) {
@@ -517,17 +522,23 @@
   function applyFilters(readTopics) {
     if (!table) return;
 
-    chrome.storage.sync.get(['hideRead', 'hideOld', 'maxAgeDays', 'stripeColor'], function(result) {
+    chrome.storage.sync.get(['hideRead', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums'], function(result) {
       var hideRead = result.hideRead || false;
       var hideOld = result.hideOld || false;
       var maxAgeDays = result.maxAgeDays || 30;
+      var hiddenSubforums = result.hiddenSubforums || [];
       currentColor = result.stripeColor || currentColor;
 
       var rows = getDataRows();
       rows.forEach(function(row) {
         var shouldHide = false;
 
-        if (hideRead) {
+        if (hiddenSubforums.length > 0) {
+          var subforum = getSubforum(row);
+          if (subforum && hiddenSubforums.indexOf(subforum) !== -1) shouldHide = true;
+        }
+
+        if (hideRead && !shouldHide) {
           var topicId = getTopicId(row);
           var lastPostId = getLastPostId(row);
           var savedPostId = topicId ? readTopics[topicId] : null;
@@ -700,7 +711,7 @@
     if (changes.enableWatchPosters || changes.watchedPosters || changes.watchColor) {
       applyStripes();
     }
-    if (changes.hideRead || changes.hideOld || changes.maxAgeDays || changes.readTopics) {
+    if (changes.hideRead || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums) {
       chrome.storage.sync.get(['readTopics'], function(result) {
         var readTopics = result.readTopics || {};
         if (Array.isArray(readTopics)) readTopics = {};

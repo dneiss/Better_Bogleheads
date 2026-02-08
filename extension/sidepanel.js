@@ -16,6 +16,20 @@
     }, 300);
   }
 
+  var SUBFORUM_MAP = [
+    { letter: 'h', name: 'Personal Investments' },
+    { letter: 't', name: 'Investing - Theory, News & General' },
+    { letter: 'p', name: 'Personal Finance' },
+    { letter: 'n', name: 'Non-US Investing' },
+    { letter: 's', name: 'Spain' },
+    { letter: 'u', name: 'United Arab Emirates' },
+    { letter: 'c', name: 'Personal Consumer Issues' },
+    { letter: 'b', name: 'Bogleheads Community' },
+    { letter: 'l', name: 'US Local Chapters' },
+    { letter: 'I', name: 'Non-US Local Chapters' },
+    { letter: 'f', name: 'Forum Issues and Administration' }
+  ];
+
   var currentThemeSetting = 'system';
 
   function resolveTheme(theme) {
@@ -79,6 +93,7 @@
   var watchColorInput = document.getElementById('watch-color');
   var watchPosterListEl = document.getElementById('watch-poster-list');
   var watchPosterCountSpan = document.getElementById('watch-poster-count');
+  var subforumListEl = document.getElementById('subforum-list');
 
   function updateReadCount(readTopics) {
     var count = Object.keys(readTopics).length;
@@ -88,6 +103,35 @@
   function updateWatchCount(watchedPosters) {
     var count = watchedPosters.length;
     watchPosterCountSpan.textContent = count > 0 ? '(' + count + ' watched)' : '';
+  }
+
+  function renderSubforumCheckboxes(hiddenSubforums) {
+    subforumListEl.innerHTML = '';
+    SUBFORUM_MAP.forEach(function(entry) {
+      var item = document.createElement('label');
+      item.className = 'subforum-item';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = hiddenSubforums.indexOf(entry.letter) === -1;
+      cb.dataset.subforum = entry.letter;
+      cb.onchange = function() {
+        updateHiddenSubforums();
+      };
+      item.appendChild(cb);
+      item.appendChild(document.createTextNode(' ' + entry.letter + ' - ' + entry.name));
+      subforumListEl.appendChild(item);
+    });
+  }
+
+  function updateHiddenSubforums() {
+    var hidden = [];
+    var checkboxes = subforumListEl.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(cb) {
+      if (!cb.checked) {
+        hidden.push(cb.dataset.subforum);
+      }
+    });
+    chrome.storage.sync.set({ hiddenSubforums: hidden });
   }
 
   function renderWatchedPosters(watchedPosters) {
@@ -345,7 +389,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -377,6 +421,7 @@
     var watchColor = result.watchColor || DEFAULT_WATCH_COLOR;
     watchColorInput.value = watchColor;
     renderWatchedPosters(watchedPosters);
+    renderSubforumCheckboxes(result.hiddenSubforums || []);
   });
 
   // Load time tracking data
@@ -414,6 +459,9 @@
     if (changes.watchedPosters) {
       var watchedPosters = changes.watchedPosters.newValue || [];
       renderWatchedPosters(watchedPosters);
+    }
+    if (changes.hiddenSubforums) {
+      renderSubforumCheckboxes(changes.hiddenSubforums.newValue || []);
     }
   });
 

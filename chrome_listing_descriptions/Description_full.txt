@@ -21,6 +21,9 @@ Keep an eye on your favorite posters. Add usernames via the side panel or right-
 Hide Old Topics
 Filter out topics older than a specified number of days to focus on recent discussions.
 
+Filter Subforums
+Show or hide topics from specific subforums on the active topics page. Each subforum has a checkbox in the side panel — uncheck any to hide those topics. All subforums are shown by default.
+
 Adjustable Font Size
 Increase or decrease the topic list font size from 50% to 200% for comfortable reading.
 
