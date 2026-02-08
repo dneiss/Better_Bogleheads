@@ -8,155 +8,157 @@
 <body>
   <div id="panel-container">
     <div id="panel-content">
-      <div class="section">
-        <div class="theme-label">Theme</div>
-        <div class="theme-options">
-          <label class="theme-option" data-tooltip="Follow your operating system's light/dark setting"><input type="radio" name="theme" value="system" id="theme-system" checked> System</label>
-          <label class="theme-option" data-tooltip="Always use light mode"><input type="radio" name="theme" value="light" id="theme-light"> Light</label>
-          <label class="theme-option" data-tooltip="Always use dark mode"><input type="radio" name="theme" value="dark" id="theme-dark"> Dark</label>
+      <div class="section-group">
+        <div class="section">
+          <div class="theme-label">Theme</div>
+          <div class="theme-options">
+            <label class="theme-option" data-tooltip="Follow your operating system's light/dark setting"><input type="radio" name="theme" value="system" id="theme-system" checked> System</label>
+            <label class="theme-option" data-tooltip="Always use light mode"><input type="radio" name="theme" value="light" id="theme-light"> Light</label>
+            <label class="theme-option" data-tooltip="Always use dark mode"><input type="radio" name="theme" value="dark" id="theme-dark"> Dark</label>
+          </div>
         </div>
       </div>
 
-      <div class="divider"></div>
-
-      <div class="section">
-        <label data-tooltip="Adds alternating row colors to the topic list for easier reading"><input type="checkbox" id="enable-striping"> Zebra striping</label>
-      </div>
-      <div class="section indent">
-        <label data-tooltip="Sets the background color for alternating rows in topic lists">Stripe color: <input type="color" id="stripe-color" value="#d0d0d0"></label>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <label data-tooltip="Hides topics you've already opened from the forum list"><input type="checkbox" id="hide-read"> Hide read topics</label>
-      </div>
-      <div class="section indent">
-        <button data-tooltip="Removes all read topic history, making all topics visible again" id="clear-read">Clear read history</button>
-        <span id="read-count"></span>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <label data-tooltip="Highlights topics with many replies to spot active discussions"><input type="checkbox" id="highlight-hot"> Highlight hot topics</label>
-      </div>
-      <div class="section indent">
-        <label data-tooltip="Minimum number of replies for a topic to be highlighted as hot">Replies threshold: <input type="number" id="hot-threshold" min="1" max="1000" value="50"></label>
-      </div>
-      <div class="section indent">
-        <label data-tooltip="Background color used to highlight hot topics">Hot color: <input type="color" id="hot-color" value="#ffeb3b"></label>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <label data-tooltip="Highlight topics where a watched poster is the author or last poster"><input type="checkbox" id="enable-watch-posters"> Watch Posters</label>
-      </div>
-      <div class="section indent">
-        <div class="watch-add-row">
-          <input type="text" id="watch-poster-input" placeholder="Username" data-tooltip="Enter a poster's username to watch">
-          <button id="watch-poster-add" data-tooltip="Add this poster to the watch list">Add</button>
+      <div class="section-group">
+        <div class="section">
+          <label data-tooltip="Adds alternating row colors to the topic list for easier reading"><input type="checkbox" id="enable-striping"> Zebra striping</label>
         </div>
-      </div>
-      <div class="section indent">
-        <label data-tooltip="Background color used to highlight watched poster topics">Watch color: <input type="color" id="watch-color" value="#c8e6c9"></label>
-      </div>
-      <div class="section indent">
-        <div id="watch-poster-list"></div>
-        <span id="watch-poster-count"></span>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <label data-tooltip="Hides topics older than the specified number of days"><input type="checkbox" id="hide-old"> Hide old topics</label>
-      </div>
-      <div class="section indent">
-        <label data-tooltip="Topics older than this many days will be hidden from view">Max age (days): <input type="number" id="max-age-days" min="1" max="365" value="30"></label>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <div class="subforum-title" data-tooltip="Hide topics from specific subforums on the active topics page">Filter subforums</div>
-        <div class="subforum-list" id="subforum-list"></div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <label data-tooltip="Shows a hand cursor when hovering over topic rows"><input type="checkbox" id="pointer-cursor"> Pointer cursor on topics</label>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <div class="time-today" id="time-today" data-tooltip="Time spent on Bogleheads today">0 minutes today</div>
-        <div class="time-total" id="time-total" data-tooltip="Total time spent on Bogleheads all-time">0 minutes all-time</div>
-        <div class="sparkline-container" id="sparkline"></div>
-        <div class="time-stats" id="time-stats">0 days tracked · 0 minutes/day</div>
-        <button data-tooltip="Clears all time tracking history" id="reset-time">Reset time</button>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <div class="stats-title">Statistics</div>
-        <div class="stats-streak-row">
-          <span class="stats-streak" id="stats-streak">0</span>
-          <span class="stats-streak-label">day reading streak</span>
-        </div>
-        <div class="stats-subtitle">Topics read (30 days): <span id="stats-topics-total">0</span></div>
-        <div class="stats-chart-container" id="stats-topics-chart"></div>
-        <div class="stats-subtitle">Most-visited forums</div>
-        <div id="stats-forum-list" class="stats-forum-list"></div>
-        <button data-tooltip="Clears forum visit and topic read statistics" id="reset-stats">Reset statistics</button>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section">
-        <label data-tooltip="Adjusts text size on Bogleheads pages (50% to 200%)">Font size: <span id="font-size-display">100%</span></label>
-        <div class="font-controls">
-          <button data-tooltip="Decrease font size" id="font-decrease" aria-label="Decrease font size">-</button>
-          <input type="range" id="font-size" min="50" max="200" value="100">
-          <button data-tooltip="Increase font size" id="font-increase" aria-label="Increase font size">+</button>
-          <button data-tooltip="Reset font size to 100%" id="font-reset">Reset</button>
+        <div class="section indent">
+          <label data-tooltip="Sets the background color for alternating rows in topic lists">Stripe color: <input type="color" id="stripe-color" value="#d0d0d0"></label>
         </div>
       </div>
 
-      <div class="divider"></div>
-
-      <div class="section">
-        <div class="shortcuts-title">Keyboard shortcuts</div>
-        <div class="shortcuts-list">
-          <div class="shortcut-row"><kbd>Alt+B</kbd> <span>Toggle side panel</span></div>
-          <div class="shortcut-row"><kbd>Alt+Shift+H</kbd> <span>Toggle hide read topics</span></div>
-          <div class="shortcut-row"><kbd>Alt+Shift+N</kbd> <span>Navigate to active topics</span></div>
-          <div class="shortcut-row"><kbd>Alt+Shift+R</kbd> <span>Mark current topic as read</span></div>
+      <div class="section-group">
+        <div class="section">
+          <label data-tooltip="Hides topics you've already opened from the forum list"><input type="checkbox" id="hide-read"> Hide read topics</label>
         </div>
-        <div class="shortcuts-hint">Reassign at chrome://extensions/shortcuts</div>
+        <div class="section indent">
+          <button data-tooltip="Removes all read topic history, making all topics visible again" id="clear-read">Clear read history</button>
+          <span id="read-count"></span>
+        </div>
       </div>
 
-      <div class="divider"></div>
-
-      <div class="section">
-        <div class="refresh-notice">After updating or reinstalling this extension, reload any open Bogleheads pages by pressing Cmd+R (Mac) or Ctrl+R (Windows) for changes to take effect.</div>
+      <div class="section-group">
+        <div class="section">
+          <label data-tooltip="Highlights topics with many replies to spot active discussions"><input type="checkbox" id="highlight-hot"> Highlight hot topics</label>
+        </div>
+        <div class="section indent">
+          <label data-tooltip="Minimum number of replies for a topic to be highlighted as hot">Replies threshold: <input type="number" id="hot-threshold" min="1" max="1000" value="50"></label>
+        </div>
+        <div class="section indent">
+          <label data-tooltip="Background color used to highlight hot topics">Hot color: <input type="color" id="hot-color" value="#ffeb3b"></label>
+        </div>
       </div>
 
-      <div class="divider"></div>
-
-      <div class="section">
-        <button data-tooltip="Download all settings as a JSON file" id="export-settings">Export Settings</button>
-        <button data-tooltip="Load settings from a JSON file" id="import-settings">Import Settings</button>
-        <input type="file" id="import-file" accept=".json" style="display:none">
+      <div class="section-group">
+        <div class="section">
+          <label data-tooltip="Highlight topics where a watched poster is the author or last poster"><input type="checkbox" id="enable-watch-posters"> Watch Posters</label>
+        </div>
+        <div class="section indent">
+          <div class="watch-add-row">
+            <input type="text" id="watch-poster-input" placeholder="Username" data-tooltip="Enter a poster's username to watch">
+            <button id="watch-poster-add" data-tooltip="Add this poster to the watch list">Add</button>
+          </div>
+        </div>
+        <div class="section indent">
+          <label data-tooltip="Background color used to highlight watched poster topics">Watch color: <input type="color" id="watch-color" value="#c8e6c9"></label>
+        </div>
+        <div class="section indent">
+          <div id="watch-poster-list"></div>
+          <span id="watch-poster-count"></span>
+        </div>
       </div>
 
-      <div class="divider"></div>
+      <div class="section-group">
+        <div class="section">
+          <label data-tooltip="Hides topics older than the specified number of days"><input type="checkbox" id="hide-old"> Hide old topics</label>
+        </div>
+        <div class="section indent">
+          <label data-tooltip="Topics older than this many days will be hidden from view">Max age (days): <input type="number" id="max-age-days" min="1" max="365" value="30"></label>
+        </div>
+      </div>
 
-      <div class="section">
-        <a href="https://github.com/dneiss/Better_Bogleheads/issues" target="_blank" class="feedback-link" data-tooltip="Report bugs or request features on GitHub">Feedback &amp; Bug Reports</a>
+      <div class="section-group">
+        <div class="section">
+          <div class="subforum-title" data-tooltip="Hide topics from specific subforums on the active topics page">Filter subforums</div>
+          <div class="subforum-list" id="subforum-list"></div>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <label data-tooltip="Shows a hand cursor when hovering over topic rows"><input type="checkbox" id="pointer-cursor"> Pointer cursor on topics</label>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <div class="time-today" id="time-today" data-tooltip="Time spent on Bogleheads today">0 minutes today</div>
+          <div class="time-total" id="time-total" data-tooltip="Total time spent on Bogleheads all-time">0 minutes all-time</div>
+          <div class="sparkline-container" id="sparkline"></div>
+          <div class="time-stats" id="time-stats">0 days tracked · 0 minutes/day</div>
+          <button data-tooltip="Clears all time tracking history" id="reset-time">Reset time</button>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <div class="stats-title">Statistics</div>
+          <div class="stats-streak-row">
+            <span class="stats-streak" id="stats-streak">0</span>
+            <span class="stats-streak-label">day reading streak</span>
+          </div>
+          <div class="stats-subtitle">Topics read (30 days): <span id="stats-topics-total">0</span></div>
+          <div class="stats-chart-container" id="stats-topics-chart"></div>
+          <div class="stats-subtitle">Most-visited forums</div>
+          <div id="stats-forum-list" class="stats-forum-list"></div>
+          <button data-tooltip="Clears forum visit and topic read statistics" id="reset-stats">Reset statistics</button>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <label data-tooltip="Adjusts text size on Bogleheads pages (50% to 200%)">Font size: <span id="font-size-display">100%</span></label>
+          <div class="font-controls">
+            <button data-tooltip="Decrease font size" id="font-decrease" aria-label="Decrease font size">-</button>
+            <input type="range" id="font-size" min="50" max="200" value="100">
+            <button data-tooltip="Increase font size" id="font-increase" aria-label="Increase font size">+</button>
+            <button data-tooltip="Reset font size to 100%" id="font-reset">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <div class="shortcuts-title">Keyboard shortcuts</div>
+          <div class="shortcuts-list">
+            <div class="shortcut-row"><kbd>Alt+B</kbd> <span>Toggle side panel</span></div>
+            <div class="shortcut-row"><kbd>Alt+Shift+H</kbd> <span>Toggle hide read topics</span></div>
+            <div class="shortcut-row"><kbd>Alt+Shift+N</kbd> <span>Navigate to active topics</span></div>
+            <div class="shortcut-row"><kbd>Alt+Shift+R</kbd> <span>Mark current topic as read</span></div>
+          </div>
+          <div class="shortcuts-hint">Reassign at chrome://extensions/shortcuts</div>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <div class="refresh-notice">After updating or reinstalling this extension, reload any open Bogleheads pages by pressing Cmd+R (Mac) or Ctrl+R (Windows) for changes to take effect.</div>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <button data-tooltip="Download all settings as a JSON file" id="export-settings">Export Settings</button>
+          <button data-tooltip="Load settings from a JSON file" id="import-settings">Import Settings</button>
+          <input type="file" id="import-file" accept=".json" style="display:none">
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="section">
+          <a href="https://github.com/dneiss/Better_Bogleheads/issues" target="_blank" class="feedback-link" data-tooltip="Report bugs or request features on GitHub">Feedback &amp; Bug Reports</a>
+        </div>
       </div>
     </div>
   </div>

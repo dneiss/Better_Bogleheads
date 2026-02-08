@@ -22,9 +22,17 @@ body {
   margin-left: 24px;
 }
 
-.divider {
-  border-top: 2px solid #c0c0c0;
-  margin: 10px 0;
+.section-group {
+  padding: 10px 0;
+  border-bottom: 2px solid #c0c0c0;
+}
+
+.section-group:last-child {
+  border-bottom: none;
+}
+
+.section-group:nth-child(even) {
+  background-color: #eee;
 }
 
 label {
@@ -217,8 +225,12 @@ body.bh-dark #panel-content {
   background: #1a1a1a;
 }
 
-body.bh-dark .divider {
+body.bh-dark .section-group {
   border-color: #444;
+}
+
+body.bh-dark .section-group:nth-child(even) {
+  background-color: #222;
 }
 
 body.bh-dark label {
