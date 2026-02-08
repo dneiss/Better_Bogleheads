@@ -262,6 +262,51 @@
     window.addEventListener('pagehide', stopTimeTracking);
   }
 
+  function getCurrentForumInfo() {
+    var breadcrumbs = document.querySelectorAll('.breadcrumbs a');
+    for (var i = breadcrumbs.length - 1; i >= 0; i--) {
+      var href = breadcrumbs[i].href || '';
+      if (href.indexOf('viewforum.php') !== -1) {
+        var match = href.match(/f=(\d+)/);
+        if (match) {
+          return { id: match[1], name: breadcrumbs[i].textContent.trim() };
+        }
+      }
+    }
+    return null;
+  }
+
+  function trackForumVisit() {
+    var forum = getCurrentForumInfo();
+    if (!forum) return;
+    try {
+      chrome.storage.local.get(['forumStats'], function(result) {
+        if (chrome.runtime.lastError) return;
+        var stats = result.forumStats || { forumVisits: {}, dailyTopicsRead: {} };
+        if (!stats.forumVisits) stats.forumVisits = {};
+        var entry = stats.forumVisits[forum.id] || { name: '', count: 0 };
+        entry.name = forum.name;
+        entry.count += 1;
+        stats.forumVisits[forum.id] = entry;
+        chrome.storage.local.set({ forumStats: stats });
+      });
+    } catch (e) { /* context invalidated */ }
+  }
+
+  function trackDailyTopicRead() {
+    try {
+      chrome.storage.local.get(['forumStats'], function(result) {
+        if (chrome.runtime.lastError) return;
+        var stats = result.forumStats || { forumVisits: {}, dailyTopicsRead: {} };
+        if (!stats.dailyTopicsRead) stats.dailyTopicsRead = {};
+        var today = getTodayDateString();
+        stats.dailyTopicsRead[today] = (stats.dailyTopicsRead[today] || 0) + 1;
+        stats.dailyTopicsRead = pruneOldDays(stats.dailyTopicsRead);
+        chrome.storage.local.set({ forumStats: stats });
+      });
+    } catch (e) { /* context invalidated */ }
+  }
+
   function init() {
     if (!isContextValid()) return;
     table = document.getElementById('posts_table');
@@ -281,6 +326,9 @@
 
     // Start time tracking (works on all bogleheads.org pages)
     initTimeTracking();
+
+    // Track forum visits for statistics
+    trackForumVisit();
 
     if (!table) return;
 
@@ -528,6 +576,7 @@
           if (topicId && lastPostId) {
             readTopics[topicId] = lastPostId;
             chrome.storage.sync.set({ readTopics: readTopics });
+            trackDailyTopicRead();
             updateBadge(readTopics);
           }
         });
@@ -560,6 +609,7 @@
           var lastPostId = getLastPostId(lastRightClickedRow);
           if (lastPostId) {
             readTopics[topicId] = lastPostId;
+            trackDailyTopicRead();
           }
         }
         chrome.storage.sync.set({ readTopics: readTopics });
@@ -615,6 +665,7 @@
         if (Array.isArray(readTopics)) readTopics = {};
         readTopics[topicId] = lastPostId;
         chrome.storage.sync.set({ readTopics: readTopics });
+        trackDailyTopicRead();
       });
     }
   });

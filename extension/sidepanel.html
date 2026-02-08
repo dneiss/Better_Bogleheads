@@ -95,6 +95,21 @@
       <div class="divider"></div>
 
       <div class="section">
+        <div class="stats-title">Statistics</div>
+        <div class="stats-streak-row">
+          <span class="stats-streak" id="stats-streak">0</span>
+          <span class="stats-streak-label">day reading streak</span>
+        </div>
+        <div class="stats-subtitle">Topics read (30 days): <span id="stats-topics-total">0</span></div>
+        <div class="stats-chart-container" id="stats-topics-chart"></div>
+        <div class="stats-subtitle">Most-visited forums</div>
+        <div id="stats-forum-list" class="stats-forum-list"></div>
+        <button data-tooltip="Clears forum visit and topic read statistics" id="reset-stats">Reset statistics</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section">
         <label data-tooltip="Adjusts text size on Bogleheads pages (50% to 200%)">Font size: <span id="font-size-display">100%</span></label>
         <div class="font-controls">
           <button data-tooltip="Decrease font size" id="font-decrease" aria-label="Decrease font size">-</button>

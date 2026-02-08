@@ -219,6 +219,126 @@
     renderSparkline(dailySeconds);
   }
 
+  // Statistics elements
+  var statsStreakEl = document.getElementById('stats-streak');
+  var statsTopicsTotalEl = document.getElementById('stats-topics-total');
+  var statsTopicsChartEl = document.getElementById('stats-topics-chart');
+  var statsForumListEl = document.getElementById('stats-forum-list');
+  var resetStatsButton = document.getElementById('reset-stats');
+
+  function computeStreak(dailySeconds) {
+    if (!dailySeconds) return 0;
+    var streak = 0;
+    var d = new Date();
+    // Check today first
+    var today = getTodayDateString();
+    if (!dailySeconds[today] || dailySeconds[today] <= 0) {
+      // No activity today — check if yesterday starts a streak
+      d.setDate(d.getDate() - 1);
+    }
+    while (true) {
+      var year = d.getFullYear();
+      var month = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      var key = year + '-' + month + '-' + day;
+      if (dailySeconds[key] && dailySeconds[key] > 0) {
+        streak++;
+        d.setDate(d.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+
+  function renderTopicsBarChart(dailyTopicsRead) {
+    var days = getLast30Days();
+    var values = days.map(function(day) {
+      return (dailyTopicsRead && dailyTopicsRead[day]) ? dailyTopicsRead[day] : 0;
+    });
+    var maxVal = Math.max.apply(null, values);
+    var hasData = maxVal > 0;
+    if (maxVal === 0) maxVal = 1;
+
+    var svgWidth = 200;
+    var svgHeight = 40;
+    var barWidth = svgWidth / 30 - 1;
+    var gap = 1;
+
+    var bars = '';
+    for (var i = 0; i < 30; i++) {
+      var x = i * (barWidth + gap);
+      if (hasData) {
+        var barHeight = (values[i] / maxVal) * (svgHeight - 4);
+        if (barHeight < 1 && values[i] > 0) barHeight = 1;
+        var y = svgHeight - barHeight - 2;
+        bars += '<rect class="stats-bar" x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barHeight + '"><title>' + days[i] + ': ' + values[i] + ' topics</title></rect>';
+      } else {
+        var y = svgHeight - 4;
+        bars += '<rect class="stats-bar stats-bar-empty" x="' + x + '" y="' + y + '" width="' + barWidth + '" height="2"><title>' + days[i] + ': no data</title></rect>';
+      }
+    }
+
+    var baseline = '<line class="sparkline-baseline" x1="0" y1="' + (svgHeight - 2) + '" x2="' + svgWidth + '" y2="' + (svgHeight - 2) + '" />';
+    statsTopicsChartEl.innerHTML = '<svg viewBox="0 0 ' + svgWidth + ' ' + svgHeight + '" preserveAspectRatio="none">' + baseline + bars + '</svg>';
+  }
+
+  function renderForumList(forumVisits) {
+    statsForumListEl.innerHTML = '';
+    if (!forumVisits || Object.keys(forumVisits).length === 0) {
+      statsForumListEl.innerHTML = '<div class="stats-forum-empty">No forum visits yet</div>';
+      return;
+    }
+    var sorted = Object.keys(forumVisits).sort(function(a, b) {
+      return forumVisits[b].count - forumVisits[a].count;
+    }).slice(0, 5);
+
+    sorted.forEach(function(id, index) {
+      var entry = forumVisits[id];
+      var row = document.createElement('div');
+      row.className = 'stats-forum-row';
+      var rank = document.createElement('span');
+      rank.className = 'stats-forum-rank';
+      rank.textContent = (index + 1) + '.';
+      var name = document.createElement('span');
+      name.className = 'stats-forum-name';
+      name.textContent = entry.name;
+      name.title = entry.name;
+      var count = document.createElement('span');
+      count.className = 'stats-forum-count';
+      count.textContent = entry.count;
+      row.appendChild(rank);
+      row.appendChild(name);
+      row.appendChild(count);
+      statsForumListEl.appendChild(row);
+    });
+  }
+
+  function updateStatsDisplay() {
+    // Load time tracking for streak (sync) and forum stats (local)
+    chrome.storage.sync.get(['timeTracking'], function(syncResult) {
+      var tracking = syncResult.timeTracking || {};
+      var streak = computeStreak(tracking.dailySeconds);
+      statsStreakEl.textContent = streak;
+
+      chrome.storage.local.get(['forumStats'], function(localResult) {
+        var stats = localResult.forumStats || { forumVisits: {}, dailyTopicsRead: {} };
+        var dailyTopicsRead = stats.dailyTopicsRead || {};
+
+        // Sum topics over 30 days
+        var days = getLast30Days();
+        var total = 0;
+        days.forEach(function(day) {
+          total += dailyTopicsRead[day] || 0;
+        });
+        statsTopicsTotalEl.textContent = total;
+
+        renderTopicsBarChart(dailyTopicsRead);
+        renderForumList(stats.forumVisits || {});
+      });
+    });
+  }
+
   function applyFontSizeDisplay(size) {
     fontSizeDisplay.textContent = size + '%';
     fontSizeInput.value = size;
@@ -264,8 +384,17 @@
     updateTimeDisplay(result.timeTracking);
   });
 
+  // Load statistics
+  updateStatsDisplay();
+
   // Listen for storage changes (e.g., read count updates from content script)
   chrome.storage.onChanged.addListener(function(changes, namespace) {
+    if (namespace === 'local') {
+      if (changes.forumStats) {
+        updateStatsDisplay();
+      }
+      return;
+    }
     if (namespace !== 'sync') return;
     if (changes.readTopics) {
       var readTopics = changes.readTopics.newValue || {};
@@ -280,6 +409,7 @@
     }
     if (changes.timeTracking) {
       updateTimeDisplay(changes.timeTracking.newValue);
+      updateStatsDisplay(); // streak depends on time tracking
     }
     if (changes.watchedPosters) {
       var watchedPosters = changes.watchedPosters.newValue || [];
@@ -400,6 +530,13 @@
       };
       chrome.storage.sync.set({ timeTracking: newTracking });
       updateTimeDisplay(newTracking);
+    }
+  };
+
+  resetStatsButton.onclick = function() {
+    if (confirm('This will reset forum visit and topic read statistics. Continue?')) {
+      chrome.storage.local.set({ forumStats: { forumVisits: {}, dailyTopicsRead: {} } });
+      updateStatsDisplay();
     }
   };
 

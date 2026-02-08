@@ -317,6 +317,138 @@ body.bh-dark .time-stats {
   color: #a0aec0;
 }
 
+/* Statistics section */
+.stats-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+body.bh-dark .stats-title {
+  color: #e0e0e0;
+}
+
+.stats-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+  margin-top: 8px;
+}
+
+body.bh-dark .stats-subtitle {
+  color: #a0aec0;
+}
+
+.stats-streak-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.stats-streak {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c5aa0;
+}
+
+body.bh-dark .stats-streak {
+  color: #6db3f2;
+}
+
+.stats-streak-label {
+  font-size: 14px;
+  color: #666;
+}
+
+body.bh-dark .stats-streak-label {
+  color: #a0aec0;
+}
+
+.stats-chart-container {
+  height: 40px;
+  margin-bottom: 4px;
+}
+
+.stats-chart-container svg {
+  width: 100%;
+  height: 100%;
+}
+
+.stats-bar {
+  fill: #22c55e;
+  opacity: 0.7;
+}
+
+.stats-bar:hover {
+  opacity: 1;
+}
+
+.stats-bar.stats-bar-empty {
+  fill: #ccc;
+  opacity: 0.5;
+}
+
+body.bh-dark .stats-bar {
+  fill: #4ade80;
+}
+
+body.bh-dark .stats-bar.stats-bar-empty {
+  fill: #555;
+}
+
+.stats-forum-list {
+  margin-bottom: 8px;
+}
+
+.stats-forum-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  font-size: 14px;
+}
+
+.stats-forum-rank {
+  color: #999;
+  min-width: 18px;
+}
+
+body.bh-dark .stats-forum-rank {
+  color: #777;
+}
+
+.stats-forum-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #333;
+}
+
+body.bh-dark .stats-forum-name {
+  color: #e0e0e0;
+}
+
+.stats-forum-count {
+  color: #666;
+  font-weight: 500;
+}
+
+body.bh-dark .stats-forum-count {
+  color: #a0aec0;
+}
+
+.stats-forum-empty {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+}
+
+body.bh-dark .stats-forum-empty {
+  color: #666;
+}
+
 /* Keyboard shortcuts section */
 .shortcuts-title {
   font-weight: 600;
