@@ -16,6 +16,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Pointer Cursor** - Optional pointer cursor when hovering over topic rows
 - **Dark Mode** - Full dark theme for Bogleheads forum pages and the side panel. Choose System (follows your OS setting), Light, or Dark. Switches automatically when your OS theme changes.
 - **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
+- **Statistics** - Reading streak, topics read per day with bar chart, and top 5 most-visited forums
 - **Export/Import Settings** - Download your settings as a JSON file or restore them from a previous export
 
 All settings are saved and persist across sessions.

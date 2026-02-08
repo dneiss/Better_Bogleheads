@@ -33,6 +33,9 @@ Enable a pointer cursor when hovering over topic rows to make them feel more cli
 Time Tracking
 See how much time you spend on Bogleheads.org. The side panel displays today's time, all-time total, and a sparkline graph showing your activity over the last 30 days. Reset anytime to start fresh.
 
+Statistics
+Track your reading habits with a Statistics section in the side panel. See your current reading streak (consecutive days with activity), topics read over the last 30 days with a bar chart, and your top 5 most-visited forums ranked by visit count. Reset statistics anytime.
+
 Omnibox Commands
 Type "bh" in Chrome's address bar, press Tab, then use these shortcuts:
 • new - Go to active topics
