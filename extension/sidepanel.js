@@ -93,6 +93,7 @@
   var enableStripingCheckbox = document.getElementById('enable-striping');
   var colorInput = document.getElementById('stripe-color');
   var hideReadCheckbox = document.getElementById('hide-read');
+  var markAllReadButton = document.getElementById('mark-all-read');
   var clearReadButton = document.getElementById('clear-read');
   var readCountSpan = document.getElementById('read-count');
   var highlightHotCheckbox = document.getElementById('highlight-hot');
@@ -592,6 +593,14 @@
   fontResetButton.onclick = function() {
     applyFontSizeDisplay(DEFAULT_FONT_SIZE);
     chrome.storage.sync.set({ fontSize: DEFAULT_FONT_SIZE });
+  };
+
+  markAllReadButton.onclick = function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: 'markAllRead' });
+      }
+    });
   };
 
   clearReadButton.onclick = function() {

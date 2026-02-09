@@ -627,6 +627,28 @@
         applyFilters(readTopics);
         updateBadge(readTopics);
       });
+    } else if (message.type === 'markAllRead') {
+      if (!table) return;
+      chrome.storage.sync.get(['readTopics'], function(result) {
+        var readTopics = result.readTopics || {};
+        if (Array.isArray(readTopics)) readTopics = {};
+        var rows = getDataRows();
+        var marked = 0;
+        rows.forEach(function(row) {
+          if (row.style.display === 'none') return;
+          var topicId = getTopicId(row);
+          var lastPostId = getLastPostId(row);
+          if (topicId && lastPostId) {
+            readTopics[topicId] = lastPostId;
+            marked++;
+          }
+        });
+        if (marked > 0) {
+          chrome.storage.sync.set({ readTopics: readTopics });
+          applyFilters(readTopics);
+          updateBadge(readTopics);
+        }
+      });
     } else if (message.type === 'watchPoster') {
       var username = '';
       if (lastRightClickedProfileLink) {
