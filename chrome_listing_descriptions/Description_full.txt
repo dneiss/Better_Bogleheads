@@ -30,6 +30,12 @@ Increase or decrease the topic list font size from 50% to 200% for comfortable r
 Mark as Read (Right-Click)
 Right-click any topic row to mark it as read without opening it. Useful for clearing topics you're not interested in.
 
+Mark All as Read
+One-click button in the side panel to mark all visible topics on the current page as read. Useful for catching up quickly after time away.
+
+New Replies Indicator
+Shows a red dot next to topics you've previously read that have new replies since your last visit. Toggle this on or off from the side panel. Hover over the dot to see a tooltip confirming new replies are available.
+
 Pointer Cursor
 Enable a pointer cursor when hovering over topic rows to make them feel more clickable.
 
@@ -60,6 +66,9 @@ Reassign shortcuts at chrome://extensions/shortcuts.
 
 Export/Import Settings
 Download your settings as a JSON file to back them up or transfer to another machine. Import a previously exported file to restore your settings.
+
+Collapsible Side Panel Sections
+Click any section header in the side panel to collapse or expand it. A chevron indicator shows the current state. Collapsed sections are remembered and sync across your Chrome browsers.
 
 Side Panel
 

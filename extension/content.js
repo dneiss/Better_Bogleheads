@@ -307,9 +307,21 @@
     } catch (e) { /* context invalidated */ }
   }
 
+  function injectNewRepliesStyle() {
+    if (document.getElementById('bh-new-replies-style')) return;
+    var style = document.createElement('style');
+    style.id = 'bh-new-replies-style';
+    style.textContent = [
+      '.bh-new-replies { color: #e53e3e; font-size: 16px; margin-right: 4px; vertical-align: middle; position: relative; cursor: default; }',
+      '.bh-new-replies:hover::after { content: "New replies since you last read"; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin-top: 4px; padding: 6px 10px; background: #000; color: #fff; font-size: 13px; border-radius: 4px; white-space: nowrap; z-index: 1000; pointer-events: none; }'
+    ].join('\n');
+    document.head.appendChild(style);
+  }
+
   function init() {
     if (!isContextValid()) return;
     table = document.getElementById('posts_table');
+    injectNewRepliesStyle();
 
     // Migrate readThreads to readTopics (one-time)
     chrome.storage.sync.get(['readThreads', 'readTopics'], function(result) {
@@ -522,8 +534,9 @@
   function applyFilters(readTopics) {
     if (!table) return;
 
-    chrome.storage.sync.get(['hideRead', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums'], function(result) {
+    chrome.storage.sync.get(['hideRead', 'showNewReplies', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums'], function(result) {
       var hideRead = result.hideRead || false;
+      var showNewReplies = result.showNewReplies || false;
       var hideOld = result.hideOld || false;
       var maxAgeDays = result.maxAgeDays || 30;
       var hiddenSubforums = result.hiddenSubforums || [];
@@ -532,6 +545,9 @@
       var rows = getDataRows();
       rows.forEach(function(row) {
         var shouldHide = false;
+        var topicId = getTopicId(row);
+        var lastPostId = getLastPostId(row);
+        var savedPostId = topicId ? readTopics[topicId] : null;
 
         if (hiddenSubforums.length > 0) {
           var subforum = getSubforum(row);
@@ -539,9 +555,6 @@
         }
 
         if (hideRead && !shouldHide) {
-          var topicId = getTopicId(row);
-          var lastPostId = getLastPostId(row);
-          var savedPostId = topicId ? readTopics[topicId] : null;
           var isFullyRead = savedPostId && savedPostId === lastPostId;
           if (isFullyRead) shouldHide = true;
         }
@@ -552,6 +565,17 @@
         }
 
         row.style.display = shouldHide ? 'none' : '';
+
+        // New replies indicator
+        var existingDot = row.querySelector('.bh-new-replies');
+        if (existingDot) existingDot.remove();
+        if (showNewReplies && savedPostId && savedPostId !== lastPostId) {
+          var dot = document.createElement('span');
+          dot.className = 'bh-new-replies';
+          dot.textContent = '\u25CF';
+          var titleLink = row.querySelector('td a[href*="viewtopic.php"]');
+          if (titleLink) titleLink.parentNode.insertBefore(dot, titleLink);
+        }
       });
 
       applyStripes(currentColor);
@@ -733,7 +757,7 @@
     if (changes.enableWatchPosters || changes.watchedPosters || changes.watchColor) {
       applyStripes();
     }
-    if (changes.hideRead || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums) {
+    if (changes.hideRead || changes.showNewReplies || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums) {
       chrome.storage.sync.get(['readTopics'], function(result) {
         var readTopics = result.readTopics || {};
         if (Array.isArray(readTopics)) readTopics = {};

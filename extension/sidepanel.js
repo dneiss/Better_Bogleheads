@@ -93,6 +93,7 @@
   var enableStripingCheckbox = document.getElementById('enable-striping');
   var colorInput = document.getElementById('stripe-color');
   var hideReadCheckbox = document.getElementById('hide-read');
+  var showNewRepliesCheckbox = document.getElementById('show-new-replies');
   var markAllReadButton = document.getElementById('mark-all-read');
   var clearReadButton = document.getElementById('clear-read');
   var readCountSpan = document.getElementById('read-count');
@@ -414,7 +415,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -431,6 +432,7 @@
     enableStripingCheckbox.checked = enableStriping;
     colorInput.value = color;
     hideReadCheckbox.checked = hideRead;
+    showNewRepliesCheckbox.checked = result.showNewReplies || false;
     highlightHotCheckbox.checked = highlightHot;
     hotThresholdInput.value = hotThreshold;
     hotColorInput.value = hotColor;
@@ -518,6 +520,10 @@
 
   hideReadCheckbox.onchange = function() {
     chrome.storage.sync.set({ hideRead: this.checked });
+  };
+
+  showNewRepliesCheckbox.onchange = function() {
+    chrome.storage.sync.set({ showNewReplies: this.checked });
   };
 
   highlightHotCheckbox.onchange = function() {

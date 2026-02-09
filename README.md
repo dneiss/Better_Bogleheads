@@ -18,6 +18,9 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Dark Mode** - Full dark theme for Bogleheads forum pages and the side panel. Choose System (follows your OS setting), Light, or Dark. Switches automatically when your OS theme changes.
 - **Time Tracking** - Tracks time spent on the site with today's time, all-time total, and a 30-day sparkline graph
 - **Statistics** - Reading streak, topics read per day with bar chart, and top 5 most-visited forums
+- **Mark All as Read** - One-click button to mark all visible topics on the current page as read
+- **New Replies Indicator** - Red dot next to topics you've previously read that have new replies since your last visit (toggleable)
+- **Collapsible Side Panel Sections** - Click any section header to collapse/expand it. Collapsed state syncs across devices.
 - **Export/Import Settings** - Download your settings as a JSON file or restore them from a previous export
 
 All settings are saved and persist across sessions.
