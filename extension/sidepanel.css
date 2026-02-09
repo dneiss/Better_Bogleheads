@@ -14,6 +14,33 @@ body {
   padding: 16px;
 }
 
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c5aa0;
+  text-decoration: none;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 2px solid #c0c0c0;
+}
+
+.panel-header:hover {
+  text-decoration: underline;
+}
+
+.panel-header-icon {
+  width: 16px;
+  height: 16px;
+}
+
+body.bh-dark .panel-header {
+  color: #6db3f2;
+  border-bottom-color: #444;
+}
+
 .section {
   margin-bottom: 4px;
 }

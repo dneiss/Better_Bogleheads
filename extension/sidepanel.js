@@ -89,6 +89,15 @@
     if (radio) radio.checked = true;
   });
 
+  document.getElementById('panel-header-link').onclick = function(e) {
+    e.preventDefault();
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (tabs[0]) {
+        chrome.tabs.update(tabs[0].id, { url: 'https://www.bogleheads.org/' });
+      }
+    });
+  };
+
   var themeRadios = document.querySelectorAll('input[name="theme"]');
   var enableStripingCheckbox = document.getElementById('enable-striping');
   var colorInput = document.getElementById('stripe-color');

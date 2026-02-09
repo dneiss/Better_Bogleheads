@@ -27,7 +27,7 @@ All settings are saved and persist across sessions.
 
 ## Side Panel
 
-The extension uses Chrome's side panel for all controls. The panel automatically opens when you visit Bogleheads.org and slides out from the right side of the browser. You can also click the extension icon to toggle it. All settings in the panel apply immediately. Hover over any setting to see a tooltip explaining what it does.
+The extension uses Chrome's side panel for all controls. The panel automatically opens when you visit Bogleheads.org and slides out from the right side of the browser. You can also click the extension icon to toggle it. Click the "Better Bogleheads" header at the top of the panel to navigate to Bogleheads.org. All settings in the panel apply immediately. Hover over any setting to see a tooltip explaining what it does.
 
 ## Omnibox Commands
 

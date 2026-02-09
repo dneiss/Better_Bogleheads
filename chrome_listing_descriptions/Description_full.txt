@@ -72,7 +72,7 @@ Click any section header in the side panel to collapse or expand it. A chevron i
 
 Side Panel
 
-All controls live in Chrome's built-in side panel. Click the extension icon to toggle it. Settings apply immediately.
+All controls live in Chrome's built-in side panel. Click the extension icon to toggle it. Click the "Better Bogleheads" header at the top of the panel to navigate to Bogleheads.org in the current tab. Settings apply immediately.
 
 Helpful Tooltips
 Hover over any setting in the side panel to see a description of what it does.
