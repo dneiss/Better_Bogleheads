@@ -8,9 +8,11 @@
 <body>
   <div id="panel-container">
     <div id="panel-content">
-      <div class="section-group">
+      <div class="section-group" data-section="theme">
         <div class="section">
           <div class="theme-label">Theme</div>
+        </div>
+        <div class="section indent">
           <div class="theme-options">
             <label class="theme-option" data-tooltip="Follow your operating system's light/dark setting"><input type="radio" name="theme" value="system" id="theme-system" checked> System</label>
             <label class="theme-option" data-tooltip="Always use light mode"><input type="radio" name="theme" value="light" id="theme-light"> Light</label>
@@ -19,7 +21,7 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="zebra">
         <div class="section">
           <label data-tooltip="Adds alternating row colors to the topic list for easier reading"><input type="checkbox" id="enable-striping"> Zebra striping</label>
         </div>
@@ -28,7 +30,7 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="hide-read">
         <div class="section">
           <label data-tooltip="Hides topics you've already opened from the forum list"><input type="checkbox" id="hide-read"> Hide read topics</label>
         </div>
@@ -38,7 +40,7 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="hot-topics">
         <div class="section">
           <label data-tooltip="Highlights topics with many replies to spot active discussions"><input type="checkbox" id="highlight-hot"> Highlight hot topics</label>
         </div>
@@ -50,7 +52,7 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="watch-posters">
         <div class="section">
           <label data-tooltip="Highlight topics where a watched poster is the author or last poster"><input type="checkbox" id="enable-watch-posters"> Watch Posters</label>
         </div>
@@ -69,7 +71,7 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="hide-old">
         <div class="section">
           <label data-tooltip="Hides topics older than the specified number of days"><input type="checkbox" id="hide-old"> Hide old topics</label>
         </div>
@@ -78,22 +80,26 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="subforum-filter">
         <div class="section">
           <div class="subforum-title" data-tooltip="Hide topics from specific subforums on the active topics page">Filter subforums</div>
+        </div>
+        <div class="section indent">
           <div class="subforum-list" id="subforum-list"></div>
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="pointer-cursor">
         <div class="section">
           <label data-tooltip="Shows a hand cursor when hovering over topic rows"><input type="checkbox" id="pointer-cursor"> Pointer cursor on topics</label>
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="time-tracking">
         <div class="section">
           <div class="time-today" id="time-today" data-tooltip="Time spent on Bogleheads today">0 minutes today</div>
+        </div>
+        <div class="section indent">
           <div class="time-total" id="time-total" data-tooltip="Total time spent on Bogleheads all-time">0 minutes all-time</div>
           <div class="sparkline-container" id="sparkline"></div>
           <div class="time-stats" id="time-stats">0 days tracked · 0 minutes/day</div>
@@ -101,9 +107,11 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="statistics">
         <div class="section">
           <div class="stats-title">Statistics</div>
+        </div>
+        <div class="section indent">
           <div class="stats-streak-row">
             <span class="stats-streak" id="stats-streak">0</span>
             <span class="stats-streak-label">day reading streak</span>
@@ -116,9 +124,11 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="font-size">
         <div class="section">
           <label data-tooltip="Adjusts text size on Bogleheads pages (50% to 200%)">Font size: <span id="font-size-display">100%</span></label>
+        </div>
+        <div class="section indent">
           <div class="font-controls">
             <button data-tooltip="Decrease font size" id="font-decrease" aria-label="Decrease font size">-</button>
             <input type="range" id="font-size" min="50" max="200" value="100">
@@ -128,9 +138,11 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="shortcuts">
         <div class="section">
           <div class="shortcuts-title">Keyboard shortcuts</div>
+        </div>
+        <div class="section indent">
           <div class="shortcuts-list">
             <div class="shortcut-row"><kbd>Alt+B</kbd> <span>Toggle side panel</span></div>
             <div class="shortcut-row"><kbd>Alt+Shift+H</kbd> <span>Toggle hide read topics</span></div>
@@ -141,13 +153,13 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="refresh-notice">
         <div class="section">
           <div class="refresh-notice">After updating or reinstalling this extension, reload any open Bogleheads pages by pressing Cmd+R (Mac) or Ctrl+R (Windows) for changes to take effect.</div>
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="export-import">
         <div class="section">
           <button data-tooltip="Download all settings as a JSON file" id="export-settings">Export Settings</button>
           <button data-tooltip="Load settings from a JSON file" id="import-settings">Import Settings</button>
@@ -155,7 +167,7 @@
         </div>
       </div>
 
-      <div class="section-group">
+      <div class="section-group" data-section="feedback">
         <div class="section">
           <a href="https://github.com/dneiss/Better_Bogleheads/issues" target="_blank" class="feedback-link" data-tooltip="Report bugs or request features on GitHub">Feedback &amp; Bug Reports</a>
         </div>

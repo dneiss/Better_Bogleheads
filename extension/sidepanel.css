@@ -591,6 +591,39 @@ body.bh-dark .feedback-link {
   color: #6db3f2;
 }
 
+/* Collapse toggle chevron */
+.section-group > .section:first-child {
+  cursor: pointer;
+  position: relative;
+  padding-left: 16px;
+}
+
+.section-group > .section:first-child::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  border: 4px solid transparent;
+  border-left: 6px solid #666;
+  transition: transform 0.2s;
+}
+
+/* Collapsed state — chevron points right */
+.section-group.collapsed > .section:first-child::before {
+  transform: translateY(-50%);
+}
+
+/* Collapsed — hide everything after the first section */
+.section-group.collapsed > *:not(:first-child) {
+  display: none;
+}
+
+/* Dark mode chevron */
+body.bh-dark .section-group > .section:first-child::before {
+  border-left-color: #a0aec0;
+}
+
 /* Theme selector */
 .theme-label {
   font-weight: 600;

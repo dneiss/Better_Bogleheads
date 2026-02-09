@@ -30,6 +30,30 @@
     { letter: 'f', name: 'Forum Issues and Administration' }
   ];
 
+  // Collapsible sections
+  chrome.storage.sync.get(['collapsedSections'], function(result) {
+    var collapsed = result.collapsedSections || [];
+    collapsed.forEach(function(id) {
+      var group = document.querySelector('.section-group[data-section="' + id + '"]');
+      if (group) group.classList.add('collapsed');
+    });
+  });
+
+  document.querySelectorAll('.section-group[data-section] > .section:first-child').forEach(function(header) {
+    header.addEventListener('click', function(e) {
+      // Don't toggle when interacting with form controls inside the header
+      if (e.target.closest('input, button, select, textarea, a')) return;
+      var group = header.parentElement;
+      group.classList.toggle('collapsed');
+      // Save collapsed state
+      var allCollapsed = [];
+      document.querySelectorAll('.section-group.collapsed[data-section]').forEach(function(g) {
+        allCollapsed.push(g.dataset.section);
+      });
+      chrome.storage.sync.set({ collapsedSections: allCollapsed });
+    });
+  });
+
   var currentThemeSetting = 'system';
 
   function resolveTheme(theme) {
@@ -462,6 +486,16 @@
     }
     if (changes.hiddenSubforums) {
       renderSubforumCheckboxes(changes.hiddenSubforums.newValue || []);
+    }
+    if (changes.collapsedSections) {
+      var collapsed = changes.collapsedSections.newValue || [];
+      document.querySelectorAll('.section-group[data-section]').forEach(function(group) {
+        if (collapsed.indexOf(group.dataset.section) !== -1) {
+          group.classList.add('collapsed');
+        } else {
+          group.classList.remove('collapsed');
+        }
+      });
     }
   });
 
