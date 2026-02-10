@@ -129,6 +129,8 @@
   var watchPosterListEl = document.getElementById('watch-poster-list');
   var watchPosterCountSpan = document.getElementById('watch-poster-count');
   var subforumListEl = document.getElementById('subforum-list');
+  var bookmarkListEl = document.getElementById('bookmark-list');
+  var bookmarkCountSpan = document.getElementById('bookmark-count');
 
   function updateReadCount(readTopics) {
     var count = Object.keys(readTopics).length;
@@ -198,6 +200,60 @@
       watchPosterListEl.appendChild(item);
     });
     updateWatchCount(watchedPosters);
+  }
+
+  function updateBookmarkCount(bookmarks) {
+    var count = Object.keys(bookmarks).length;
+    bookmarkCountSpan.textContent = count > 0 ? '(' + count + ')' : '';
+  }
+
+  function renderBookmarks(bookmarks) {
+    bookmarkListEl.innerHTML = '';
+    var entries = Object.keys(bookmarks).sort(function(a, b) {
+      return (bookmarks[b].date || 0) - (bookmarks[a].date || 0);
+    });
+    if (entries.length === 0) {
+      var empty = document.createElement('div');
+      empty.className = 'bookmark-empty';
+      empty.textContent = 'No bookmarks yet. Click the star next to a topic to bookmark it.';
+      bookmarkListEl.appendChild(empty);
+    }
+    entries.forEach(function(topicId) {
+      var bm = bookmarks[topicId];
+      var item = document.createElement('div');
+      item.className = 'bookmark-item';
+      var titleLink = document.createElement('a');
+      titleLink.className = 'bookmark-title';
+      titleLink.href = '#';
+      titleLink.textContent = bm.title || 'Untitled';
+      titleLink.onclick = function(e) {
+        e.preventDefault();
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+          if (tabs[0]) {
+            chrome.tabs.update(tabs[0].id, { url: bm.url });
+          }
+        });
+      };
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'bookmark-remove';
+      removeBtn.textContent = '\u00d7';
+      removeBtn.dataset.tooltip = 'Remove bookmark';
+      removeBtn.setAttribute('aria-label', 'Remove bookmark');
+      removeBtn.onclick = function() {
+        chrome.storage.sync.get(['bookmarkedTopics'], function(result) {
+          var bms = result.bookmarkedTopics || {};
+          delete bms[topicId];
+          chrome.storage.sync.set({ bookmarkedTopics: bms });
+        });
+      };
+      var info = document.createElement('div');
+      info.className = 'bookmark-info';
+      info.appendChild(titleLink);
+      item.appendChild(info);
+      item.appendChild(removeBtn);
+      bookmarkListEl.appendChild(item);
+    });
+    updateBookmarkCount(bookmarks);
   }
 
   function formatTime(seconds) {
@@ -424,7 +480,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -458,6 +514,7 @@
     watchColorInput.value = watchColor;
     renderWatchedPosters(watchedPosters);
     renderSubforumCheckboxes(result.hiddenSubforums || []);
+    renderBookmarks(result.bookmarkedTopics || {});
   });
 
   // Load time tracking data
@@ -495,6 +552,9 @@
     if (changes.watchedPosters) {
       var watchedPosters = changes.watchedPosters.newValue || [];
       renderWatchedPosters(watchedPosters);
+    }
+    if (changes.bookmarkedTopics) {
+      renderBookmarks(changes.bookmarkedTopics.newValue || {});
     }
     if (changes.hiddenSubforums) {
       renderSubforumCheckboxes(changes.hiddenSubforums.newValue || []);

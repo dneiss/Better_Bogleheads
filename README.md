@@ -20,6 +20,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Statistics** - Reading streak, topics read per day with bar chart, and top 5 most-visited forums
 - **Mark All as Read** - One-click button to mark all visible topics on the current page as read
 - **New Replies Indicator** - Red dot next to topics you've previously read that have new replies since your last visit (toggleable)
+- **Topic Bookmarks** - Star any topic to save it to the Bookmarks section in the side panel for quick access, even after it leaves the active topics page
 - **Collapsible Side Panel Sections** - Click any section header to collapse/expand it. Collapsed state syncs across devices.
 - **Export/Import Settings** - Download your settings as a JSON file or restore them from a previous export
 

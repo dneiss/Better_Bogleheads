@@ -242,6 +242,100 @@ button:focus-visible {
   color: #666;
 }
 
+/* Bookmark styles */
+.bookmarks-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+body.bh-dark .bookmarks-title {
+  color: #e0e0e0;
+}
+
+#bookmark-count {
+  font-weight: normal;
+  font-size: 15px;
+  color: #666;
+}
+
+body.bh-dark #bookmark-count {
+  color: #a0aec0;
+}
+
+.bookmark-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.bookmark-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bookmark-title {
+  color: #2c5aa0;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmark-title:hover {
+  text-decoration: underline;
+}
+
+body.bh-dark .bookmark-title {
+  color: #6db3f2;
+}
+
+.bookmark-forum {
+  font-size: 12px;
+  color: #888;
+}
+
+body.bh-dark .bookmark-forum {
+  color: #777;
+}
+
+.bookmark-remove {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.bookmark-remove:hover {
+  color: #e00;
+  background: none;
+}
+
+body.bh-dark .bookmark-remove {
+  color: #777;
+}
+
+body.bh-dark .bookmark-remove:hover {
+  color: #ff6b6b;
+}
+
+.bookmark-empty {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+}
+
+body.bh-dark .bookmark-empty {
+  color: #666;
+}
+
 /* Dark theme styles */
 body.bh-dark {
   background: #1a1a1a;

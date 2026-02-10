@@ -318,10 +318,23 @@
     document.head.appendChild(style);
   }
 
+  function injectBookmarkStyle() {
+    if (document.getElementById('bh-bookmark-style')) return;
+    var style = document.createElement('style');
+    style.id = 'bh-bookmark-style';
+    style.textContent = [
+      '.bh-bookmark-star { font-size: 16px; margin-right: 4px; vertical-align: middle; cursor: pointer; color: #999; }',
+      '.bh-bookmark-star:hover { color: #f5a623; }',
+      '.bh-bookmark-star.bookmarked { color: #f5a623; }'
+    ].join('\n');
+    document.head.appendChild(style);
+  }
+
   function init() {
     if (!isContextValid()) return;
     table = document.getElementById('posts_table');
     injectNewRepliesStyle();
+    injectBookmarkStyle();
 
     // Migrate readThreads to readTopics (one-time)
     chrome.storage.sync.get(['readThreads', 'readTopics'], function(result) {
@@ -345,16 +358,17 @@
     if (!table) return;
 
     // Load settings and apply initial state
-    chrome.storage.sync.get(['stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor'], function(result) {
+    chrome.storage.sync.get(['stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'bookmarkedTopics'], function(result) {
       currentColor = result.stripeColor || DEFAULT_COLOR;
       var readTopics = result.readTopics || {};
       if (Array.isArray(readTopics)) readTopics = {};
+      var bookmarkedTopics = result.bookmarkedTopics || {};
       var fontSize = result.fontSize || DEFAULT_FONT_SIZE;
       var pointerCursor = result.pointerCursor || false;
 
       applyFontSize(fontSize);
       applyPointerCursor(pointerCursor);
-      applyFilters(readTopics);
+      applyFilters(readTopics, bookmarkedTopics);
       trackClicks(readTopics);
       trackRightClicks();
       updateBadge(readTopics);
@@ -531,16 +545,27 @@
     });
   }
 
-  function applyFilters(readTopics) {
+  function getTopicTitle(row) {
+    var link = row.querySelector('td a[href*="viewtopic.php"]');
+    return link ? link.textContent.trim() : '';
+  }
+
+  function getTopicUrl(row) {
+    var link = row.querySelector('td a[href*="viewtopic.php"]');
+    return link ? link.href : '';
+  }
+
+  function applyFilters(readTopics, bookmarkedTopics) {
     if (!table) return;
 
-    chrome.storage.sync.get(['hideRead', 'showNewReplies', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums'], function(result) {
+    chrome.storage.sync.get(['hideRead', 'showNewReplies', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums', 'bookmarkedTopics'], function(result) {
       var hideRead = result.hideRead || false;
       var showNewReplies = result.showNewReplies || false;
       var hideOld = result.hideOld || false;
       var maxAgeDays = result.maxAgeDays || 30;
       var hiddenSubforums = result.hiddenSubforums || [];
       currentColor = result.stripeColor || currentColor;
+      var bookmarks = bookmarkedTopics || result.bookmarkedTopics || {};
 
       var rows = getDataRows();
       rows.forEach(function(row) {
@@ -575,6 +600,40 @@
           dot.textContent = '\u25CF';
           var titleLink = row.querySelector('td a[href*="viewtopic.php"]');
           if (titleLink) titleLink.parentNode.insertBefore(dot, titleLink);
+        }
+
+        // Bookmark star
+        var existingStar = row.querySelector('.bh-bookmark-star');
+        if (existingStar) existingStar.remove();
+        if (topicId) {
+          var star = document.createElement('span');
+          star.className = 'bh-bookmark-star' + (bookmarks[topicId] ? ' bookmarked' : '');
+          star.textContent = bookmarks[topicId] ? '\u2605' : '\u2606';
+          star.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (!isContextValid()) return;
+            chrome.storage.sync.get(['bookmarkedTopics'], function(res) {
+              var bm = res.bookmarkedTopics || {};
+              if (bm[topicId]) {
+                delete bm[topicId];
+                star.textContent = '\u2606';
+                star.classList.remove('bookmarked');
+              } else {
+                bm[topicId] = {
+                  title: getTopicTitle(row),
+                  url: getTopicUrl(row),
+                  forum: getSubforum(row),
+                  date: Date.now()
+                };
+                star.textContent = '\u2605';
+                star.classList.add('bookmarked');
+              }
+              chrome.storage.sync.set({ bookmarkedTopics: bm });
+            });
+          });
+          var titleLink = row.querySelector('td a[href*="viewtopic.php"]');
+          if (titleLink) titleLink.parentNode.insertBefore(star, titleLink);
         }
       });
 
@@ -626,10 +685,10 @@
     } else if (message.type === 'applyStripes') {
       applyStripes();
     } else if (message.type === 'applyFilters') {
-      chrome.storage.sync.get(['readTopics'], function(result) {
+      chrome.storage.sync.get(['readTopics', 'bookmarkedTopics'], function(result) {
         var readTopics = result.readTopics || {};
         if (Array.isArray(readTopics)) readTopics = {};
-        applyFilters(readTopics);
+        applyFilters(readTopics, result.bookmarkedTopics || {});
       });
     } else if (message.type === 'fontSize') {
       applyFontSize(message.value);
@@ -757,11 +816,11 @@
     if (changes.enableWatchPosters || changes.watchedPosters || changes.watchColor) {
       applyStripes();
     }
-    if (changes.hideRead || changes.showNewReplies || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums) {
-      chrome.storage.sync.get(['readTopics'], function(result) {
+    if (changes.hideRead || changes.showNewReplies || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums || changes.bookmarkedTopics) {
+      chrome.storage.sync.get(['readTopics', 'bookmarkedTopics'], function(result) {
         var readTopics = result.readTopics || {};
         if (Array.isArray(readTopics)) readTopics = {};
-        applyFilters(readTopics);
+        applyFilters(readTopics, result.bookmarkedTopics || {});
         updateBadge(readTopics);
       });
     }
