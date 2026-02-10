@@ -808,9 +808,7 @@ body.bh-dark .theme-option:hover {
   pointer-events: none;
 }
 
-[data-tooltip]:hover::after,
-[data-tooltip]:focus-within::after,
-[data-tooltip]:focus::after {
+[data-tooltip]:hover::after {
   opacity: 1;
   visibility: visible;
 }
