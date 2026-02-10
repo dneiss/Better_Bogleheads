@@ -730,6 +730,16 @@ body.bh-dark .feedback-link {
   transition: transform 0.2s;
 }
 
+/* No chevron when section has nothing to collapse */
+.section-group > .section:only-child {
+  cursor: default;
+  padding-left: 0;
+}
+
+.section-group > .section:only-child::before {
+  display: none;
+}
+
 /* Collapsed state — chevron points right */
 .section-group.collapsed > .section:first-child::before {
   transform: translateY(-50%);
