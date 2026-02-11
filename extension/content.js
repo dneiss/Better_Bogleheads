@@ -330,11 +330,67 @@
     document.head.appendChild(style);
   }
 
+  function injectStickyHeader() {
+    if (document.getElementById('bh-sticky-header-style')) return;
+    var rightside = document.getElementById('rightside');
+    var postsTable = document.getElementById('posts_table');
+    if (!rightside || !postsTable) return;
+
+    var tbody = postsTable.querySelector('tbody');
+    if (!tbody) return;
+
+    // Wrap the title and accordion button in a sticky div
+    var titleStrong = rightside.querySelector(':scope > strong');
+    var accordionBtn = rightside.querySelector(':scope > button.accordion');
+    if (titleStrong) {
+      var titleWrap = document.createElement('div');
+      titleWrap.id = 'bh-sticky-title';
+      rightside.insertBefore(titleWrap, titleStrong);
+      titleWrap.appendChild(titleStrong);
+      if (accordionBtn) titleWrap.appendChild(accordionBtn);
+    }
+
+    // Mark header rows so we can target them with CSS
+    var rows = Array.from(tbody.querySelectorAll('tr'));
+    for (var i = 0; i < 3 && i < rows.length; i++) {
+      rows[i].setAttribute('data-bh-sticky', 'true');
+    }
+
+    // Inject styles - use requestAnimationFrame to calculate heights after layout
+    requestAnimationFrame(function() {
+      var titleWrapEl = document.getElementById('bh-sticky-title');
+      var titleHeight = titleWrapEl ? titleWrapEl.offsetHeight : 0;
+
+      var stickyRows = tbody.querySelectorAll('tr[data-bh-sticky]');
+      var cumTop = titleHeight;
+      for (var i = 0; i < stickyRows.length; i++) {
+        var cells = stickyRows[i].querySelectorAll('td, th');
+        for (var j = 0; j < cells.length; j++) {
+          cells[j].style.position = 'sticky';
+          cells[j].style.top = cumTop + 'px';
+          cells[j].style.zIndex = '50';
+        }
+        cumTop += stickyRows[i].offsetHeight;
+      }
+
+      var style = document.createElement('style');
+      style.id = 'bh-sticky-header-style';
+      style.textContent = [
+        '#bh-sticky-title { position: sticky; top: 0; z-index: 51; background: #fff; }',
+        'body.bh-dark #bh-sticky-title { background: #1a1a1a !important; }',
+        'tr[data-bh-sticky] td, tr[data-bh-sticky] th { background-color: #fff !important; }',
+        'body.bh-dark tr[data-bh-sticky] td, body.bh-dark tr[data-bh-sticky] th { background-color: #1a1a1a !important; }'
+      ].join('\n');
+      document.head.appendChild(style);
+    });
+  }
+
   function init() {
     if (!isContextValid()) return;
     table = document.getElementById('posts_table');
     injectNewRepliesStyle();
     injectBookmarkStyle();
+    injectStickyHeader();
 
     // Migrate readThreads to readTopics (one-time)
     chrome.storage.sync.get(['readThreads', 'readTopics'], function(result) {
