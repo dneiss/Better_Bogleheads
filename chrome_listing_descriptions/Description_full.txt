@@ -46,7 +46,7 @@ Compact Mode
 Reduces row padding in the topic list to fit more topics on screen. Toggle it on or off from the side panel.
 
 Subforum Color Coding
-Shows a colored 4px left border on each topic row based on its subforum. Each of the 11 subforums has a distinct color. The same colors appear as small squares next to each subforum name in the Show Subforums list. Toggle it on or off from the side panel.
+Shows a colored 4px left border on each topic row based on its subforum. Each of the 11 subforums has a distinct color. The same colors appear as small squares next to each subforum name in the Show Subforums list. Hover over the colored border or the subforum letter to see the full subforum name as a tooltip. Toggle it on or off from the side panel.
 
 Unread Count in Tab Title
 The browser tab title shows the number of unread topics — for example, "Bogleheads (23 unread)". When all topics are read, it simply shows "Bogleheads". Always on, no toggle needed.

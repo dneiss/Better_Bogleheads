@@ -21,6 +21,15 @@
     l: '#E91E63', I: '#CDDC39', f: '#FF5722'
   };
 
+  var SUBFORUM_NAMES = {
+    h: 'Personal Investments', t: 'Investing - Theory, News & General',
+    p: 'Personal Finance', n: 'Non-US Investing',
+    s: 'Spain', u: 'United Arab Emirates',
+    c: 'Personal Consumer Issues', b: 'Bogleheads Community',
+    l: 'US Local Chapters', I: 'Non-US Local Chapters',
+    f: 'Forum Issues and Administration'
+  };
+
   var subforumColorsEnabled = false;
 
   function isContextValid() {
@@ -550,14 +559,20 @@
     subforumColorsEnabled = enabled;
     var rows = getDataRows();
     rows.forEach(function(row) {
-      var firstTd = row.querySelector('td');
+      var cells = row.querySelectorAll('td');
+      var firstTd = cells[0];
       if (!firstTd) return;
       if (enabled) {
         var subforum = getSubforum(row);
         var color = SUBFORUM_COLORS[subforum] || 'transparent';
+        var name = SUBFORUM_NAMES[subforum] || '';
         firstTd.style.borderLeft = '4px solid ' + color;
+        firstTd.title = name;
+        if (cells[1]) cells[1].title = name;
       } else {
         firstTd.style.borderLeft = '';
+        firstTd.title = '';
+        if (cells[1]) cells[1].title = '';
       }
     });
   }
