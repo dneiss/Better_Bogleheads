@@ -57,6 +57,9 @@ Hides the "Bogleheads.org – Investing advice inspired by John Bogle" title ban
 Row Hover Effect
 Topic rows subtly darken when you hover over them, giving a more interactive and modern feel. Always on — works with any stripe color.
 
+Modern Font
+The topic table uses a modern system font stack instead of the default serif font. Uses your operating system's native font (San Francisco on Mac, Segoe UI on Windows) for a cleaner, more contemporary look. Always on.
+
 Subforum Color Coding
 Shows a colored 4px left border on each topic row based on its subforum. Each of the 11 subforums has a distinct color. The same colors appear as small squares next to each subforum name in the Show Subforums list. Hover over the colored border or the subforum letter to see the full subforum name as a tooltip. Toggle it on or off from the side panel.
 

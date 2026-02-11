@@ -27,6 +27,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Hide Left Sidebar** - Removes the left navigation sidebar to give more space to the topic list. Automatically adds padding so content doesn't touch the edge.
 - **Hide Page Banner** - Hides the site title banner at the top of the page to reclaim vertical space
 - **Row Hover Effect** - Subtle highlight when hovering over topic rows for a more interactive feel
+- **Modern Font** - Replaces the default serif font in the topic table with the system font stack for a cleaner look
 - **Subforum Color Coding** - Colored left border on topic rows based on subforum, with matching color squares in the subforum list. Hover over the border or subforum letter to see the full subforum name.
 - **Unread Count in Tab Title** - Tab title shows "Bogleheads (23 unread)" when there are unread topics
 - **Collapsible Side Panel Sections** - Click any section header to collapse/expand it. Collapsed state syncs across devices.

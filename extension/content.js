@@ -419,6 +419,7 @@
     injectNewRepliesStyle();
     injectBookmarkStyle();
     injectStickyHeader();
+    injectModernFont();
 
     // Migrate readThreads to readTopics (one-time)
     chrome.storage.sync.get(['readThreads', 'readTopics'], function(result) {
@@ -600,6 +601,14 @@
         if (cells[1]) cells[1].title = '';
       }
     });
+  }
+
+  function injectModernFont() {
+    if (document.getElementById('bh-modern-font')) return;
+    var style = document.createElement('style');
+    style.id = 'bh-modern-font';
+    style.textContent = '#posts_table, #posts_table td, #posts_table th, #posts_table a { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; }';
+    document.head.appendChild(style);
   }
 
   function injectRowHoverStyle() {
