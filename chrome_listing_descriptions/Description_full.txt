@@ -49,7 +49,13 @@ Compact Mode
 Reduces row padding and line height in the topic list to fit more topics on screen. Toggle it on or off from the side panel.
 
 Hide Left Sidebar
-Removes the left navigation sidebar from the page to give more horizontal space to the topic list. Toggle it on or off from the side panel.
+Removes the left navigation sidebar from the page to give more horizontal space to the topic list. When enabled, the table automatically gains left padding so content doesn't touch the edge. Toggle it on or off from the side panel.
+
+Hide Page Banner
+Hides the "Bogleheads.org – Investing advice inspired by John Bogle" title banner at the top of the page to reclaim vertical space. Toggle it on or off from the side panel.
+
+Row Hover Effect
+Topic rows subtly darken when you hover over them, giving a more interactive and modern feel. Always on — works with any stripe color.
 
 Subforum Color Coding
 Shows a colored 4px left border on each topic row based on its subforum. Each of the 11 subforums has a distinct color. The same colors appear as small squares next to each subforum name in the Show Subforums list. Hover over the colored border or the subforum letter to see the full subforum name as a tooltip. Toggle it on or off from the side panel.

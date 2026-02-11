@@ -452,10 +452,14 @@
 
     // Load settings and apply initial state
     // Load compact mode and subforum colors settings
-    chrome.storage.sync.get(['compactMode', 'subforumColors', 'hideLeftSidebar'], function(result) {
+    injectRowHoverStyle();
+
+    chrome.storage.sync.get(['compactMode', 'subforumColors', 'hideLeftSidebar', 'hideBanner', 'hideLeftSidebar'], function(result) {
       applyCompactMode(result.compactMode || false);
       subforumColorsEnabled = result.subforumColors || false;
       applyHideLeftSidebar(result.hideLeftSidebar || false);
+      applyHideBanner(result.hideBanner || false);
+      applyTablePadding(result.hideLeftSidebar || false);
     });
 
     chrome.storage.sync.get(['stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'bookmarkedTopics'], function(result) {
@@ -596,6 +600,39 @@
         if (cells[1]) cells[1].title = '';
       }
     });
+  }
+
+  function injectRowHoverStyle() {
+    if (document.getElementById('bh-row-hover')) return;
+    var style = document.createElement('style');
+    style.id = 'bh-row-hover';
+    style.textContent = '#posts_table tbody tr:hover td { filter: brightness(0.93); transition: filter 0.1s; }';
+    document.head.appendChild(style);
+  }
+
+  function applyHideBanner(enabled) {
+    var rightside = document.getElementById('rightside');
+    if (!rightside) return;
+    // The banner is the first element inside #rightside (the site title line)
+    var banner = rightside.querySelector(':scope > strong, :scope > #bh-sticky-title');
+    if (banner) banner.style.display = enabled ? 'none' : '';
+    // Also hide the accordion button if it exists outside the sticky wrapper
+    var accordion = rightside.querySelector(':scope > button.accordion');
+    if (accordion) accordion.style.display = enabled ? 'none' : '';
+  }
+
+  function applyTablePadding(enabled) {
+    var existing = document.getElementById('bh-table-padding');
+    if (enabled) {
+      if (!existing) {
+        var style = document.createElement('style');
+        style.id = 'bh-table-padding';
+        style.textContent = '#posts_table { margin-left: 16px; }';
+        document.head.appendChild(style);
+      }
+    } else if (existing) {
+      existing.remove();
+    }
   }
 
   function applyHideLeftSidebar(enabled) {
@@ -994,6 +1031,10 @@
     }
     if (changes.hideLeftSidebar) {
       applyHideLeftSidebar(changes.hideLeftSidebar.newValue || false);
+      applyTablePadding(changes.hideLeftSidebar.newValue || false);
+    }
+    if (changes.hideBanner) {
+      applyHideBanner(changes.hideBanner.newValue || false);
     }
     if (changes.enableStriping) {
       applyStripes();

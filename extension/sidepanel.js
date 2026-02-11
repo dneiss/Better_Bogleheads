@@ -137,6 +137,7 @@
   var compactModeCheckbox = document.getElementById('compact-mode');
   var subforumColorsCheckbox = document.getElementById('subforum-colors');
   var hideLeftSidebarCheckbox = document.getElementById('hide-left-sidebar');
+  var hideBannerCheckbox = document.getElementById('hide-banner');
   var subforumListEl = document.getElementById('subforum-list');
   var bookmarkListEl = document.getElementById('bookmark-list');
   var bookmarkCountSpan = document.getElementById('bookmark-count');
@@ -533,7 +534,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors', 'enableMutedTopics', 'mutedTopics', 'hideLeftSidebar'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors', 'enableMutedTopics', 'mutedTopics', 'hideLeftSidebar', 'hideBanner'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -573,6 +574,7 @@
     enableMutedTopicsCheckbox.checked = result.enableMutedTopics || false;
     renderMutedTopics(result.mutedTopics || {});
     hideLeftSidebarCheckbox.checked = result.hideLeftSidebar || false;
+    hideBannerCheckbox.checked = result.hideBanner || false;
   });
 
   // Load time tracking data
@@ -686,6 +688,10 @@
 
   hideLeftSidebarCheckbox.onchange = function() {
     chrome.storage.sync.set({ hideLeftSidebar: this.checked });
+  };
+
+  hideBannerCheckbox.onchange = function() {
+    chrome.storage.sync.set({ hideBanner: this.checked });
   };
 
   subforumColorsCheckbox.onchange = function() {
