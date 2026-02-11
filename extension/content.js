@@ -583,7 +583,7 @@
       if (!existing) {
         var style = document.createElement('style');
         style.id = 'bh-compact-mode';
-        style.textContent = '#posts_table td { padding-top: 1px !important; padding-bottom: 1px !important; }';
+        style.textContent = '#posts_table td { padding-top: 1px !important; padding-bottom: 1px !important; line-height: 1 !important; }';
         document.head.appendChild(style);
       }
     } else if (existing) {
