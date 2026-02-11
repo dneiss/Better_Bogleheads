@@ -734,6 +734,7 @@
           var star = document.createElement('span');
           star.className = 'bh-bookmark-star' + (bookmarks[topicId] ? ' bookmarked' : '');
           star.textContent = bookmarks[topicId] ? '\u2605' : '\u2606';
+          star.title = bookmarks[topicId] ? 'Remove bookmark' : 'Bookmark this topic';
           star.addEventListener('click', function(e) {
             e.stopPropagation();
             e.preventDefault();
@@ -743,6 +744,7 @@
               if (bm[topicId]) {
                 delete bm[topicId];
                 star.textContent = '\u2606';
+                star.title = 'Bookmark this topic';
                 star.classList.remove('bookmarked');
               } else {
                 bm[topicId] = {
@@ -752,6 +754,7 @@
                   date: Date.now()
                 };
                 star.textContent = '\u2605';
+                star.title = 'Remove bookmark';
                 star.classList.add('bookmarked');
               }
               chrome.storage.sync.set({ bookmarkedTopics: bm });
