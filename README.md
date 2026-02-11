@@ -10,7 +10,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Highlight Hot Topics** - Highlight topics with many replies (customizable threshold and color)
 - **Watch Posters** - Highlight topics where a watched poster is the author or last poster (add via side panel or right-click a profile link)
 - **Hide Old Topics** - Filter out topics older than a specified number of days
-- **Filter Subforums** - Show or hide topics from specific subforums on the active topics page
+- **Show Subforums** - Show or hide topics from specific subforums on the active topics page
 - **Adjustable Font Size** - Increase or decrease the topic list font size (50% - 200%)
 - **Mark as Read (Right-Click)** - Right-click any topic row to mark it as read without opening it
 - **Keyboard Shortcuts** - Quick access from any Bogleheads page (see below)
@@ -21,6 +21,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Mark All as Read** - One-click button to mark all visible topics on the current page as read
 - **New Replies Indicator** - Red dot next to topics you've previously read that have new replies since your last visit (toggleable)
 - **Topic Bookmarks** - Star any topic to save it to the Bookmarks section in the side panel for quick access, even after it leaves the active topics page
+- **Sticky Header** - Page title, stats line, and column headers stay pinned at the top while scrolling through topics
 - **Collapsible Side Panel Sections** - Click any section header to collapse/expand it. Collapsed state syncs across devices.
 - **Export/Import Settings** - Download your settings as a JSON file or restore them from a previous export
 

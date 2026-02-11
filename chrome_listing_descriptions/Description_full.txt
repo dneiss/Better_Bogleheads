@@ -21,7 +21,7 @@ Keep an eye on your favorite posters. Add usernames via the side panel or right-
 Hide Old Topics
 Filter out topics older than a specified number of days to focus on recent discussions.
 
-Filter Subforums
+Show Subforums
 Show or hide topics from specific subforums on the active topics page. Each subforum has a checkbox in the side panel — uncheck any to hide those topics. All subforums are shown by default.
 
 Adjustable Font Size
@@ -69,6 +69,9 @@ Reassign shortcuts at chrome://extensions/shortcuts.
 
 Export/Import Settings
 Download your settings as a JSON file to back them up or transfer to another machine. Import a previously exported file to restore your settings.
+
+Sticky Header
+The page title, stats line, and column headers stay pinned at the top of the page while you scroll through topics, so you always know which column is which.
 
 Collapsible Side Panel Sections
 Click any section header in the side panel to collapse or expand it. A chevron indicator shows the current state. Collapsed sections are remembered and sync across your Chrome browsers.
