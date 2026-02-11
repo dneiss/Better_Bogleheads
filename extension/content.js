@@ -15,6 +15,14 @@
   var DEFAULT_FONT_SIZE = 100;
   var DEFAULT_WATCH_COLOR = '#c8e6c9';
 
+  var SUBFORUM_COLORS = {
+    h: '#2196F3', t: '#4CAF50', p: '#FF9800', n: '#9C27B0',
+    s: '#F44336', u: '#00BCD4', c: '#795548', b: '#607D8B',
+    l: '#E91E63', I: '#CDDC39', f: '#FF5722'
+  };
+
+  var subforumColorsEnabled = false;
+
   function isContextValid() {
     return typeof chrome !== 'undefined' && !!chrome.runtime && !!chrome.runtime.id;
   }
@@ -414,6 +422,12 @@
     if (!table) return;
 
     // Load settings and apply initial state
+    // Load compact mode and subforum colors settings
+    chrome.storage.sync.get(['compactMode', 'subforumColors'], function(result) {
+      applyCompactMode(result.compactMode || false);
+      subforumColorsEnabled = result.subforumColors || false;
+    });
+
     chrome.storage.sync.get(['stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'bookmarkedTopics'], function(result) {
       currentColor = result.stripeColor || DEFAULT_COLOR;
       var readTopics = result.readTopics || {};
@@ -532,6 +546,36 @@
     table.style.setProperty('font-size', size + '%', 'important');
   }
 
+  function applySubforumColors(enabled) {
+    subforumColorsEnabled = enabled;
+    var rows = getDataRows();
+    rows.forEach(function(row) {
+      var firstTd = row.querySelector('td');
+      if (!firstTd) return;
+      if (enabled) {
+        var subforum = getSubforum(row);
+        var color = SUBFORUM_COLORS[subforum] || 'transparent';
+        firstTd.style.borderLeft = '4px solid ' + color;
+      } else {
+        firstTd.style.borderLeft = '';
+      }
+    });
+  }
+
+  function applyCompactMode(enabled) {
+    var existing = document.getElementById('bh-compact-mode');
+    if (enabled) {
+      if (!existing) {
+        var style = document.createElement('style');
+        style.id = 'bh-compact-mode';
+        style.textContent = '#posts_table td { padding-top: 1px !important; padding-bottom: 1px !important; }';
+        document.head.appendChild(style);
+      }
+    } else if (existing) {
+      existing.remove();
+    }
+  }
+
   function applyPointerCursor(enabled) {
     if (!table) return;
     var rows = getDataRows();
@@ -552,6 +596,7 @@
       }
     }
     chrome.runtime.sendMessage({ type: 'updateBadge', unreadCount: unreadCount });
+    document.title = unreadCount > 0 ? 'Bogleheads (' + unreadCount + ' unread)' : 'Bogleheads';
   }
 
   function applyStripes(color) {
@@ -694,6 +739,7 @@
       });
 
       applyStripes(currentColor);
+      applySubforumColors(subforumColorsEnabled);
     });
   }
 
@@ -855,6 +901,12 @@
 
     if (changes.fontSize) {
       applyFontSize(changes.fontSize.newValue || DEFAULT_FONT_SIZE);
+    }
+    if (changes.compactMode) {
+      applyCompactMode(changes.compactMode.newValue || false);
+    }
+    if (changes.subforumColors) {
+      applySubforumColors(changes.subforumColors.newValue || false);
     }
     if (changes.pointerCursor) {
       applyPointerCursor(changes.pointerCursor.newValue || false);

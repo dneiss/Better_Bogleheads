@@ -42,6 +42,15 @@ Star any topic to save it for later. Bookmarked topics appear in the Bookmarks s
 Pointer Cursor
 Enable a pointer cursor when hovering over topic rows to make them feel more clickable.
 
+Compact Mode
+Reduces row padding in the topic list to fit more topics on screen. Toggle it on or off from the side panel.
+
+Subforum Color Coding
+Shows a colored 4px left border on each topic row based on its subforum. Each of the 11 subforums has a distinct color. The same colors appear as small squares next to each subforum name in the Show Subforums list. Toggle it on or off from the side panel.
+
+Unread Count in Tab Title
+The browser tab title shows the number of unread topics — for example, "Bogleheads (23 unread)". When all topics are read, it simply shows "Bogleheads". Always on, no toggle needed.
+
 Time Tracking
 See how much time you spend on Bogleheads.org. The side panel displays today's time, all-time total, and a sparkline graph showing your activity over the last 30 days. Reset anytime to start fresh.
 

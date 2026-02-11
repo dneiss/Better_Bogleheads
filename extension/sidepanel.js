@@ -30,6 +30,12 @@
     { letter: 'f', name: 'Forum Issues and Administration' }
   ];
 
+  var SUBFORUM_COLORS = {
+    h: '#2196F3', t: '#4CAF50', p: '#FF9800', n: '#9C27B0',
+    s: '#F44336', u: '#00BCD4', c: '#795548', b: '#607D8B',
+    l: '#E91E63', I: '#CDDC39', f: '#FF5722'
+  };
+
   // Collapsible sections
   chrome.storage.sync.get(['collapsedSections'], function(result) {
     var collapsed = result.collapsedSections || [];
@@ -128,6 +134,8 @@
   var watchColorInput = document.getElementById('watch-color');
   var watchPosterListEl = document.getElementById('watch-poster-list');
   var watchPosterCountSpan = document.getElementById('watch-poster-count');
+  var compactModeCheckbox = document.getElementById('compact-mode');
+  var subforumColorsCheckbox = document.getElementById('subforum-colors');
   var subforumListEl = document.getElementById('subforum-list');
   var bookmarkListEl = document.getElementById('bookmark-list');
   var bookmarkCountSpan = document.getElementById('bookmark-count');
@@ -155,7 +163,10 @@
         updateHiddenSubforums();
       };
       item.appendChild(cb);
-      item.appendChild(document.createTextNode(' ' + entry.letter + ' - ' + entry.name));
+      var colorDot = document.createElement('span');
+      colorDot.style.cssText = 'display:inline-block;width:10px;height:10px;margin:0 4px 0 2px;vertical-align:middle;background:' + (SUBFORUM_COLORS[entry.letter] || '#999');
+      item.appendChild(colorDot);
+      item.appendChild(document.createTextNode(entry.letter + ' - ' + entry.name));
       subforumListEl.appendChild(item);
     });
   }
@@ -480,7 +491,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -515,6 +526,8 @@
     renderWatchedPosters(watchedPosters);
     renderSubforumCheckboxes(result.hiddenSubforums || []);
     renderBookmarks(result.bookmarkedTopics || {});
+    compactModeCheckbox.checked = result.compactMode || false;
+    subforumColorsCheckbox.checked = result.subforumColors || false;
   });
 
   // Load time tracking data
@@ -617,6 +630,14 @@
 
   pointerCursorCheckbox.onchange = function() {
     chrome.storage.sync.set({ pointerCursor: this.checked });
+  };
+
+  compactModeCheckbox.onchange = function() {
+    chrome.storage.sync.set({ compactMode: this.checked });
+  };
+
+  subforumColorsCheckbox.onchange = function() {
+    chrome.storage.sync.set({ subforumColors: this.checked });
   };
 
   enableWatchPostersCheckbox.onchange = function() {
