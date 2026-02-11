@@ -12,15 +12,6 @@
         <img src="icons/icon16.png" alt="" class="panel-header-icon">
         Go to Bogleheads.org
       </a>
-      <div class="section-group" data-section="bookmarks">
-        <div class="section">
-          <div class="bookmarks-title" data-tooltip="Bookmarked topics are saved here so you can find them again">Bookmarks <span id="bookmark-count"></span></div>
-        </div>
-        <div class="section indent">
-          <div id="bookmark-list"></div>
-        </div>
-      </div>
-
       <div class="section-group" data-section="theme">
         <div class="section">
           <div class="theme-label">Theme</div>
@@ -31,6 +22,25 @@
             <label class="theme-option" data-tooltip="Always use light mode"><input type="radio" name="theme" value="light" id="theme-light"> Light</label>
             <label class="theme-option" data-tooltip="Always use dark mode"><input type="radio" name="theme" value="dark" id="theme-dark"> Dark</label>
           </div>
+        </div>
+      </div>
+
+      <div class="section-group" data-section="bookmarks">
+        <div class="section">
+          <div class="bookmarks-title" data-tooltip="Bookmarked topics are saved here so you can find them again">Bookmarks <span id="bookmark-count"></span></div>
+        </div>
+        <div class="section indent">
+          <div id="bookmark-list"></div>
+        </div>
+      </div>
+
+      <div class="section-group" data-section="muted-topics">
+        <div class="section">
+          <label data-tooltip="Hide specific topics you don't want to see (max 20)"><input type="checkbox" id="enable-muted-topics"> Enable topic muting</label>
+        </div>
+        <div class="section indent">
+          <div id="muted-topic-list" class="muted-topic-list"></div>
+          <span id="muted-topic-count"></span>
         </div>
       </div>
 

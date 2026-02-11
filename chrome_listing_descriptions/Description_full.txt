@@ -36,6 +36,9 @@ One-click button in the side panel to mark all visible topics on the current pag
 New Replies Indicator
 Shows a red dot next to topics you've previously read that have new replies since your last visit. Toggle this on or off from the side panel. Hover over the dot to see a tooltip confirming new replies are available.
 
+Topic Muting
+Right-click any topic row and select "Mute this Topic" to hide it from the active topics page. Muted topics stay hidden as long as the feature is enabled. Manage your muted topics in the side panel — see the full list and unmute any topic with the × button. Up to 20 topics can be muted at a time; when the limit is reached, the oldest muted topic is automatically removed and a brief notification appears. Toggle topic muting on or off from the side panel — when off, muted topics are still saved but not hidden.
+
 Topic Bookmarks
 Star any topic to save it for later. Bookmarked topics appear in the Bookmarks section at the top of the side panel so you can find them again, even after they leave the active topics page. Click a bookmark to navigate to the topic, or remove it with the × button.
 

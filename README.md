@@ -20,6 +20,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Statistics** - Reading streak, topics read per day with bar chart, and top 5 most-visited forums
 - **Mark All as Read** - One-click button to mark all visible topics on the current page as read
 - **New Replies Indicator** - Red dot next to topics you've previously read that have new replies since your last visit (toggleable)
+- **Topic Muting** - Right-click a topic and select "Mute this Topic" to hide it. Manage muted topics (up to 20) in the side panel. Toggle muting on/off — muted topics are saved even when the feature is disabled.
 - **Topic Bookmarks** - Star any topic to save it to the Bookmarks section in the side panel for quick access, even after it leaves the active topics page
 - **Sticky Header** - Page title, stats line, and column headers stay pinned at the top while scrolling through topics
 - **Compact Mode** - Reduces row padding and line height to fit more topics on screen

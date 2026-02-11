@@ -139,6 +139,9 @@
   var subforumListEl = document.getElementById('subforum-list');
   var bookmarkListEl = document.getElementById('bookmark-list');
   var bookmarkCountSpan = document.getElementById('bookmark-count');
+  var enableMutedTopicsCheckbox = document.getElementById('enable-muted-topics');
+  var mutedTopicListEl = document.getElementById('muted-topic-list');
+  var mutedTopicCountSpan = document.getElementById('muted-topic-count');
 
   function updateReadCount(readTopics) {
     var count = Object.keys(readTopics).length;
@@ -265,6 +268,44 @@
       bookmarkListEl.appendChild(item);
     });
     updateBookmarkCount(bookmarks);
+  }
+
+  function updateMutedCount(mutedTopics) {
+    var count = Object.keys(mutedTopics).length;
+    mutedTopicCountSpan.textContent = count > 0 ? '(' + count + ' muted)' : '';
+  }
+
+  function renderMutedTopics(mutedTopics) {
+    mutedTopicListEl.innerHTML = '';
+    var entries = Object.keys(mutedTopics).sort(function(a, b) {
+      return (mutedTopics[b].date || 0) - (mutedTopics[a].date || 0);
+    });
+    entries.forEach(function(topicId) {
+      var mt = mutedTopics[topicId];
+      var item = document.createElement('div');
+      item.className = 'muted-topic-item';
+      var nameSpan = document.createElement('span');
+      nameSpan.className = 'muted-topic-title';
+      nameSpan.textContent = mt.title || 'Untitled';
+      nameSpan.title = mt.title || '';
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'muted-topic-remove';
+      removeBtn.textContent = '\u00d7';
+      removeBtn.dataset.tooltip = 'Unmute this topic';
+      removeBtn.setAttribute('aria-label', 'Unmute topic');
+      removeBtn.onclick = function() {
+        chrome.storage.sync.get(['mutedTopics'], function(result) {
+          var list = result.mutedTopics || {};
+          delete list[topicId];
+          chrome.storage.sync.set({ mutedTopics: list });
+          renderMutedTopics(list);
+        });
+      };
+      item.appendChild(nameSpan);
+      item.appendChild(removeBtn);
+      mutedTopicListEl.appendChild(item);
+    });
+    updateMutedCount(mutedTopics);
   }
 
   function formatTime(seconds) {
@@ -491,7 +532,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors', 'enableMutedTopics', 'mutedTopics'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -528,6 +569,8 @@
     renderBookmarks(result.bookmarkedTopics || {});
     compactModeCheckbox.checked = result.compactMode || false;
     subforumColorsCheckbox.checked = result.subforumColors || false;
+    enableMutedTopicsCheckbox.checked = result.enableMutedTopics || false;
+    renderMutedTopics(result.mutedTopics || {});
   });
 
   // Load time tracking data
@@ -571,6 +614,9 @@
     }
     if (changes.hiddenSubforums) {
       renderSubforumCheckboxes(changes.hiddenSubforums.newValue || []);
+    }
+    if (changes.mutedTopics) {
+      renderMutedTopics(changes.mutedTopics.newValue || {});
     }
     if (changes.collapsedSections) {
       var collapsed = changes.collapsedSections.newValue || [];
@@ -638,6 +684,10 @@
 
   subforumColorsCheckbox.onchange = function() {
     chrome.storage.sync.set({ subforumColors: this.checked });
+  };
+
+  enableMutedTopicsCheckbox.onchange = function() {
+    chrome.storage.sync.set({ enableMutedTopics: this.checked });
   };
 
   enableWatchPostersCheckbox.onchange = function() {

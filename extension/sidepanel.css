@@ -582,6 +582,61 @@ body.bh-dark .stats-forum-empty {
   color: #666;
 }
 
+/* Muted topics */
+.muted-topic-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.muted-topic-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+
+.muted-topic-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.muted-topic-remove {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.muted-topic-remove:hover {
+  color: #e00;
+  background: none;
+}
+
+body.bh-dark .muted-topic-remove {
+  color: #777;
+}
+
+body.bh-dark .muted-topic-remove:hover {
+  color: #ff6b6b;
+}
+
+#muted-topic-count {
+  font-size: 15px;
+  color: #666;
+}
+
+body.bh-dark #muted-topic-count {
+  color: #a0aec0;
+}
+
 /* Subforum filter */
 .subforum-title {
   font-weight: 600;

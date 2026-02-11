@@ -402,6 +402,17 @@
     });
   }
 
+  function showMuteToast(message) {
+    var toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#fff3cd;color:#856404;border:1px solid #ffc107;padding:8px 16px;border-radius:4px;font-size:14px;z-index:10000;transition:opacity 0.5s;';
+    document.body.appendChild(toast);
+    setTimeout(function() {
+      toast.style.opacity = '0';
+      setTimeout(function() { toast.remove(); }, 500);
+    }, 3000);
+  }
+
   function init() {
     if (!isContextValid()) return;
     table = document.getElementById('posts_table');
@@ -683,7 +694,7 @@
   function applyFilters(readTopics, bookmarkedTopics) {
     if (!table) return;
 
-    chrome.storage.sync.get(['hideRead', 'showNewReplies', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums', 'bookmarkedTopics'], function(result) {
+    chrome.storage.sync.get(['hideRead', 'showNewReplies', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums', 'bookmarkedTopics', 'enableMutedTopics', 'mutedTopics'], function(result) {
       var hideRead = result.hideRead || false;
       var showNewReplies = result.showNewReplies || false;
       var hideOld = result.hideOld || false;
@@ -691,6 +702,8 @@
       var hiddenSubforums = result.hiddenSubforums || [];
       currentColor = result.stripeColor || currentColor;
       var bookmarks = bookmarkedTopics || result.bookmarkedTopics || {};
+      var enableMutedTopics = result.enableMutedTopics || false;
+      var mutedTopics = result.mutedTopics || {};
 
       var rows = getDataRows();
       rows.forEach(function(row) {
@@ -712,6 +725,10 @@
         if (hideOld && !shouldHide) {
           var ageDays = getTopicAgeDays(row);
           if (ageDays > maxAgeDays) shouldHide = true;
+        }
+
+        if (enableMutedTopics && !shouldHide && topicId && mutedTopics[topicId]) {
+          shouldHide = true;
         }
 
         row.style.display = shouldHide ? 'none' : '';
@@ -861,6 +878,37 @@
           updateBadge(readTopics);
         }
       });
+    } else if (message.type === 'muteTopic') {
+      if (!lastRightClickedRow) return;
+      var topicId = getTopicId(lastRightClickedRow);
+      var title = getTopicTitle(lastRightClickedRow);
+      if (!topicId) return;
+      chrome.storage.sync.get(['mutedTopics'], function(result) {
+        var mutedTopics = result.mutedTopics || {};
+        if (mutedTopics[topicId]) return;
+        // Enforce max 20 limit
+        var keys = Object.keys(mutedTopics);
+        if (keys.length >= 20) {
+          var oldestKey = keys[0];
+          var oldestDate = mutedTopics[keys[0]].date;
+          for (var i = 1; i < keys.length; i++) {
+            if (mutedTopics[keys[i]].date < oldestDate) {
+              oldestDate = mutedTopics[keys[i]].date;
+              oldestKey = keys[i];
+            }
+          }
+          var oldestTitle = mutedTopics[oldestKey].title;
+          delete mutedTopics[oldestKey];
+          showMuteToast('Removed oldest muted topic: ' + oldestTitle);
+        }
+        mutedTopics[topicId] = { title: title, date: Date.now() };
+        chrome.storage.sync.set({ mutedTopics: mutedTopics });
+        chrome.storage.sync.get(['readTopics', 'bookmarkedTopics'], function(res) {
+          var readTopics = res.readTopics || {};
+          if (Array.isArray(readTopics)) readTopics = {};
+          applyFilters(readTopics, res.bookmarkedTopics || {});
+        });
+      });
     } else if (message.type === 'watchPoster') {
       var username = '';
       if (lastRightClickedProfileLink) {
@@ -951,7 +999,7 @@
     if (changes.enableWatchPosters || changes.watchedPosters || changes.watchColor) {
       applyStripes();
     }
-    if (changes.hideRead || changes.showNewReplies || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums || changes.bookmarkedTopics) {
+    if (changes.hideRead || changes.showNewReplies || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums || changes.bookmarkedTopics || changes.mutedTopics || changes.enableMutedTopics) {
       chrome.storage.sync.get(['readTopics', 'bookmarkedTopics'], function(result) {
         var readTopics = result.readTopics || {};
         if (Array.isArray(readTopics)) readTopics = {};
