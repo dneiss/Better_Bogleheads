@@ -452,9 +452,10 @@
 
     // Load settings and apply initial state
     // Load compact mode and subforum colors settings
-    chrome.storage.sync.get(['compactMode', 'subforumColors'], function(result) {
+    chrome.storage.sync.get(['compactMode', 'subforumColors', 'hideLeftSidebar'], function(result) {
       applyCompactMode(result.compactMode || false);
       subforumColorsEnabled = result.subforumColors || false;
+      applyHideLeftSidebar(result.hideLeftSidebar || false);
     });
 
     chrome.storage.sync.get(['stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'bookmarkedTopics'], function(result) {
@@ -595,6 +596,11 @@
         if (cells[1]) cells[1].title = '';
       }
     });
+  }
+
+  function applyHideLeftSidebar(enabled) {
+    var leftside = document.getElementById('leftside');
+    if (leftside) leftside.style.display = enabled ? 'none' : '';
   }
 
   function applyCompactMode(enabled) {
@@ -985,6 +991,9 @@
     }
     if (changes.pointerCursor) {
       applyPointerCursor(changes.pointerCursor.newValue || false);
+    }
+    if (changes.hideLeftSidebar) {
+      applyHideLeftSidebar(changes.hideLeftSidebar.newValue || false);
     }
     if (changes.enableStriping) {
       applyStripes();

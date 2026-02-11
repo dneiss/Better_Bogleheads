@@ -48,6 +48,9 @@ Enable a pointer cursor when hovering over topic rows to make them feel more cli
 Compact Mode
 Reduces row padding and line height in the topic list to fit more topics on screen. Toggle it on or off from the side panel.
 
+Hide Left Sidebar
+Removes the left navigation sidebar from the page to give more horizontal space to the topic list. Toggle it on or off from the side panel.
+
 Subforum Color Coding
 Shows a colored 4px left border on each topic row based on its subforum. Each of the 11 subforums has a distinct color. The same colors appear as small squares next to each subforum name in the Show Subforums list. Hover over the colored border or the subforum letter to see the full subforum name as a tooltip. Toggle it on or off from the side panel.
 
