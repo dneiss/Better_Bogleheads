@@ -430,6 +430,15 @@
 
     if (!table) return;
 
+    // Click anywhere on a row to navigate to its topic link
+    table.addEventListener('click', function(e) {
+      if (e.target.closest('a')) return;
+      var row = e.target.closest('tr');
+      if (!row) return;
+      var link = row.querySelector('td a[href*="viewtopic.php"]');
+      if (link) window.location.href = link.href;
+    });
+
     // Load settings and apply initial state
     // Load compact mode and subforum colors settings
     chrome.storage.sync.get(['compactMode', 'subforumColors'], function(result) {

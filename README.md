@@ -26,6 +26,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Subforum Color Coding** - Colored left border on topic rows based on subforum, with matching color squares in the subforum list. Hover over the border or subforum letter to see the full subforum name.
 - **Unread Count in Tab Title** - Tab title shows "Bogleheads (23 unread)" when there are unread topics
 - **Collapsible Side Panel Sections** - Click any section header to collapse/expand it. Collapsed state syncs across devices.
+- **Clickable Rows** - Click anywhere on a topic row to navigate to that topic, not just the link text
 - **Export/Import Settings** - Download your settings as a JSON file or restore them from a previous export
 
 All settings are saved and persist across sessions.

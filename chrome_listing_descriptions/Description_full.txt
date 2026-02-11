@@ -82,6 +82,9 @@ Download your settings as a JSON file to back them up or transfer to another mac
 Sticky Header
 The page title, stats line, and column headers stay pinned at the top of the page while you scroll through topics, so you always know which column is which.
 
+Clickable Rows
+Click anywhere on a topic row to navigate to that topic — no need to hit the link text exactly. Existing links in the row (like poster names) still work normally.
+
 Collapsible Side Panel Sections
 Click any section header in the side panel to collapse or expand it. A chevron indicator shows the current state. Collapsed sections are remembered and sync across your Chrome browsers.
 
