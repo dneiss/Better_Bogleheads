@@ -46,13 +46,7 @@ Pointer Cursor
 Enable a pointer cursor when hovering over topic rows to make them feel more clickable.
 
 Compact Mode
-Reduces row padding and line height in the topic list to fit more topics on screen. Toggle it on or off from the side panel.
-
-Hide Left Sidebar
-Removes the left navigation sidebar from the page to give more horizontal space to the topic list. When enabled, the table automatically gains left padding so content doesn't touch the edge. Toggle it on or off from the side panel.
-
-Hide Page Banner
-Hides the "Bogleheads.org – Investing advice inspired by John Bogle" title banner at the top of the page to reclaim vertical space. Toggle it on or off from the side panel.
+Reduces row padding and line height in the topic list to fit more topics on screen. Also hides the left navigation sidebar and page banner to maximize reading space. Toggle it on or off from the side panel.
 
 Row Hover Effect
 Topic rows subtly darken when you hover over them, giving a more interactive and modern feel. Always on — works with any stripe color.

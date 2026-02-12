@@ -1,6 +1,6 @@
 # Privacy Policy for Better Bogleheads
 
-**Last updated: January 16, 2026**
+**Last updated: February 12, 2026**
 
 ## Overview
 
@@ -29,6 +29,15 @@ The extension stores the following preferences locally on your device using Chro
 - List of watched poster usernames
 - Watch poster highlight color
 - Time tracking data (daily seconds spent on site, kept for 30 days)
+- Bookmarked topic IDs, titles, and URLs
+- Muted topic IDs and titles (up to 20)
+- Subforum visibility preferences
+- Subforum color coding preference (on/off)
+- Compact mode preference (on/off)
+- Collapsed side panel section states
+- New replies indicator preference (on/off)
+- Zebra striping enabled/disabled
+- Forum visit counts and daily topics read (stored locally, kept for 30 days)
 
 This data is stored locally and synced across your Chrome browsers if you are signed into Chrome. This data is **never** transmitted to any external servers or third parties.
 

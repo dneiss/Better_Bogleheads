@@ -3,6 +3,24 @@ chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
 
 // Re-inject content script into existing tabs after extension install/update
 chrome.runtime.onInstalled.addListener(function(details) {
+  if (details.reason === 'install') {
+    // Set defaults on first install
+    chrome.storage.sync.get(null, function(existing) {
+      if (Object.keys(existing).length === 0) {
+        chrome.storage.sync.set({
+          theme: 'system',
+          enableStriping: true,
+          stripeColor: '#e8e4df',
+          subforumColors: true,
+          hiddenSubforums: [],
+          pointerCursor: true,
+          compactMode: true,
+          hideLeftSidebar: true,
+          hideBanner: true
+        });
+      }
+    });
+  }
   if (details.reason === 'install' || details.reason === 'update') {
     chrome.tabs.query({ url: '*://*.bogleheads.org/*' }, function(tabs) {
       tabs.forEach(function(tab) {

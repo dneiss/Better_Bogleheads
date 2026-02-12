@@ -455,12 +455,13 @@
     // Load compact mode and subforum colors settings
     injectRowHoverStyle();
 
-    chrome.storage.sync.get(['compactMode', 'subforumColors', 'hideLeftSidebar', 'hideBanner', 'hideLeftSidebar'], function(result) {
-      applyCompactMode(result.compactMode || false);
+    chrome.storage.sync.get(['compactMode', 'subforumColors'], function(result) {
+      var compact = result.compactMode || false;
+      applyCompactMode(compact);
+      applyHideLeftSidebar(compact);
+      applyHideBanner(compact);
+      applyTablePadding(compact);
       subforumColorsEnabled = result.subforumColors || false;
-      applyHideLeftSidebar(result.hideLeftSidebar || false);
-      applyHideBanner(result.hideBanner || false);
-      applyTablePadding(result.hideLeftSidebar || false);
     });
 
     chrome.storage.sync.get(['stripeColor', 'hideRead', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'bookmarkedTopics'], function(result) {
@@ -607,7 +608,7 @@
     if (document.getElementById('bh-modern-font')) return;
     var style = document.createElement('style');
     style.id = 'bh-modern-font';
-    style.textContent = '#posts_table, #posts_table td, #posts_table th, #posts_table a { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; }';
+    style.textContent = '#posts_table, #posts_table td, #posts_table th, #posts_table a { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; } #posts_table { width: 100% !important; }';
     document.head.appendChild(style);
   }
 
@@ -647,6 +648,17 @@
   function applyHideLeftSidebar(enabled) {
     var leftside = document.getElementById('leftside');
     if (leftside) leftside.style.display = enabled ? 'none' : '';
+    var existing = document.getElementById('bh-hide-sidebar-style');
+    if (enabled) {
+      if (!existing) {
+        var style = document.createElement('style');
+        style.id = 'bh-hide-sidebar-style';
+        style.textContent = '#rightside { width: 100% !important; } #posts_table { width: 100% !important; } #wrap, #page-body { max-width: none !important; width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }';
+        document.head.appendChild(style);
+      }
+    } else if (existing) {
+      existing.remove();
+    }
   }
 
   function applyCompactMode(enabled) {
@@ -1030,20 +1042,17 @@
       applyFontSize(changes.fontSize.newValue || DEFAULT_FONT_SIZE);
     }
     if (changes.compactMode) {
-      applyCompactMode(changes.compactMode.newValue || false);
+      var compact = changes.compactMode.newValue || false;
+      applyCompactMode(compact);
+      applyHideLeftSidebar(compact);
+      applyHideBanner(compact);
+      applyTablePadding(compact);
     }
     if (changes.subforumColors) {
       applySubforumColors(changes.subforumColors.newValue || false);
     }
     if (changes.pointerCursor) {
       applyPointerCursor(changes.pointerCursor.newValue || false);
-    }
-    if (changes.hideLeftSidebar) {
-      applyHideLeftSidebar(changes.hideLeftSidebar.newValue || false);
-      applyTablePadding(changes.hideLeftSidebar.newValue || false);
-    }
-    if (changes.hideBanner) {
-      applyHideBanner(changes.hideBanner.newValue || false);
     }
     if (changes.enableStriping) {
       applyStripes();

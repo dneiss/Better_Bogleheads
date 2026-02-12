@@ -23,9 +23,7 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Topic Muting** - Right-click a topic and select "Mute this Topic" to hide it. Manage muted topics (up to 20) in the side panel. Toggle muting on/off — muted topics are saved even when the feature is disabled.
 - **Topic Bookmarks** - Star any topic to save it to the Bookmarks section in the side panel for quick access, even after it leaves the active topics page
 - **Sticky Header** - Page title, stats line, and column headers stay pinned at the top while scrolling through topics
-- **Compact Mode** - Reduces row padding and line height to fit more topics on screen
-- **Hide Left Sidebar** - Removes the left navigation sidebar to give more space to the topic list. Automatically adds padding so content doesn't touch the edge.
-- **Hide Page Banner** - Hides the site title banner at the top of the page to reclaim vertical space
+- **Compact Mode** - Reduces row padding and line height to fit more topics on screen. Also hides the left sidebar and page banner to maximize reading space.
 - **Row Hover Effect** - Subtle highlight when hovering over topic rows for a more interactive feel
 - **Modern Font** - Replaces the default serif font in the topic table with the system font stack for a cleaner look
 - **Subforum Color Coding** - Colored left border on topic rows based on subforum, with matching color squares in the subforum list. Hover over the border or subforum letter to see the full subforum name.
