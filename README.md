@@ -26,7 +26,8 @@ A Chrome extension that supercharges the [Bogleheads.org](https://www.bogleheads
 - **Compact Mode** - Reduces row padding and line height to fit more topics on screen. Also hides the left sidebar and page banner to maximize reading space.
 - **Row Hover Effect** - Subtle highlight when hovering over topic rows for a more interactive feel
 - **Modern Font** - Replaces the default serif font in the topic table with the system font stack for a cleaner look
-- **Subforum Color Coding** - Colored left border on topic rows based on subforum, with matching color squares in the subforum list. Hover over the border or subforum letter to see the full subforum name.
+- **Subforum Color Coding** - Colored left border on topic rows based on subforum, with matching color squares in the subforum list. Hover over the border or subforum letter to see the full subforum name. Topic counts per subforum are shown in the side panel filter list.
+- **Auto-Refresh Active Topics** - Automatically reloads the active topics page at a configurable interval (30 seconds, 1 minute, 2 minutes, or 5 minutes). Only runs on the active topics page. Disabled by default.
 - **Unread Count in Tab Title** - Tab title shows "Bogleheads (23 unread)" when there are unread topics
 - **Collapsible Side Panel Sections** - Click any section header to collapse/expand it. Collapsed state syncs across devices.
 - **Clickable Rows** - Click anywhere on a topic row to navigate to that topic, not just the link text

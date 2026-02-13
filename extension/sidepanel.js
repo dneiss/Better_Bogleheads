@@ -142,6 +142,8 @@
   var enableMutedTopicsCheckbox = document.getElementById('enable-muted-topics');
   var mutedTopicListEl = document.getElementById('muted-topic-list');
   var mutedTopicCountSpan = document.getElementById('muted-topic-count');
+  var autoRefreshCheckbox = document.getElementById('auto-refresh');
+  var autoRefreshIntervalSelect = document.getElementById('auto-refresh-interval');
 
   function updateReadCount(readTopics) {
     var count = Object.keys(readTopics).length;
@@ -153,8 +155,9 @@
     watchPosterCountSpan.textContent = count > 0 ? '(' + count + ' watched)' : '';
   }
 
-  function renderSubforumCheckboxes(hiddenSubforums) {
+  function renderSubforumCheckboxes(hiddenSubforums, counts) {
     subforumListEl.innerHTML = '';
+    counts = counts || {};
     SUBFORUM_MAP.forEach(function(entry) {
       var item = document.createElement('label');
       item.className = 'subforum-item';
@@ -169,7 +172,9 @@
       var colorDot = document.createElement('span');
       colorDot.style.cssText = 'display:inline-block;width:10px;height:10px;margin:0 4px 0 2px;vertical-align:middle;background:' + (SUBFORUM_COLORS[entry.letter] || '#999');
       item.appendChild(colorDot);
-      item.appendChild(document.createTextNode(entry.letter + ' - ' + entry.name));
+      var count = counts[entry.letter] || 0;
+      var countText = count > 0 ? ' (' + count + ')' : '';
+      item.appendChild(document.createTextNode(entry.letter + ' - ' + entry.name + countText));
       subforumListEl.appendChild(item);
     });
   }
@@ -532,7 +537,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors', 'enableMutedTopics', 'mutedTopics'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors', 'enableMutedTopics', 'mutedTopics', 'autoRefresh', 'autoRefreshInterval'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -565,12 +570,16 @@
     var watchColor = result.watchColor || DEFAULT_WATCH_COLOR;
     watchColorInput.value = watchColor;
     renderWatchedPosters(watchedPosters);
-    renderSubforumCheckboxes(result.hiddenSubforums || []);
+    chrome.storage.local.get(['subforumCounts'], function(localResult) {
+      renderSubforumCheckboxes(result.hiddenSubforums || [], localResult.subforumCounts || {});
+    });
     renderBookmarks(result.bookmarkedTopics || {});
     compactModeCheckbox.checked = result.compactMode || false;
     subforumColorsCheckbox.checked = result.subforumColors || false;
     enableMutedTopicsCheckbox.checked = result.enableMutedTopics || false;
     renderMutedTopics(result.mutedTopics || {});
+    autoRefreshCheckbox.checked = result.autoRefresh || false;
+    autoRefreshIntervalSelect.value = String(result.autoRefreshInterval || 60);
   });
 
   // Load time tracking data
@@ -586,6 +595,11 @@
     if (namespace === 'local') {
       if (changes.forumStats) {
         updateStatsDisplay();
+      }
+      if (changes.subforumCounts) {
+        chrome.storage.sync.get(['hiddenSubforums'], function(syncResult) {
+          renderSubforumCheckboxes(syncResult.hiddenSubforums || [], changes.subforumCounts.newValue || {});
+        });
       }
       return;
     }
@@ -613,7 +627,9 @@
       renderBookmarks(changes.bookmarkedTopics.newValue || {});
     }
     if (changes.hiddenSubforums) {
-      renderSubforumCheckboxes(changes.hiddenSubforums.newValue || []);
+      chrome.storage.local.get(['subforumCounts'], function(localResult) {
+        renderSubforumCheckboxes(changes.hiddenSubforums.newValue || [], localResult.subforumCounts || {});
+      });
     }
     if (changes.mutedTopics) {
       renderMutedTopics(changes.mutedTopics.newValue || {});
@@ -688,6 +704,14 @@
 
   enableMutedTopicsCheckbox.onchange = function() {
     chrome.storage.sync.set({ enableMutedTopics: this.checked });
+  };
+
+  autoRefreshCheckbox.onchange = function() {
+    chrome.storage.sync.set({ autoRefresh: this.checked });
+  };
+
+  autoRefreshIntervalSelect.onchange = function() {
+    chrome.storage.sync.set({ autoRefreshInterval: parseInt(this.value, 10) });
   };
 
   enableWatchPostersCheckbox.onchange = function() {

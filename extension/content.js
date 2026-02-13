@@ -48,6 +48,9 @@
   var timeTrackingInterval = null;
   var isTracking = false;
 
+  // Auto-refresh variables
+  var autoRefreshTimer = null;
+
   function injectDarkStyles() {
     if (darkStylesInjected) return;
     var style = document.createElement('style');
@@ -324,6 +327,34 @@
     } catch (e) { /* context invalidated */ }
   }
 
+  function isActiveTopicsPage() {
+    return window.location.href.indexOf('search_id=active_topics') !== -1;
+  }
+
+  function startAutoRefresh(intervalSeconds) {
+    stopAutoRefresh();
+    if (!isActiveTopicsPage()) return;
+    autoRefreshTimer = setInterval(function() {
+      location.reload();
+    }, intervalSeconds * 1000);
+  }
+
+  function stopAutoRefresh() {
+    if (autoRefreshTimer) {
+      clearInterval(autoRefreshTimer);
+      autoRefreshTimer = null;
+    }
+  }
+
+  function initAutoRefresh() {
+    if (!isActiveTopicsPage()) return;
+    chrome.storage.sync.get(['autoRefresh', 'autoRefreshInterval'], function(result) {
+      if (result.autoRefresh) {
+        startAutoRefresh(result.autoRefreshInterval || 60);
+      }
+    });
+  }
+
   function injectNewRepliesStyle() {
     if (document.getElementById('bh-new-replies-style')) return;
     var style = document.createElement('style');
@@ -437,10 +468,16 @@
     // Start time tracking (works on all bogleheads.org pages)
     initTimeTracking();
 
+    // Auto-refresh active topics page
+    initAutoRefresh();
+
     // Track forum visits for statistics
     trackForumVisit();
 
     if (!table) return;
+
+    // Count topics per subforum for the side panel
+    saveSubforumCounts();
 
     // Click anywhere on a row to navigate to its topic link
     table.addEventListener('click', function(e) {
@@ -491,6 +528,20 @@
   function getSubforum(row) {
     var cells = row.querySelectorAll('td');
     return cells.length >= 2 ? cells[1].textContent.trim() : '';
+  }
+
+  function saveSubforumCounts() {
+    var rows = getDataRows();
+    var counts = {};
+    rows.forEach(function(row) {
+      var subforum = getSubforum(row);
+      if (subforum) {
+        counts[subforum] = (counts[subforum] || 0) + 1;
+      }
+    });
+    try {
+      chrome.storage.local.set({ subforumCounts: counts });
+    } catch (e) { /* context invalidated */ }
   }
 
   function getTopicId(row) {
@@ -1034,6 +1085,16 @@
     // Theme can change even without a table
     if (changes.theme) {
       applyTheme(changes.theme.newValue || 'system');
+    }
+
+    if (changes.autoRefresh || changes.autoRefreshInterval) {
+      chrome.storage.sync.get(['autoRefresh', 'autoRefreshInterval'], function(result) {
+        if (result.autoRefresh) {
+          startAutoRefresh(result.autoRefreshInterval || 60);
+        } else {
+          stopAutoRefresh();
+        }
+      });
     }
 
     if (!table) return;

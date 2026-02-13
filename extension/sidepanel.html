@@ -135,6 +135,22 @@
       </div>
 
 
+      <div class="section-group" data-section="auto-refresh">
+        <div class="section">
+          <label data-tooltip="Automatically reloads the active topics page at a set interval"><input type="checkbox" id="auto-refresh"> Auto-refresh active topics</label>
+        </div>
+        <div class="section indent">
+          <label data-tooltip="How often to refresh the active topics page">Interval:
+            <select id="auto-refresh-interval">
+              <option value="30">30 seconds</option>
+              <option value="60" selected>1 minute</option>
+              <option value="120">2 minutes</option>
+              <option value="300">5 minutes</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
       <div class="section-group" data-section="time-tracking">
         <div class="section">
           <div class="time-today" id="time-today" data-tooltip="Time spent on Bogleheads today">0 minutes today</div>

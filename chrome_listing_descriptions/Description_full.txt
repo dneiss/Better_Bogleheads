@@ -22,7 +22,10 @@ Hide Old Topics
 Filter out topics older than a specified number of days to focus on recent discussions.
 
 Show Subforums
-Show or hide topics from specific subforums on the active topics page. Each subforum has a checkbox in the side panel — uncheck any to hide those topics. All subforums are shown by default.
+Show or hide topics from specific subforums on the active topics page. Each subforum has a checkbox in the side panel — uncheck any to hide those topics. All subforums are shown by default. Topic counts per subforum are displayed next to each subforum name so you can see at a glance how many topics are from each area.
+
+Auto-Refresh Active Topics
+Automatically reloads the active topics page at a configurable interval. Choose from 30 seconds, 1 minute, 2 minutes, or 5 minutes. Only runs when you're on the active topics page. Disabled by default — enable it from the side panel when you want to stay up to date without manually refreshing.
 
 Adjustable Font Size
 Increase or decrease the topic list font size from 50% to 200% for comfortable reading.
