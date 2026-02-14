@@ -21,6 +21,9 @@ Keep an eye on your favorite posters. Add usernames via the side panel or right-
 Hide Old Topics
 Filter out topics older than a specified number of days to focus on recent discussions.
 
+New Topics Only
+Show only recently created topics within a selectable time window. Choose from Last 1 hour, 4 hours, 12 hours, 24 hours, 3 days, or 7 days. Stacks with Hide Read Topics — read topics stay hidden even if they fall within the time window. Toggle it on or off from the side panel.
+
 Show Subforums
 Show or hide topics from specific subforums on the active topics page. Each subforum has a checkbox in the side panel — uncheck any to hide those topics. All subforums are shown by default. Topic counts per subforum are displayed next to each subforum name so you can see at a glance how many topics are from each area.
 
