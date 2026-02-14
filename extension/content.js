@@ -672,14 +672,22 @@
   }
 
   function applyHideBanner(enabled) {
-    var rightside = document.getElementById('rightside');
-    if (!rightside) return;
-    // The banner is the first element inside #rightside (the site title line)
-    var banner = rightside.querySelector(':scope > strong, :scope > #bh-sticky-title');
-    if (banner) banner.style.display = enabled ? 'none' : '';
-    // Also hide the accordion button if it exists outside the sticky wrapper
-    var accordion = rightside.querySelector(':scope > button.accordion');
-    if (accordion) accordion.style.display = enabled ? 'none' : '';
+    var existing = document.getElementById('bh-hide-banner-style');
+    if (enabled) {
+      if (!existing) {
+        var style = document.createElement('style');
+        style.id = 'bh-hide-banner-style';
+        style.textContent = [
+          '#bh-sticky-title { display: none !important; }',
+          '#rightside > strong { display: none !important; }',
+          '#rightside > button.accordion { display: none !important; }',
+          'tr[data-bh-sticky] { display: none !important; }'
+        ].join('\n');
+        document.head.appendChild(style);
+      }
+    } else if (existing) {
+      existing.remove();
+    }
   }
 
   function applyTablePadding(enabled) {
