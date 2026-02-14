@@ -144,6 +144,8 @@
   var mutedTopicCountSpan = document.getElementById('muted-topic-count');
   var autoRefreshCheckbox = document.getElementById('auto-refresh');
   var autoRefreshIntervalSelect = document.getElementById('auto-refresh-interval');
+  var newTopicsOnlyCheckbox = document.getElementById('new-topics-only');
+  var newTopicsHoursSelect = document.getElementById('new-topics-hours');
 
   function updateReadCount(readTopics) {
     var count = Object.keys(readTopics).length;
@@ -537,7 +539,7 @@
   }
 
   // Load saved settings and apply to UI
-  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors', 'enableMutedTopics', 'mutedTopics', 'autoRefresh', 'autoRefreshInterval'], function(result) {
+  chrome.storage.sync.get(['enableStriping', 'stripeColor', 'hideRead', 'showNewReplies', 'readTopics', 'highlightHot', 'hotThreshold', 'hotColor', 'fontSize', 'hideOld', 'maxAgeDays', 'pointerCursor', 'enableWatchPosters', 'watchedPosters', 'watchColor', 'hiddenSubforums', 'bookmarkedTopics', 'compactMode', 'subforumColors', 'enableMutedTopics', 'mutedTopics', 'autoRefresh', 'autoRefreshInterval', 'newTopicsOnly', 'newTopicsMaxHours'], function(result) {
     var color = result.stripeColor || DEFAULT_COLOR;
     var hideRead = result.hideRead || false;
     var readTopics = result.readTopics || {};
@@ -580,6 +582,8 @@
     renderMutedTopics(result.mutedTopics || {});
     autoRefreshCheckbox.checked = result.autoRefresh || false;
     autoRefreshIntervalSelect.value = String(result.autoRefreshInterval || 60);
+    newTopicsOnlyCheckbox.checked = result.newTopicsOnly || false;
+    newTopicsHoursSelect.value = String(result.newTopicsMaxHours || 24);
   });
 
   // Load time tracking data
@@ -712,6 +716,14 @@
 
   autoRefreshIntervalSelect.onchange = function() {
     chrome.storage.sync.set({ autoRefreshInterval: parseInt(this.value, 10) });
+  };
+
+  newTopicsOnlyCheckbox.onchange = function() {
+    chrome.storage.sync.set({ newTopicsOnly: this.checked });
+  };
+
+  newTopicsHoursSelect.onchange = function() {
+    chrome.storage.sync.set({ newTopicsMaxHours: parseInt(this.value, 10) });
   };
 
   enableWatchPostersCheckbox.onchange = function() {

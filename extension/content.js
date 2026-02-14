@@ -628,6 +628,48 @@
     return 0;
   }
 
+  function getTopicAgeHours(row) {
+    var cells = row.querySelectorAll('td.NoMobile');
+    for (var i = 0; i < cells.length; i++) {
+      var cell = cells[i];
+      var link = cell.querySelector('a');
+      if (link) {
+        var text = link.textContent.trim();
+        var timeMatch = text.match(/^(\d{1,2}):(\d{2})$/);
+        if (timeMatch) {
+          var hours = parseInt(timeMatch[1], 10);
+          var minutes = parseInt(timeMatch[2], 10);
+          var now = new Date();
+          var topicTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+          if (topicTime > now) {
+            topicTime.setDate(topicTime.getDate() - 1);
+          }
+          return (now - topicTime) / (1000 * 60 * 60);
+        }
+        var dateMatch = text.match(/^(\d{1,2})\/(\d{1,2})$/);
+        if (dateMatch) {
+          var month = parseInt(dateMatch[1], 10) - 1;
+          var day = parseInt(dateMatch[2], 10);
+          var now = new Date();
+          var year = now.getFullYear();
+          var topicDate = new Date(year, month, day);
+          if (topicDate > now) {
+            topicDate = new Date(year - 1, month, day);
+          }
+          return (now - topicDate) / (1000 * 60 * 60);
+        }
+        var yearMatch = text.match(/^(\d{4})$/);
+        if (yearMatch) {
+          var yr = parseInt(yearMatch[1], 10);
+          var now = new Date();
+          var topicDate = new Date(yr, 0, 1);
+          return (now - topicDate) / (1000 * 60 * 60);
+        }
+      }
+    }
+    return 0;
+  }
+
   function applyFontSize(size) {
     if (!table) return;
     table.style.setProperty('font-size', size + '%', 'important');
@@ -817,7 +859,7 @@
   function applyFilters(readTopics, bookmarkedTopics) {
     if (!table) return;
 
-    chrome.storage.sync.get(['hideRead', 'showNewReplies', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums', 'bookmarkedTopics', 'enableMutedTopics', 'mutedTopics'], function(result) {
+    chrome.storage.sync.get(['hideRead', 'showNewReplies', 'hideOld', 'maxAgeDays', 'stripeColor', 'hiddenSubforums', 'bookmarkedTopics', 'enableMutedTopics', 'mutedTopics', 'newTopicsOnly', 'newTopicsMaxHours'], function(result) {
       var hideRead = result.hideRead || false;
       var showNewReplies = result.showNewReplies || false;
       var hideOld = result.hideOld || false;
@@ -827,6 +869,8 @@
       var bookmarks = bookmarkedTopics || result.bookmarkedTopics || {};
       var enableMutedTopics = result.enableMutedTopics || false;
       var mutedTopics = result.mutedTopics || {};
+      var newTopicsOnly = result.newTopicsOnly || false;
+      var newTopicsMaxHours = result.newTopicsMaxHours || 24;
 
       var rows = getDataRows();
       rows.forEach(function(row) {
@@ -852,6 +896,11 @@
 
         if (enableMutedTopics && !shouldHide && topicId && mutedTopics[topicId]) {
           shouldHide = true;
+        }
+
+        if (newTopicsOnly && !shouldHide) {
+          var ageHours = getTopicAgeHours(row);
+          if (ageHours > newTopicsMaxHours) shouldHide = true;
         }
 
         row.style.display = shouldHide ? 'none' : '';
@@ -1136,7 +1185,7 @@
     if (changes.enableWatchPosters || changes.watchedPosters || changes.watchColor) {
       applyStripes();
     }
-    if (changes.hideRead || changes.showNewReplies || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums || changes.bookmarkedTopics || changes.mutedTopics || changes.enableMutedTopics) {
+    if (changes.hideRead || changes.showNewReplies || changes.hideOld || changes.maxAgeDays || changes.readTopics || changes.hiddenSubforums || changes.bookmarkedTopics || changes.mutedTopics || changes.enableMutedTopics || changes.newTopicsOnly || changes.newTopicsMaxHours) {
       chrome.storage.sync.get(['readTopics', 'bookmarkedTopics'], function(result) {
         var readTopics = result.readTopics || {};
         if (Array.isArray(readTopics)) readTopics = {};
