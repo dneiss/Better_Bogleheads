@@ -726,7 +726,7 @@
       if (!existing) {
         var style = document.createElement('style');
         style.id = 'bh-compact-mode';
-        style.textContent = '#posts_table td { padding-top: 1px !important; padding-bottom: 1px !important; line-height: 1 !important; }';
+        style.textContent = '#posts_table td { padding-top: 1px !important; padding-bottom: 1px !important; line-height: 1 !important; } #container { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; box-sizing: border-box !important; } #table_body { width: 100% !important; } #rightside { overflow: hidden !important; padding-right: 8px !important; } #posts_table { width: 100% !important; } #posts_table td:last-child { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; max-width: 0 !important; }';
         document.head.appendChild(style);
       }
     } else if (existing) {
