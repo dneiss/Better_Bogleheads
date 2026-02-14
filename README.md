@@ -98,5 +98,5 @@ Reassign shortcuts at `chrome://extensions/shortcuts`.
 
 ## License(s)
 
-- MIT License - Feel free to modify and distribute
+- MIT License - Feel free to modify and distribute, source is at https://github.com/dneiss/Better_Bogleheads
 - Bogleheads® is a registered service mark of The John C. Bogle Center for Financial Literacy

@@ -118,4 +118,4 @@ This extension only runs on https://bogleheads.org/ and stores your preferences 
 
 OPEN SOURCE
 
-This extension is open source and available on GitHub. Contributions and feedback are welcome.
+This extension is open source and available on GitHub (https://github.com/dneiss/Better_Bogleheads). Contributions and feedback are welcome.
